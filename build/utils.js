@@ -33,7 +33,6 @@ exports.cssLoaders = function (options) {
       return ['vue-style-loader', sourceLoader].join('!')
     }
   }
-
   // http://vuejs.github.io/vue-loader/en/configurations/extract-css.html
   return {
     css: generateLoaders(['css']),
