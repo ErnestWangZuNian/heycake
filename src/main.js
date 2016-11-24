@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import App from './App'
 import VueRouter from 'vue-router'
 import routes from './router/router'
 import { Toast } from 'mint-ui'
@@ -12,7 +11,6 @@ const router = new VueRouter({
 })
 /* eslint-disable no-new */
 new Vue({
-  App,
   router,
   Toast
 }).$mount('#app')
