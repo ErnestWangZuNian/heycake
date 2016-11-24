@@ -27,7 +27,6 @@
 </template>
 <script>
     export default {
-      
       name: 'Test'
     }
     require('../assets/scss/style.scss')

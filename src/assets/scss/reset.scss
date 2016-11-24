@@ -17,7 +17,19 @@ a {
     &:link,&:visited, &:active{color: #06f;}
     &:hover, &:focus {color:#f60; text-decoration:underline;outline:none;}
 }
+/*定义字体颜色*/
+$colorLintGray: #888;
+$colorLintBlock: #444;
+$colordarkBlock: #231915;
+$colorBlock: #000;
+$colorBolder: #d4965b;
 /*清理浮动*/
+.fl{
+    float: left;
+}
+.fr{
+    float: right;
+}
 .cf{
     zoom:1;
     &:before,&:after {content:"";display:table;}

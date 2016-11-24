@@ -1,11 +1,11 @@
 @import 'px2rem.scss';
 @import 'reset.scss';
-$designWidth: 750;
+$designWidth: 640;
 body {
   position: relative;
-  width: px2rem(750);
+  width: px2rem(640);
   margin: 0 auto;
-  background: #f3ecd1 url(../img/body-bg11.jpg) repeat;
+  background-color: #fff;
   background-size: cover;
 }
 .container {
