@@ -153,3 +153,80 @@ body {
     display: none;
   }
 }
+
+.swiper {
+  width: 100%;
+  height: px2rem(320);
+  img {
+    width: 100%;
+    height: 100%;
+  }
+  .mint-swipe-indicator {
+    width: px2rem(14);
+    height: px2rem(14);
+    cursor: pointer;
+  }
+  .mint-swipe-indicators {
+    .is-active {
+      background-color: red;
+    }
+  }
+}
+.index-nav5 {
+  .nav-list {width: 20%!important;}
+}
+.index-nav {
+  width: 100%;
+  padding: px2rem(14) 0;
+  height: px2rem(64);
+  background-color: #000;
+  color: #fff;
+  .nav-list {
+    float: left;
+    width: 25%;
+    text-align: center;
+    font-size: px2rem(20);
+    cursor: pointer;
+    .icon {
+      display: inline-block;
+      margin-bottom: px2rem(2);
+      width: px2rem(30);
+      height: px2rem(32);
+      background: url(../img/new_nav_sprite.png) no-repeat;
+      background-size: px2rem(240) px2rem(146)
+    }
+    .icon1 {
+      background-position: 0 0;
+    }
+    .icon2 {
+      background-position: px2rem(-49) 0;
+    }
+    .icon3 {
+      background-position: px2rem(-107) 0;
+    }
+    .icon4 {
+      background-position: px2rem(-161) 0;
+    }
+    .icon0 {
+      background-position: px2rem(-205) 0;
+    }
+  }
+  .nav-list:hover {
+    color: $colorBolder;
+    .icon1 {
+      background-position: 0 px2rem(-114);
+    }
+    .icon2 {
+      background-position: px2rem(-49) px2rem(-114);
+    }
+    .icon3 {
+      background-position: px2rem(-107) px2rem(-114);
+    }
+    .icon4 {
+      background-position: px2rem(-161) px2rem(-114);
+    }
+    .icon0 {
+      background-position: px2rem(-205) px2rem(-114);
+    }
+  }
+}
