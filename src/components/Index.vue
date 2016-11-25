@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+     <div class="container">
         <!--用户信息-->
         <div class="user-info">
             <div class="logo">
@@ -46,6 +46,16 @@
         <div class="product-list">
             <ul>
                 <li>
+                    <img src="" alt="">
+                    <h3>Rose Lover</h3>
+                    <h4>玫瑰情人</h4>
+                </li>
+                <li>
+                    <img src="" alt="">
+                    <h3>Rose Lover</h3>
+                    <h4>玫瑰情人</h4>
+                </li>
+                 <li>
                     <img src="" alt="">
                     <h3>Rose Lover</h3>
                     <h4>玫瑰情人</h4>

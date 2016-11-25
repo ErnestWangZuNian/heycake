@@ -1,2 +1,2 @@
-const urlroot = 'http://192.168.1.150:1382'
+const urlroot = 'http://heycake.cn'
 export default urlroot

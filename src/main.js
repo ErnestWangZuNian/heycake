@@ -7,6 +7,14 @@ import { Toast } from 'mint-ui'
 import 'mint-ui/lib/style.css'
 Vue.use(VueRouter)
 Vue.use(VueResource)
+Vue.http.interceptors.push((request, next) => {
+  next((response) => {
+    if (!response.ok) {
+      console.log('404页面')
+      return response
+    }
+  })
+})
 ajax.getDataFromApi({
   url: '/v1/goods?recommend=true'
 }, (data) => {
