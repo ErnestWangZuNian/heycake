@@ -1,0 +1,23 @@
+@import 'style.scss';
+
+.list {
+  ul{
+    a{ text-decoration: none};
+    li{
+      .div-img{
+        img{width: px2rem(640); height: px2rem(535)}
+      };
+      .div-info{
+        background-color: #000000;
+        height: px2rem(72);
+        line-height: px2rem(72);
+        color: #f4f4f4;
+        text-align: center;
+        font-size: px2rem(28);
+        p{
+          span{ margin-right: px2rem(20)}
+        }
+      }
+    }
+  }
+}
