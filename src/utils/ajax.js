@@ -4,7 +4,7 @@ const ajax = {
   xhrhttp (params, callback, error) {
     Vue.http({
       url: urlRoot + params.url,
-      data: params.data ? params.data : {},
+      params: params.data ? params.data : {},
       method: params.method
     }).then((response) => {
       callback && callback(response)

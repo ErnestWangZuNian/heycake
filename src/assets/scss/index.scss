@@ -18,7 +18,7 @@
     }
     .login-flag{
         position: absolute;
-        right: 0;
+        right: px2rem(20);
         top: 50%;
         cursor: pointer;
         transform: translateY(-50%);
@@ -43,11 +43,15 @@
         }
         h3{
             color: $colorLintGray;
+            text-align: center;
             font-size: px2rem(18);
+            margin-top: px2rem(10);
         }
         h4{
             color: $colorLintBlock;
+            text-align: center;
             font-size: px2rem(28);
+            margin-top: px2rem(4);
         }
     }
     li:hover{
