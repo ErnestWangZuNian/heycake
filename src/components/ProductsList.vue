@@ -96,12 +96,24 @@
             </ul>
           </dd>
         </dl>
+
+        <template>
+          <mt-loadmore :top-method="loadTop" @top-status-change="handleTopChange">
+            <ul>
+              <li v-for="item in list">{{ item }}</li>
+            </ul>
+            <div slot="top" class="mint-loadmore-top">
+              <span v-show="topStatus !== 'loading'" :class="{ 'rotate': topStatus === 'drop' }">↓</span>
+              <span v-show="topStatus === 'loading'">Loading...</span>
+            </div>
+          </mt-loadmore>
+        </template>
       </div>
     </div>
   </div>
 </template>
 <script>
-  import {Swipe, SwipeItem, InfiniteScroll} from 'mint-ui'
+  import {Swipe, SwipeItem, Loadmore } from 'mint-ui'
   import  Loading from './Loading'
   import ajax from '../utils/ajax.js'
   //Swipe ， SwipeItem        幻灯片
@@ -111,17 +123,24 @@
     components: {
       Loading,
       Swipe,
-      SwipeItem
+      SwipeItem,
+      Loadmore
     },
     mounted () {
       this.fetchData()
     },
     data () {
       return {
-        loading: true
+        loading: true,
+        list:[0],
+        topStatus: '',
       }
     },
     methods: {
+      handleTopChange(status) {
+        this.topStatus = status;
+      },
+
       fetchData () {
         console.log('wangggg')
         this.loading = true
