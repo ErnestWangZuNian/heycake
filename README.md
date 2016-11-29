@@ -1,7 +1,5 @@
 #heycake  
 
- ![](http://heycake.cn/attachment/3eb9a9fc-9577ce5f-3f08997e-24e331fb-9511f2c8123f67aa)
- 
 
 #####该项目采用vue2.0版本开发，路由采用vue-router,数据交互采用vue-rescource，项目结构主要放在src目录下,主要组件
 

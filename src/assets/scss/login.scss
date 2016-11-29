@@ -1,0 +1,26 @@
+@import 'style.scss';
+.login-top {
+   width: px2rem(640);
+   height: px2rem(394);
+   display: table-cell;
+   vertical-align: middle;
+   text-align: center;
+   .login-top-logo{
+       display: inline-block;
+       width: px2rem(196);
+       height: px2rem(196);
+       background: url(../img/images.png) repeat;
+       background-size: px2rem(778) px2rem(663);
+       background-position: 0 px2rem(194);
+   }
+}
+.login-content{
+   padding: 0 px2rem(12);
+   .g-login-content{
+       height: px2rem(70);
+       border-bottom: px2rem(1) solid #999899;
+   }
+   label {
+       
+   }
+}

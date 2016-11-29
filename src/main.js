@@ -1,12 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
+import Vuex from 'vuex'
 import routes from './router/router'
 // import ajax from './utils/ajax.js'
 import { Toast, Lazyload } from 'mint-ui'
 import 'mint-ui/lib/style.css'
 Vue.use(VueRouter)
 Vue.use(VueResource)
+Vue.use(Vuex)
 Vue.use(Lazyload)
 Vue.http.interceptors.push((request, next) => {
   next((response) => {

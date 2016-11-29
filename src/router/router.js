@@ -5,14 +5,16 @@ const ProductsList = resolve => require(['../components/ProductsList'], resolve)
 const NewArrivals = resolve => require(['../components/NewArrivals'], resolve)
 const UserCenter = resolve => require(['../components/UserCenter'], resolve)
 const Loading = resolve => require(['../components/Loading'], resolve)
+const Login = resolve => require(['../components/Login'], resolve)
 const Bar = { template: '<div>bar</div>' }
 const routes = [
     { path: '/site/bar', component: Bar },
     { path: '/site/test', component: Test },
     { path: '/site/index', component: Index },
-    { path: '/site/productsList', component: ProductsList },
-    { path: '/site/newArrivals', component: NewArrivals },
-    { path: '/site/userCenter', component: UserCenter },
-    { path: '/site/loading', component: Loading }
+    { path: '/site/products-list', component: ProductsList },
+    { path: '/site/new-arrivals', component: NewArrivals },
+    { path: '/site/user-center', component: UserCenter },
+    { path: '/site/loading', component: Loading },
+    { path: '/site/login', component: Login }
 ]
 export default routes
