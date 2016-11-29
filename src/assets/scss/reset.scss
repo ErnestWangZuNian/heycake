@@ -53,7 +53,7 @@ $colorBolder: #d4965b;
   color:$color;
 }
 // input框
-@mixin inputs($width:640,$height: 70,$bodercolor:#ddd,$font:24,$radius:0){
+@mixin inputs($width:600,$height: 70,$bodercolor:#ddd,$font:24,$radius:0){
   width: px2rem($width);
   height: px2rem($height);
   line-height:px2rem($height) ;
@@ -61,7 +61,21 @@ $colorBolder: #d4965b;
   font-size:px2rem($font);
   border-radius:px2rem($radius);
   padding: 0 px2rem(10);
+  box-sizing: border-box;
 }
+
+// select框
+@mixin selects($width:290,$height: 70,$bodercolor:#ddd,$font:24,$radius:6){
+  width: px2rem($width);
+  height: px2rem($height);
+  line-height:px2rem($height) ;
+  border:px2rem(1) solid $bodercolor;
+  font-size:px2rem($font);
+  border-radius:px2rem($radius);
+  padding: 0 px2rem(10);
+  box-sizing: border-box;
+}
+
 @mixin wid($width){
     width:px2rem($width)
 }
