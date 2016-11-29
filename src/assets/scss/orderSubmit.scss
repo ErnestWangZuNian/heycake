@@ -1,0 +1,202 @@
+@import 'style.scss';
+//配送方式
+.order-tab{
+  background-color: #f5f5f5;
+  padding: px2rem(20);
+  height:px2rem(105);
+  box-sizing: border-box;
+  .btn-red{
+    @include btn(290,64,#ce0c0c,#ffffff,24,6)
+  };
+  .btn-gray{
+    @include btn(290,64,#ffffff,#333333,24,6);
+    border:px2rem(1) solid #dddddd;
+  }
+}
+//信息
+.order-info{
+  border-top:px2rem(1) solid #dddddd;
+  border-bottom:px2rem(1) solid #dddddd;
+  padding: 0 px2rem(20);
+  .label-list {
+    .info{
+      width: px2rem(520);
+      section{
+        font-size: px2rem(24);
+        line-height: px2rem(48);
+        color: #333333;
+        display:-moz-box;
+        display:-webkit-box;
+        display:box;
+        .icon{
+          margin-top: px2rem(9);
+          width: px2rem(30);
+          height: px2rem(30);
+          margin-right: px2rem(20);
+          background: url(../img/images.png);
+          background-size: px2rem(778) px2rem(683);
+        };
+        .icon-name {
+          background-position: px2rem(-417) px2rem(-10) ;
+        };
+        .icon-tel {
+          background-position: px2rem(-457) px2rem(-10);
+        };
+        .icon-addr {
+          background-position: px2rem(-490) px2rem(-10) ;
+        };
+        .text{
+          -moz-box-flex:1;
+          -webkit-box-flex:1;
+          box-flex:1;
+        }
+      };
+    };
+    .arrow{
+      width: px2rem(70);
+      .icon-right{
+        margin-top: px2rem(60);
+        margin-left: px2rem(30);
+        width: px2rem(30);
+        height: px2rem(40);
+        background: url(../img/images.png) px2rem(-750) px2rem(-125);
+        background-size: px2rem(778) px2rem(683);
+      }
+    }
+  }
+  .label-message{
+    border-top: px2rem(1) solid #dddddd;
+    font-size: px2rem(28);
+    padding: px2rem(20) 0;
+    .inputs {
+      @include inputs(506,52,#ddd,24,10)
+    }
+  }
+}
+
+//分隔
+.order-splitter{
+  background-color: #f5f5f5;
+  height: px2rem(20);
+}
+
+//预约时间
+.order-times{
+  border-top:px2rem(1) solid #dddddd;
+  border-bottom:px2rem(1) solid #dddddd;
+  padding: 0 px2rem(20);
+  .times{
+    height: px2rem(120);
+    text-align: center;
+    .inputs{
+      @include inputs(200,52,#ddd,24,8);
+      margin:px2rem(20) 0 ;
+    }
+  }
+}
+
+//购物明细
+.order-detail{
+  border-top:px2rem(1) solid #dddddd;
+  border-bottom:px2rem(1) solid #dddddd;
+  padding: 0 px2rem(20);
+  ul{
+    li{
+      display:-moz-box;
+      display:-webkit-box;
+      display:box;
+      border-bottom: px2rem(1) solid #ddd;
+      padding: px2rem(20) 0;
+      .imgs{
+        img{width: px2rem(100);
+          height: px2rem(100);
+        }
+        margin-right: px2rem(20);
+      };
+      .info{
+        -moz-box-flex:1;
+        -webkit-box-flex:1;
+        box-flex:1;
+        h3{
+          font-size: px2rem(24);
+          font-weight: normal;
+          line-height: px2rem(30);
+          height: px2rem(70);
+        }
+        p{
+          font-size:px2rem(20);
+          color: #666666;
+        }
+      };
+      .price{
+        width: px2rem(110);
+        font-size: px2rem(22);
+        color: #cd0c0c;
+        .mrg { margin-top: px2rem(30); text-align: center;}
+      }
+    }
+  };
+  .freight{
+    height:px2rem(85);
+    line-height: px2rem(85);
+    font-size: px2rem(28);
+    span{
+      font-size: px2rem(24);
+      display: inline-block;
+      float: right;
+    }
+  }
+}
+
+//支付方式
+.order-pay{
+  border-top:px2rem(1) solid #dddddd;
+  border-bottom:px2rem(1) solid #dddddd;
+  padding: 0 px2rem(20);
+  font-size: px2rem(30);
+  color: #666666;
+  .selected{
+    display: inline-block;
+    margin-right: px2rem(20);
+  };
+  .text{
+    position: relative;
+    top:px2rem(-10);
+    display: inline-block;
+  }
+}
+
+//底部
+.order-null {
+  height:px2rem(200);
+  background-color: #f5f5f5;
+  border-bottom: px2rem(1) solid #dddddd;
+}
+
+//提交订单
+.order-submit{
+  padding: 0 px2rem(20);
+  background-color: #eeeeee;
+  height: px2rem(100);
+  position: relative;
+  line-height: px2rem(100);
+  p{
+    display: inline-block;
+    font-size: px2rem(30);
+    color: #444444;
+    span{
+      color: #cd0c0c;
+    }
+  }
+  .btn{
+    @include btn(220,100,#cd0c0c,#ffffff,28,0)
+    position: absolute;
+    right: 0;
+  }
+}
+
+.title{
+  font-size: px2rem(28);
+  border-bottom: px2rem(1) solid #ddd;
+  line-height: px2rem(80);
+};
