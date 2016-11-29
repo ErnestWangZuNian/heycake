@@ -20,7 +20,7 @@
        height: px2rem(70);
        border-bottom: px2rem(1) solid #999899;
    }
-   label {
-       
+   .test{
+       @include btn()
    }
 }

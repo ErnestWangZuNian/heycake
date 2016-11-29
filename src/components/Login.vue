@@ -3,10 +3,14 @@
          <div class="login-top">
              <div class="login-top-logo"></div>
              <div class="login-content">
-                 <div class="tel-phone"></div>
-                 <div class="password"></div>
+                 <div class="g-login-content tel-phone">
+                     <label for="telphone"></label>
+                     <input type="text">
+                 </div>
+                 <div class="g-login-content password"></div>
                  <div class="login-tip"></div>
                  <div class="login-btn"></div>
+                 <div class="test">qqqqq</div>
              </div>
          </div>
      </div>

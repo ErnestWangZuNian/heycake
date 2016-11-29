@@ -40,6 +40,21 @@ $colorBolder: #d4965b;
     -webkit-transition: all $time ease-in-out;
     transition: all $time ease-in-out;
 }
+// 按钮
+@mixin btn($width:640,$height: 70,$bgcolor:#b00002,$color:#fff,$font:28,$radius:0){
+  width: px2rem($width);
+  height: px2rem($height);
+  text-align: center;
+  line-height:px2rem($height) ;
+  background-color:$bgcolor;
+  border:px2rem(1) solid $bgcolor;
+  border-radius:px2rem($radius);
+  font-size:px2rem($font);
+  color:$color;
+}
+@mixin wid($width){
+    width:px2rem($width)
+}
 // 文字描边
 @mixin ts($s1:1px,$s2:1px,$color:#fff){
     text-shadow:
