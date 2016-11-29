@@ -12,6 +12,12 @@ code, kbd, pre, samp, tt { font-family: Consolas,"Courier New", Courier, monospa
 address, cite, dfn, em, var,i {font-style: normal;}
 blockquote, q {quotes: none;}
 blockquote:before, blockquote:after,q:before, q:after {content:"";content: none;}
+input{
+    border: none;
+    background: none; 
+}
+//  去除输入框点击黄色背景
+*:focus {outline: none;}
 a { 
     color:#06f; text-decoration:none;cursor: pointer;
     &:link,&:visited, &:active{color: #06f;}
@@ -52,6 +58,7 @@ $colorBolder: #d4965b;
   font-size:px2rem($font);
   color:$color;
 }
+//浮动宽度
 @mixin wid($width){
     width:px2rem($width)
 }

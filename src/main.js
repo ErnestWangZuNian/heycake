@@ -10,6 +10,7 @@ Vue.use(VueRouter)
 Vue.use(VueResource)
 Vue.use(Vuex)
 Vue.use(Lazyload)
+Vue.http.headers = {'Content-Type': 'application/x-www-form-urlencoded'}
 Vue.http.interceptors.push((request, next) => {
   next((response) => {
     if (!response.ok) {
