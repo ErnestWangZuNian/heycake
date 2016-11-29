@@ -4,6 +4,7 @@ const Index = resolve => require(['../components/Index'], resolve)
 const ProductsList = resolve => require(['../components/ProductsList'], resolve)
 const NewArrivals = resolve => require(['../components/NewArrivals'], resolve)
 const UserCenter = resolve => require(['../components/UserCenter'], resolve)
+const Cart = resolve => require(['../components/Cart'], resolve)
 const Loading = resolve => require(['../components/Loading'], resolve)
 const Login = resolve => require(['../components/Login'], resolve)
 const Bar = { template: '<div>bar</div>' }
@@ -14,6 +15,7 @@ const routes = [
     { path: '/site/products-list', component: ProductsList },
     { path: '/site/new-arrivals', component: NewArrivals },
     { path: '/site/user-center', component: UserCenter },
+    { path: '/site/cart', component: Cart },
     { path: '/site/loading', component: Loading },
     { path: '/site/login', component: Login }
 ]

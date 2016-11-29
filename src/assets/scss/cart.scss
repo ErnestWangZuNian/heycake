@@ -1,0 +1,55 @@
+@import 'style.scss';
+
+ul.theCart{
+  li{
+    border-bottom:px2rem(1) solid #ccc;
+    padding: px2rem(10) 0;
+    .goods-img{width: px2rem(130); height: px2rem(130);
+      img{width: 100%; height: 100%;}
+    }
+    h2{ font-size: px2rem(24); color: #68270b; margin: px2rem(4) 0; font-weight: normal;};
+    p{font-size: px2rem(20); color: #666666;};
+    .countBox{
+      margin-top:px2rem(5);
+      button{ width:px2rem(58); height: px2rem(58); line-height:px2rem(58); color: #000; border:px2rem(1) solid #aaa; background: #eee; font-size: px2rem(24)};
+      input{line-height:px2rem(58); border: 0; border-top: px2rem(1) solid #aaa; border-bottom: px2rem(1) solid #aaa; font-size: px2rem(24); width: px2rem(100); text-align: center;}
+    };
+    .price{font-size:px2rem(24);color: #cd0c0c; margin-top: px2rem(10); text-align: right; margin-right: px2rem(20)};
+    .close{ position: relative; left: px2rem(45); top: px2rem(40); width:px2rem(41);height:px2rem(41);background: url(../img/images.png) no-repeat px2rem(-682) px2rem(-121);  background-size: px2rem(778) px2rem(683);}
+  }
+}
+
+.selected {
+  width:px2rem(37);
+  height:px2rem(37);
+  background: url(../img/images.png) no-repeat px2rem(-697) 0;
+  background-size: px2rem(778) px2rem(683) ;
+  margin-top: px2rem(46);
+  margin-left: px2rem(20);
+};
+.selected1 {
+  background: url(../img/images.png) no-repeat px2rem(-646) 0;
+  background-size: px2rem(778) px2rem(683);
+};
+.w76{ width: px2rem(76)};
+.w148{ width: px2rem(148)};
+.w285{ width: px2rem(285)};
+.w130{ width: px2rem(130)};
+
+.settlement{
+  width: 100%;
+  height:px2rem(100);
+  line-height: px2rem(100);
+  border-top: px2rem(1) #ddd solid;
+  border-bottom: px2rem(1) #ddd solid;
+  position: fixed;
+  bottom: px2rem(100);
+  background-color: rgb(238, 238, 238);
+  font-size: px2rem(28);
+  color: #666;
+  .selected{margin-top: px2rem(30); float:left; margin-right: px2rem(10)};
+  .total{ margin: 0 px2rem(20); font-size: px2rem(24);
+    span{ color: #b00002;}
+  };
+  button{width:px2rem(160); height: px2rem(64); line-height:px2rem(64); color: #ffffff; border:px2rem(1) solid #b00002; background: #b00002; font-size: px2rem(28); border-radius: px2rem(6)}
+}
