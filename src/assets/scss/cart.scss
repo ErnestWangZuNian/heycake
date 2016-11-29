@@ -11,7 +11,10 @@ ul.theCart{
     p{font-size: px2rem(20); color: #666666;};
     .countBox{
       margin-top:px2rem(5);
-      button{ width:px2rem(58); height: px2rem(58); line-height:px2rem(58); color: #000; border:px2rem(1) solid #aaa; background: #eee; font-size: px2rem(24)};
+      button{
+        @include btn(58,58,#eeeeee,#000000,24,0);
+        border: px2rem(1) solid #aaa;
+      };
       input{line-height:px2rem(58); border: 0; border-top: px2rem(1) solid #aaa; border-bottom: px2rem(1) solid #aaa; font-size: px2rem(24); width: px2rem(100); text-align: center;}
     };
     .price{font-size:px2rem(24);color: #cd0c0c; margin-top: px2rem(10); text-align: right; margin-right: px2rem(20)};
@@ -19,18 +22,7 @@ ul.theCart{
   }
 }
 
-.selected {
-  width:px2rem(37);
-  height:px2rem(37);
-  background: url(../img/images.png) no-repeat px2rem(-697) 0;
-  background-size: px2rem(778) px2rem(683) ;
-  margin-top: px2rem(46);
-  margin-left: px2rem(20);
-};
-.selected1 {
-  background: url(../img/images.png) no-repeat px2rem(-646) 0;
-  background-size: px2rem(778) px2rem(683);
-};
+
 .w76{ width: px2rem(76)};
 .w148{ width: px2rem(148)};
 .w285{ width: px2rem(285)};
@@ -51,5 +43,7 @@ ul.theCart{
   .total{ margin: 0 px2rem(20); font-size: px2rem(24);
     span{ color: #b00002;}
   };
-  button{width:px2rem(160); height: px2rem(64); line-height:px2rem(64); color: #ffffff; border:px2rem(1) solid #b00002; background: #b00002; font-size: px2rem(28); border-radius: px2rem(6)}
+  button{
+    @include btn(160,64,#b00002,#ffffff,28,6);
+  }
 }

@@ -1,0 +1,28 @@
+@import 'style.scss';
+
+
+.address-list {
+  padding: px2rem(20);
+  .input-line{
+    @include inputs();
+     margin: px2rem(10) 0;
+  };
+  .sele { margin: px2rem(10) 0}
+  .select-line {
+    @include selects();
+    option{ font-size: px2rem(14)}
+  };
+  .default{
+    height:px2rem(88);
+    border-top:px2rem(1) solid #dddddd;
+    border-bottom: px2rem(1) solid #dddddd;
+  }
+}
+
+.submit-list{
+  margin-top: px2rem(130);
+  .btn-submit{
+    @include btn(460,66,#cd0c0c,#ffffff,32,6);
+    margin-left:px2rem(90) ;
+  }
+}
