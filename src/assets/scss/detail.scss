@@ -1,20 +1,6 @@
 @import 'style.scss';
 .grid {
-  display: flex;
-  padding: 0 px2rem(20);
-  font-size: px2rem(28);
-  height:px2rem(79);
-  align-items: center;
-  .grid-cell{
-    flex:1;
-    color: #333333;
-  };
-  .tleft{ text-align: left; };
-  .tright{ text-align: right; color: #888888;};
-  .u-w30{
-    flex: 0 0 px2rem(30);
-    .item-after{background: url(../img/images.png) no-repeat px2rem(-640) px2rem(-245);background-size: px2rem(778) px2rem(683); width: px2rem(30); height: px2rem(30);}
-  };
+  @include grid();
   .u-w100{
     flex: 0 0 px2rem(100);
     .item-cart{background: url(../img/images.png) no-repeat px2rem(-740) px2rem(-245);background-size: px2rem(778) px2rem(683); width: px2rem(35); height: px2rem(35); margin: px2rem(10) 0 0 px2rem(20)}
