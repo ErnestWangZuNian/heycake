@@ -20,7 +20,6 @@
             <div class="login-btn" @click='login'>
                 登录/ 注册
             </div>
-            <span>{{loginFlag}}</span>
             <div class="login-intro">
               <p> 说明：登录/注册说明您已同意《heycake用户协议》</p>
               <p>找回密码，请致电：<strong>400-1139-499</strong></p>
@@ -35,23 +34,26 @@
        methods: {
         // 登录
            login () {
-              console.log(this.$store.commit('SET_USER_INFO'),true)
               ajax.postDataToApi({
-                  url: '/v1/authentication/login/',
+                  url: '/v1/authentication/login',
                   body: {
                       account: this.telphone,
                       password: this.password,
                   }
               },(response) => {
-                  console.log('esansfgsdfgffasd')
+                  let token = response.data.body.session_token
                  // 获取登录成功后的用户信息并存入vuex的user
                     ajax.getDataFromApi({
                         url: 'v1/authentication/detection',
+                        header: {'X-Overpowered-Token':token}
                     },(response) => {
-                        console.log(response.data.body)
-                        this.$store.commit("types.SET_USER_INFO",response.data.body)
+                        Number(response.data.body) === 1 ? response.data.body = true :
+                        response.data.body = false
+                        let loginFlag = response.data.body
+                        localStorage.setItem('isLogin', loginFlag)
+                        this.$store.dispatch('setUserInfo',loginFlag)
+                        location.href = '/#/site/index'
                     },(error) => {
-                      console.log('dddasdsadsad')
                     })
               },(error) => {
                  

@@ -7,7 +7,7 @@
                 <div class="logo">
                     <img src="../assets/img/logo.png" alt="">
                 </div>
-                <div class="login-flag">登录<span>|</span>注册</div>
+                <div class="login-flag" v-if='!loginFlag'>登录<span>|</span>注册</div>
             </div>
             <!--轮播图-->
             <div class="swiper">
@@ -20,22 +20,30 @@
             <!--导航-->
             <div class="index-nav">
                 <ul class="cf">
-                    <li class="nav-list">
+                    <router-link to="products-list">
+                        <li class="nav-list">
                         <i class="icon icon1"></i>
                         <p>蛋糕目录</p>
                     </li>
-                    <li class="nav-list">
+                    </router-link>
+                     <router-link to="new-arrivals">
+                        <li class="nav-list">
                         <i class="icon icon2"></i>
                         <p>新品推荐</p>
                     </li>
-                    <li class="nav-list">
+                    </router-link>
+                     <router-link to="cart">
+                        <li class="nav-list">
                         <i class="icon icon3"></i>
                         <p>我的订单</p>
                     </li>
-                    <li class="nav-list">
+                    </router-link>
+                     <router-link to="cart">
+                        <li class="nav-list">
                         <i class="icon icon4"></i>
                         <p>我的购物车</p>
                     </li>
+                    </router-link>
                 </ul>
             </div>
             <!--产品列表-->
@@ -58,6 +66,7 @@
      import Loading from './Loading'
      import ajax from '../utils/ajax'
      import utils from '../utils/public'
+     import { mapGetters } from 'vuex'
      export default {
          name: 'Index',
          components: {
@@ -67,6 +76,11 @@
              Lazyload,
              Loadmore 
          },
+         computed: {
+          ...mapGetters({
+              loginFlag: 'isLogin'
+            }),
+       }, 
          events: {
           bottomStatusChange () {
               console.log('我京东到家就')
