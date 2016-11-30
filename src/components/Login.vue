@@ -20,6 +20,7 @@
             <div class="login-btn" @click='login'>
                 登录/ 注册
             </div>
+            <span>{{loginFlag}}</span>
             <div class="login-intro">
               <p> 说明：登录/注册说明您已同意《heycake用户协议》</p>
               <p>找回密码，请致电：<strong>400-1139-499</strong></p>
@@ -28,11 +29,13 @@
     </div>
 </template>
 <script>
+    import { mapGetters } from 'vuex'
     import ajax from '../utils/ajax'
     export default {
        methods: {
         // 登录
            login () {
+              console.log(this.$store.commit('SET_USER_INFO'),true)
               ajax.postDataToApi({
                   url: '/v1/authentication/login/',
                   body: {
@@ -40,12 +43,13 @@
                       password: this.password,
                   }
               },(response) => {
+                  console.log('esansfgsdfgffasd')
                  // 获取登录成功后的用户信息并存入vuex的user
-                  console.log('www1')
                     ajax.getDataFromApi({
                         url: 'v1/authentication/detection',
                     },(response) => {
                         console.log(response.data.body)
+                        this.$store.commit("types.SET_USER_INFO",response.data.body)
                     },(error) => {
                       console.log('dddasdsadsad')
                     })
@@ -53,6 +57,11 @@
                  
               })
             }
+       },
+       computed: {
+          ...mapGetters({
+              loginFlag: 'isLogin'
+            }),
        },
        data () {
            return {

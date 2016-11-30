@@ -26,7 +26,7 @@ module.exports = {
         target: 'http://heycake.cn',
         changeOrigin: true,
         pathRewrite: {
-          '^/v1': ''
+          '^/': ''
         }
       }
     },

@@ -4,8 +4,8 @@ const state = {
   isLogin: false
 }
 const mutations = {
-  [ types.GET_USER_INFO ] (state) {
-    console.log(state)
+  [ types.SET_USER_INFO ] (state, loginFlag) {
+    state.isLogin = loginFlag
   }
 }
 export default {
