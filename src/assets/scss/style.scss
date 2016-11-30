@@ -97,7 +97,44 @@ body {
   margin-top: px2rem(46);
   margin-left: px2rem(20);
 };
+//取消单选就加上下面这个类
 .selected1 {
   background: url(../img/images.png) no-repeat px2rem(-646) 0;
   background-size: px2rem(778) px2rem(683);
 };
+
+//底部操作区
+.operation {
+  position: fixed;
+  bottom: 0px;
+  height: px2rem(100);
+  border-top:px2rem(1) solid #ddd;
+  width: 100%;
+  background-color: #ffffff;
+}
+
+//分隔
+.splitter{
+  background-color: #f5f5f5;
+  height: px2rem(20);
+}
+
+//字体大小
+.font-20{font-size: px2rem(20)}
+.font-24{font-size: px2rem(24)}
+.font-28{font-size: px2rem(28)}
+.font-30{font-size: px2rem(30)}
+.font-32{font-size: px2rem(32)}
+
+//字体颜色
+.c-000{ color: #000000!important;}
+.c-333{ color: #333333!important;}
+.c-666{ color: #666666!important;}
+.c-888{ color: #888888!important;}
+.c-red{ color: #dd1f1f!important;}
+.c-fff{ color: #ffffff!important;}
+.c-aaa{ color: #aaaaaa!important;}
+
+//position
+.position-rel {position: relative;}
+.position-abs {position: absolute;}

@@ -51,6 +51,7 @@ $colorBolder: #d4965b;
   border-radius:px2rem($radius);
   font-size:px2rem($font);
   color:$color;
+  font-family: "microsoft yahei";
 }
 // input框
 @mixin inputs($width:600,$height: 70,$bodercolor:#ddd,$font:24,$radius:0){
@@ -62,6 +63,7 @@ $colorBolder: #d4965b;
   border-radius:px2rem($radius);
   padding: 0 px2rem(10);
   box-sizing: border-box;
+  font-family: "microsoft yahei";
 }
 
 // select框
@@ -74,6 +76,7 @@ $colorBolder: #d4965b;
   border-radius:px2rem($radius);
   padding: 0 px2rem(10);
   box-sizing: border-box;
+  font-family: "microsoft yahei";
 }
 
 @mixin wid($width){

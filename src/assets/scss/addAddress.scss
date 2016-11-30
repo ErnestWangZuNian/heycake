@@ -14,9 +14,11 @@
   };
   .default{
     height:px2rem(88);
-    border-top:px2rem(1) solid #dddddd;
     border-bottom: px2rem(1) solid #dddddd;
-  }
+    line-height: px2rem(88);
+    font-size:px2rem(28);
+    .selected { float: left;  margin-top:px2rem(30); margin-right: px2rem(20)}
+  };
 }
 
 .submit-list{
