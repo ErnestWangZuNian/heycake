@@ -6,6 +6,7 @@ const UserCenter = resolve => require(['../components/UserCenter'], resolve)
 const Cart = resolve => require(['../components/Cart'], resolve)
 const OrderSubmit = resolve => require(['../components/OrderSubmit'], resolve)
 const AddAddress = resolve => require(['../components/AddAddress'], resolve)
+const Detail = resolve => require(['../components/Detail'], resolve)
 const Loading = resolve => require(['../components/Loading'], resolve)
 const Login = resolve => require(['../components/Login'], resolve)
 const routes = [
@@ -16,6 +17,7 @@ const routes = [
     { path: '/site/cart', component: Cart },
     { path: '/site/order-submit', component: OrderSubmit },
     { path: '/site/add-address', component: AddAddress },
+    { path: '/site/detail', component: Detail },
     { path: '/site/loading', component: Loading },
     { path: '/site/login', component: Login }
 ]

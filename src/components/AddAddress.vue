@@ -21,6 +21,10 @@
           <div class="cf"></div>
         </div>
         <input class="input-line" type="text" placeholder="详细地址">
+        <div class="default">
+          <div class="selected"></div>
+          <span>设为默认</span>
+        </div>
       </div>
 
       <div class="submit-list">

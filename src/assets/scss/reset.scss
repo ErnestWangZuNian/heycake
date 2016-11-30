@@ -15,11 +15,11 @@ blockquote, q {quotes: none;}
 blockquote:before, blockquote:after,q:before, q:after {content:"";content: none;}
 input{
     border: none;
-    background: none; 
+    background: none;
 }
 //  去除输入框点击黄色背景
 *:focus {outline: none;}
-a { 
+a {
     color:#06f; text-decoration:none;cursor: pointer;
     &:link,&:visited, &:active{color: #06f;}
     &:hover, &:focus {color:#f60; text-decoration:underline;outline:none;}
@@ -58,6 +58,7 @@ $colorBolder: #d4965b;
   border-radius:px2rem($radius);
   font-size:px2rem($font);
   color:$color;
+  font-family: "microsoft yahei";
 }
 // input框
 @mixin inputs($width:600,$height: 70,$bodercolor:#ddd,$font:24,$radius:0){
@@ -69,6 +70,7 @@ $colorBolder: #d4965b;
   border-radius:px2rem($radius);
   padding: 0 px2rem(10);
   box-sizing: border-box;
+  font-family: "microsoft yahei";
 }
 
 // select框
@@ -81,6 +83,24 @@ $colorBolder: #d4965b;
   border-radius:px2rem($radius);
   padding: 0 px2rem(10);
   box-sizing: border-box;
+  font-family: "microsoft yahei";
+}
+
+//网格布局
+@mixin grid($height:79,$font:24,$color:#333333) {
+  display: flex;
+  font-size: px2rem($font);
+  height:px2rem($height);
+  align-items: center;
+  padding: 0 px2rem(20);
+  .grid-cell{
+    flex:1;
+    color: $color;
+  };
+  .u-w30{
+    flex: 0 0 px2rem(30);
+    .item-after{background: url(../img/images.png) no-repeat px2rem(-640) px2rem(-245);background-size: px2rem(778) px2rem(683); width: px2rem(30); height: px2rem(30);}
+  };
 }
 
 @mixin wid($width){
@@ -108,7 +128,7 @@ $colorBolder: #d4965b;
 @mixin yd($s1:0,$s2:0){
     -webkit-transform:translate($s1,$s2);
     transform:translate($s1,$s2);
-} 
+}
 // 禁止选中
 @mixin ns{
     -webkit-touch-callout: none;
@@ -125,9 +145,9 @@ $colorBolder: #d4965b;
     text-overflow: ellipsis;
 }
 // 计算(基本不会采用)
-@mixin calc($property, $expression) { 
-    #{$property}: -webkit-calc(#{$expression}); 
-    #{$property}: calc(#{$expression}); 
+@mixin calc($property, $expression) {
+    #{$property}: -webkit-calc(#{$expression});
+    #{$property}: calc(#{$expression});
 }
 // 一行文字垂直居中,并隐藏溢出
 @mixin hlh($s1) {
