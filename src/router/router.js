@@ -10,6 +10,7 @@ const Detail = resolve => require(['../components/Detail'], resolve)
 const Loading = resolve => require(['../components/Loading'], resolve)
 const Login = resolve => require(['../components/Login'], resolve)
 const routes = [
+    { path: '', redirect: '/site/index' },
     { path: '/site/index', component: Index },
     { path: '/site/products-list', component: ProductsList },
     { path: '/site/new-arrivals', component: NewArrivals },

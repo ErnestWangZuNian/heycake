@@ -20,35 +20,36 @@
       <!--导航-->
       <div class="index-nav index-nav5">
         <ul class="cf">
-          <router-link :to="{ path: '/site/index'}">
+           <router-link to="index">
             <li class="nav-list">
               <i class="icon icon0"></i>
               <p>首页</p>
             </li>
           </router-link>
-
-          <router-link :to="{ path: '/site/productsList'}">
-          <li class="nav-list">
-            <i class="icon icon1"></i>
-            <p>蛋糕目录</p>
-          </li>
+          <router-link to="products-list">
+            <li class="nav-list">
+              <i class="icon icon1"></i>
+              <p>蛋糕目录</p>
+            </li>
           </router-link>
-
-          <router-link :to="{ path: '/site/newArrivals'}">
-          <li class="nav-list">
-            <i class="icon icon2"></i>
-            <p>新品推荐</p>
-          </li>
-            </router-link>
-
-          <li class="nav-list">
-            <i class="icon icon3"></i>
-            <p>我的订单</p>
-          </li>
-          <li class="nav-list">
-            <i class="icon icon4"></i>
-            <p>我的购物车</p>
-          </li>
+          <router-link to="new-arrivals">
+            <li class="nav-list">
+              <i class="icon icon2"></i>
+              <p>新品推荐</p>
+            </li>
+          </router-link>
+          <router-link to="cart">
+            <li class="nav-list">
+              <i class="icon icon3"></i>
+              <p>我的订单</p>
+            </li>
+          </router-link>
+          <router-link to="cart">
+            <li class="nav-list">
+              <i class="icon icon4"></i>
+              <p>我的购物车</p>
+            </li>
+          </router-link>
         </ul>
       </div>
 

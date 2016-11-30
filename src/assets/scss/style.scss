@@ -69,6 +69,24 @@ body {
       background-position: px2rem(-205) 0;
     }
   }
+  .router-link-active{
+    color: $colorBolder;
+    .icon1 {
+      background-position: 0 px2rem(-114);
+    }
+    .icon2 {
+      background-position: px2rem(-49) px2rem(-114);
+    }
+    .icon3 {
+      background-position: px2rem(-107) px2rem(-114);
+    }
+    .icon4 {
+      background-position: px2rem(-161) px2rem(-114);
+    }
+    .icon0 {
+      background-position: px2rem(-205) px2rem(-114);
+    }
+   }
   .nav-list:hover {
     color: $colorBolder;
     .icon1 {
