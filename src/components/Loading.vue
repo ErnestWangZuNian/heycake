@@ -8,6 +8,7 @@
                 <div class="dot"></div>
                 <div class="dot"></div>
             </figure>
+            
         </div>
     </div>
 </template>

@@ -1,3 +1,4 @@
+
 @charset "UTF-8";
 html {font-size: 62.5%;font-family:tahoma,Helvetica, Arial,"\5FAE\8F6F\96C5\9ED1";}
 body,ul,ol,dl,dd,h1,h2,h3,h4,h5,h6,pre,form,fieldset,legend,input,button,textarea,p,blockquote,table,th,td,menu{margin:0;padding:0;box-sizing:content-box;}
@@ -12,7 +13,13 @@ code, kbd, pre, samp, tt { font-family: Consolas,"Courier New", Courier, monospa
 address, cite, dfn, em, var,i {font-style: normal;}
 blockquote, q {quotes: none;}
 blockquote:before, blockquote:after,q:before, q:after {content:"";content: none;}
-a {
+input{
+    border: none;
+    background: none; 
+}
+//  去除输入框点击黄色背景
+*:focus {outline: none;}
+a { 
     color:#06f; text-decoration:none;cursor: pointer;
     &:link,&:visited, &:active{color: #06f;}
     &:hover, &:focus {color:#f60; text-decoration:underline;outline:none;}
@@ -104,7 +111,7 @@ $colorBolder: #d4965b;
 @mixin yd($s1:0,$s2:0){
     -webkit-transform:translate($s1,$s2);
     transform:translate($s1,$s2);
-}
+} 
 // 禁止选中
 @mixin ns{
     -webkit-touch-callout: none;
@@ -121,9 +128,9 @@ $colorBolder: #d4965b;
     text-overflow: ellipsis;
 }
 // 计算(基本不会采用)
-@mixin calc($property, $expression) {
-    #{$property}: -webkit-calc(#{$expression});
-    #{$property}: calc(#{$expression});
+@mixin calc($property, $expression) { 
+    #{$property}: -webkit-calc(#{$expression}); 
+    #{$property}: calc(#{$expression}); 
 }
 // 一行文字垂直居中,并隐藏溢出
 @mixin hlh($s1) {

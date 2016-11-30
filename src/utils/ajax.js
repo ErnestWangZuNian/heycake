@@ -1,10 +1,11 @@
 import Vue from 'vue'
-import urlRoot from './urlRoot.js'
+// import urlRoot from './urlRoot.js'
 const ajax = {
   xhrhttp (params, callback, error) {
     Vue.http({
-      url: urlRoot + params.url,
+      url: params.url,
       params: params.data ? params.data : {},
+      body: params.body ? params.body : {},
       method: params.method
     }).then((response) => {
       callback && callback(response)

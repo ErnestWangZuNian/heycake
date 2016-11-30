@@ -15,12 +15,66 @@
    }
 }
 .login-content{
-   padding: 0 px2rem(12);
+   width: px2rem(503);
+   margin: 0 auto;
    .g-login-content{
        height: px2rem(70);
+       line-height:  px2rem(70);
        border-bottom: px2rem(1) solid #999899;
+       font-size: px2rem(24);
+       color: #a9a9a9;
    }
-   .test{
-       @include btn()
+   label,i{
+       display:  inline-block;
+       position: relative;
+       top: px2rem(8);
+       width: px2rem(27);
+       height: px2rem(32);
+       margin-right:  px2rem(20);
    }
+   input {
+       height: 100%;
+       font-size: px2rem(24);
+       line-height: px2rem(32);
+       color: #a9a9a9;
+   }
+   .tel-phone {
+       label {
+          background: url(../img/login_tel_icon.png) no-repeat;
+          background-size: px2rem(22) px2rem(32);
+       }
+   }
+   .password{
+       label{
+          background: url(../img/login_lock_icon.png) no-repeat;
+          background-size: px2rem(22) px2rem(32);          
+       }
+   }
+   .login-tip {
+       border: none;
+       i{
+          background: url(../img/login_reg_tip.png) no-repeat;
+          background-size: px2rem(22) px2rem(32);
+       }
+   }
+   .login-btn {
+       margin-top: px2rem(20);
+       @include btn();
+       width: 100%;
+       border-radius: px2rem(6);
+       background-color: #432412;
+       border:none;
+   }
+   .login-intro {
+    width: 100%;
+    font-size: px2rem(20);
+    margin-top: px2rem(40);
+    p{
+        margin-top: px2rem(20);
+    }
+    strong{
+       color: #231815;
+       font-size: px2rem(22);
+    }
+ }
 }

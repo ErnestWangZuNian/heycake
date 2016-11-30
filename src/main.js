@@ -3,13 +3,15 @@ import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
 import Vuex from 'vuex'
 import routes from './router/router'
-// import ajax from './utils/ajax.js'
-import { Toast, Lazyload } from 'mint-ui'
+import store from './vuex/index'
+import { Lazyload } from 'mint-ui'
 import 'mint-ui/lib/style.css'
 Vue.use(VueRouter)
 Vue.use(VueResource)
 Vue.use(Vuex)
 Vue.use(Lazyload)
+//  设置错误处理页面
+Vue.http.headers = {'Content-Type': 'application/x-www-form-urlencoded'}
 Vue.http.interceptors.push((request, next) => {
   next((response) => {
     if (!response.ok) {
@@ -18,18 +20,13 @@ Vue.http.interceptors.push((request, next) => {
     }
   })
 })
-// ajax.getDataFromApi({
-//   url: '/v1/goods?recommend=true'
-// }, (data) => {
-//   console.log(data)
-// })
 // 实例化router
 const router = new VueRouter({
   routes
 })
-/* eslint-disable no-new */
+// 把路由和状态管理挂在根组件
 new Vue({
   router,
-  Toast
+  store
 }).$mount('#app')
 
