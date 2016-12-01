@@ -7,7 +7,11 @@
                 <div class="logo">
                     <img src="../assets/img/logo.png" alt="">
                 </div>
-                <div class="login-flag" v-if='!loginFlag'>登录<span>|</span>注册</div>
+                <router-link to='login' v-if='!loginFlag'>
+                    <div class="login-flag" >
+                        登录<span>|</span>注册
+                    </div>
+                </router-link>
             </div>
             <!--轮播图-->
             <div class="swiper">
@@ -23,7 +27,7 @@
                     <router-link to="products-list">
                         <li class="nav-list">
                             <i class="icon icon1"></i>
-                            <p>蛋糕目录{{loginFlag}}</p>
+                            <p>蛋糕目录</p>
                         </li>
                     </router-link>
                     <router-link to="new-arrivals">

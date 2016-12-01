@@ -17,19 +17,19 @@ input{
     border: none;
     background: none;
 }
-//  去除输入框点击黄色背景
-*:focus {outline: none;}
-a {
-    color:#06f; text-decoration:none;cursor: pointer;
-    &:link,&:visited, &:active{color: #06f;}
-    &:hover, &:focus {color:#f60; text-decoration:underline;outline:none;}
-}
 /*定义字体颜色*/
 $colorLintGray: #888;
 $colorLintBlock: #444;
 $colordarkBlock: #231915;
 $colorBlock: #000;
 $colorBolder: #d4965b;
+//  去除输入框点击黄色背景
+*:focus {outline: none;}
+a {
+    color:$colorBlock; text-decoration:none;cursor: pointer;
+    &:link,&:visited, &:active{color: $colorBlock;}
+    &:hover, &:focus {color:$colorBolder; text-decoration:underline;outline:none;}
+}
 /*清理浮动*/
 .fl{
     float: left;
