@@ -143,6 +143,8 @@ body {
 .font-28{font-size: px2rem(28)}
 .font-30{font-size: px2rem(30)}
 .font-32{font-size: px2rem(32)}
+.font-36{font-size: px2rem(36)}
+.font-60{font-size: px2rem(60)}
 
 //字体颜色
 .c-000{ color: #000000!important;}
@@ -152,6 +154,7 @@ body {
 .c-red{ color: #dd1f1f!important;}
 .c-fff{ color: #ffffff!important;}
 .c-aaa{ color: #aaaaaa!important;}
+.c-396{ color: #339966!important;}
 
 //背景颜色
 .bgc-f5f5f5 { background-color: #f5f5f5}
@@ -163,6 +166,7 @@ body {
 
 //对齐
 .tleft{ text-align: left; };
+.tcenter { text-align: center;}
 .tright{ text-align: right;};
 
 //border
