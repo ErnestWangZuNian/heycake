@@ -26,7 +26,7 @@ Vue.http.interceptors.push((request, next) => {
 let savedUserInfo = JSON.parse(window.localStorage.getItem('userInfo'))
 if (savedUserInfo) {
   if (savedUserInfo.isLogin) {
-    console.log(savedUserInfo)
+    // console.log(savedUserInfo)
     store.dispatch('setUserInfo', savedUserInfo)
   }
 }

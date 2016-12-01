@@ -7,6 +7,7 @@ const Cart = resolve => require(['../components/Cart'], resolve)
 const OrderSubmit = resolve => require(['../components/OrderSubmit'], resolve)
 const AddAddress = resolve => require(['../components/AddAddress'], resolve)
 const Detail = resolve => require(['../components/Detail'], resolve)
+const MyOrder = resolve => require(['../components/MyOrder'], resolve)
 const Loading = resolve => require(['../components/Loading'], resolve)
 const Login = resolve => require(['../components/Login'], resolve)
 const routes = [
@@ -19,6 +20,7 @@ const routes = [
     { path: '/site/order-submit', component: OrderSubmit },
     { path: '/site/add-address', component: AddAddress },
     { path: '/site/detail/:id', component: Detail },
+    { path: '/site/my-order', component: MyOrder },
     { path: '/site/loading', component: Loading },
     { path: '/site/login', component: Login }
 ]

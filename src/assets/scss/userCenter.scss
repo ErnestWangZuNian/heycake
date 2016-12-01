@@ -25,16 +25,10 @@
       line-height: px2rem(48);
       padding-top: px2rem(40);
       font-weight: normal;
-      button{
-        width: px2rem(140);
-        height:px2rem(60);
-        background-color: rgba(255, 255, 255, .5);
-        color: #fff;
-        border-radius: px2rem(10);
-        font-size:px2rem(24);
+      .btn{
+        @include btn(140,60,rgba(255, 255, 255, .5),#fff,24,10);
         position: relative;
         top:px2rem(15);
-        font-family: "microsoft yahei";
       };
     };
   };
