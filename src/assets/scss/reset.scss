@@ -62,7 +62,11 @@ a {
   font-size:px2rem($font);
   color:$color;
   font-family: "microsoft yahei";
+<<<<<<< HEAD
   cursor: pointer;
+=======
+  display: inline-block;
+>>>>>>> d8025d45a3b3e8638ba50451771f1c09e6a29f48
 }
 // input框
 @mixin inputs($width:600,$height: 70,$bodercolor:#ddd,$font:24,$radius:0){
@@ -75,6 +79,7 @@ a {
   padding: 0 px2rem(10);
   box-sizing: border-box;
   font-family: "microsoft yahei";
+  display: inline-block;
 }
 
 // select框
@@ -88,6 +93,9 @@ a {
   padding: 0 px2rem(10);
   box-sizing: border-box;
   font-family: "microsoft yahei";
+  option{
+    font-size: px2rem(12);
+  }
 }
 
 //网格布局
@@ -101,10 +109,27 @@ a {
     flex:1;
     color: $color;
   };
+  .u-1of2 {
+    flex: 0 0 50%;
+  }
+
+  .u-1of3 {
+    flex: 0 0 33.3333%;
+  }
+
+  .u-1of4 {
+    flex: 0 0 25%;
+  }
   .u-w30{
     flex: 0 0 px2rem(30);
     .item-after{background: url(../img/images.png) no-repeat px2rem(-640) px2rem(-245);background-size: px2rem(778) px2rem(683); width: px2rem(30); height: px2rem(30);}
   };
+  .u-w100{
+    flex: 0 0 px2rem(100);
+  }
+  .u-w130{
+    flex: 0 0 px2rem(130);
+  }
 }
 
 @mixin wid($width){

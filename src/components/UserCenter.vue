@@ -4,19 +4,14 @@
     <div class="container" v-if="!loading">
       <div class="member-center">
         <div class="theTop">
-          <!--未登录-->
-          <!--<div class="gologin">-->
-            <!--<button type="button">去登录</button>-->
-          <!--</div>-->
-
           <!--已登录-->
           <div class="logined">
             <div class="fl">
-              <p>用 户 名 ：<span>安妮的毛毛熊</span></p>
-              <p>当前积分：<span>20156988</span></p>
+              <p>用 户 名 ：<span>{{userInfo.name}}</span></p>
+              <p>当前积分：<span>{{userInfo.total}}</span></p>
             </div>
             <div class="fr">
-              <button type="button">返回首页</button>
+              <router-link to="index" class="btn" >返回首页</router-link>
             </div>
           </div>
 
@@ -66,35 +61,47 @@
   </div>
 </template>
 <script>
-  import {Swipe, SwipeItem } from 'mint-ui'
+  import {Swipe, SwipeItem, MessageBox} from 'mint-ui'
   import  Loading from './Loading'
   import ajax from '../utils/ajax.js'
   export default {
-    name: 'NewArrivals',
+    name: 'UserCenter',
     components: {
       Loading,
       Swipe,
       SwipeItem,
-    },
-    mounted () {
-//      this.fetchData()
+      MessageBox,
     },
     data () {
       return {
-        loading: false,
+        loading: true,
+        isLogin:this.$store.state.user.userInfo.isLogin  || '',   //是否登录
+        userId:this.$store.state.user.userInfo.userId || '',      //当前用户ID
+        userInfo:{}
       }
     },
+    mounted () {
+      //判断是否登录
+      this.isLoginMethod()
+
+      //this.fetchData()
+    },
     methods: {
-      fetchData () {
-        this.loading = true
-        ajax.getDataFromApi({
-          url: '/v2/goods?recommend=true'
-        }, (data) => {
-        this.loading = false;
-      },(data) => {
-          this.loading = false;
-        })
-      }
+      //判断是否登录
+      isLoginMethod(){
+        if(this.isLogin){
+          ajax.getDataFromApi({
+            url:'/v1/user-center'
+          },(response) => {
+            this.userInfo = response.data.body.list
+            this.loading = false
+          })
+        }else{
+          MessageBox.alert('未登录').then(action => {
+            location.href = '/#/site/login'
+          })
+        }
+      },
     },
   }
   require('../assets/scss/userCenter.scss')
