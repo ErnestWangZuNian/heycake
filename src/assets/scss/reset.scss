@@ -117,6 +117,12 @@ a {
     flex: 0 0 px2rem(30);
     .item-after{background: url(../img/images.png) no-repeat px2rem(-640) px2rem(-245);background-size: px2rem(778) px2rem(683); width: px2rem(30); height: px2rem(30);}
   };
+  .u-w100{
+    flex: 0 0 px2rem(100);
+  }
+  .u-w130{
+    flex: 0 0 px2rem(130);
+  }
 }
 
 @mixin wid($width){

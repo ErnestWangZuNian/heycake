@@ -18,12 +18,91 @@
           </select>
         </div>
       </div>
-      <div class="grid height-85">
-        <div class="grid-cell">下单时间：<span class="c-666">2015-5-5 13:22</span></div>
-        <div class="grid-cell tright u-1of4">待支付</div>
+
+      <div class="orders">
+        <div class="grid height-85 border-bottom">
+          <div class="grid-cell">下单时间：<span class="c-666">2015-5-5 13:22</span></div>
+          <div class="grid-cell tright u-1of4">待支付</div>
+        </div>
+
+        <ul>
+          <li class="grid height-150 border-bottom">
+            <div class="grid-cell u-w100">
+              <img src="../assets/img/goods1.jpg">
+            </div>
+            <div class="grid-cell">
+              <div class="title">hey coffee 美味无敌千层大蛋糕</div>
+              <div class="c-666 f-20">6寸 13cm*13cm 2-4人</div>
+            </div>
+            <div class="grid-cell u-w130 tright">
+              <div class="price">￥138.00</div>
+              <div class="f-20 c-666">x1</div>
+            </div>
+          </li>
+          <li class="grid height-150 border-bottom">
+            <div class="grid-cell u-w100">
+              <img src="../assets/img/goods1.jpg">
+            </div>
+            <div class="grid-cell">
+              <div class="title">hey coffee 美味无敌千层大蛋糕</div>
+              <div class="c-666 f-20">6寸 13cm*13cm 2-4人</div>
+            </div>
+            <div class="grid-cell u-w130 tright">
+              <div class="price">￥138.00</div>
+              <div class="f-20 c-666">x1</div>
+            </div>
+          </li>
+          <li class="grid height-150 border-bottom">
+            <div class="grid-cell u-w100">
+              <img src="../assets/img/goods1.jpg">
+            </div>
+            <div class="grid-cell">
+              <div class="title">hey coffee 美味无敌千层大蛋糕</div>
+              <div class="c-666 f-20">6寸 13cm*13cm 2-4人</div>
+            </div>
+            <div class="grid-cell u-w130 tright">
+              <div class="price">￥138.00</div>
+              <div class="f-20 c-666">x1</div>
+            </div>
+          </li>
+        </ul>
+        <div class="grid height-85 border-bottom">
+          <div class="grid-cell c-888">支付金额：<span class="c-red">￥316.00</span>（含运费）</div>
+          <div class="grid-cell tright u-1of4">
+            <span class="btn-red">去支付</span></div>
+        </div>
       </div>
 
       <div class="splitter"></div>
+
+      <div class="orders">
+        <div class="grid height-85 border-bottom">
+          <div class="grid-cell">下单时间：<span class="c-666">2015-5-5 13:22</span></div>
+          <div class="grid-cell tright u-1of4">待支付</div>
+        </div>
+
+        <ul>
+          <li class="grid height-150 border-bottom">
+            <div class="grid-cell u-w100">
+              <img src="../assets/img/goods1.jpg">
+            </div>
+            <div class="grid-cell">
+              <div class="title">hey coffee 美味无敌千层大蛋糕</div>
+              <div class="c-666 f-20">6寸 13cm*13cm 2-4人</div>
+            </div>
+            <div class="grid-cell u-w130 tright">
+              <div class="price">￥138.00</div>
+              <div class="f-20 c-666">x1</div>
+            </div>
+          </li>
+        </ul>
+        <div class="grid height-85 border-bottom">
+          <div class="grid-cell c-888">支付金额：<span class="c-red">￥316.00</span>（含运费）</div>
+          <div class="grid-cell tright u-1of4">
+            <span class="btn-red">去支付</span></div>
+        </div>
+      </div>
+
     </div>
   </div>
 </template>

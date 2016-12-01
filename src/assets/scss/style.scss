@@ -164,3 +164,11 @@ body {
 //对齐
 .tleft{ text-align: left; };
 .tright{ text-align: right;};
+
+//border
+.border{ border: px2rem(1) solid #dddddd;}
+.border-top {border-top: px2rem(1) solid #dddddd;}
+.border-bottom {border-bottom: px2rem(1) solid #dddddd;}
+.border-left {border-left: px2rem(1) solid #dddddd;}
+.border-right {border-right: px2rem(1) solid #dddddd;}
+
