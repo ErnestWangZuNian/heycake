@@ -1,11 +1,14 @@
 import * as types from '../mutation-types'
 
 const state = {
-  isLogin: false
+  userInfo: {
+    isLogin: false,
+    userId: null
+  }
 }
 const mutations = {
-  [ types.SET_USER_INFO ] (state, loginFlag) {
-    state.isLogin = loginFlag
+  [ types.SET_USER_INFO ] (state, userInfo) {
+    state.userInfo.isLogin = userInfo.isLogin
   }
 }
 export default {

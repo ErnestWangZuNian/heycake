@@ -22,27 +22,27 @@
                 <ul class="cf">
                     <router-link to="products-list">
                         <li class="nav-list">
-                        <i class="icon icon1"></i>
-                        <p>蛋糕目录</p>
-                    </li>
+                            <i class="icon icon1"></i>
+                            <p>蛋糕目录{{loginFlag}}</p>
+                        </li>
                     </router-link>
-                     <router-link to="new-arrivals">
+                    <router-link to="new-arrivals">
                         <li class="nav-list">
-                        <i class="icon icon2"></i>
-                        <p>新品推荐</p>
-                    </li>
+                            <i class="icon icon2"></i>
+                            <p>新品推荐</p>
+                        </li>
                     </router-link>
-                     <router-link to="cart">
+                    <router-link to="cart">
                         <li class="nav-list">
-                        <i class="icon icon3"></i>
-                        <p>我的订单</p>
-                    </li>
+                            <i class="icon icon3"></i>
+                            <p>我的订单</p>
+                        </li>
                     </router-link>
-                     <router-link to="cart">
+                    <router-link to="cart">
                         <li class="nav-list">
-                        <i class="icon icon4"></i>
-                        <p>我的购物车</p>
-                    </li>
+                            <i class="icon icon4"></i>
+                            <p>我的购物车</p>
+                        </li>
                     </router-link>
                 </ul>
             </div>
@@ -50,7 +50,7 @@
             <div class="product-list">
                 <loadmore :bottom-method="loadTop">
                     <ul>
-                        <li v-for="item in hotCakeList">
+                        <li v-for="item in hotCakeList" @click="gotoDetail(item.id)">
                             <img :src="item.picture" alt="热卖商品" v-lazy="item.picture" :bottom-distance="200">
                             <h3>{{item.english_name}}</h3>
                             <h4>{{item.name}}</h4>
@@ -76,17 +76,17 @@
              Lazyload,
              Loadmore 
          },
-         computed: {
+        computed: {
           ...mapGetters({
               loginFlag: 'isLogin'
             }),
-       }, 
-         events: {
-          bottomStatusChange () {
-              console.log('我京东到家就')
-          }
-         },
-         data () {
+         }, 
+        events: {
+            bottomStatusChange () {
+                console.log('我京东到家就')
+            }
+        },
+        data () {
            return {
               loading: true,
               banner: [],
@@ -140,6 +140,10 @@
             loadTop () {
                 console.log('wangg')
                 // this.getHotCakeList(2)
+            },
+         // 点击列表去到详情
+            gotoDetail: function (id) {
+                location.href=`/#/site/detail/${id}`
             }
          }
      }

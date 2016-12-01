@@ -34,6 +34,11 @@
        methods: {
         // 登录
            login () {
+             // 初始化用户信息
+              let userInfo = {
+                      isLogin: false,
+                      userId: null
+                  }
               ajax.postDataToApi({
                   url: '/v1/authentication/login',
                   body: {
@@ -42,6 +47,7 @@
                   }
               },(response) => {
                   let token = response.data.body.session_token
+                  userInfo.userId = response.data.body.user_id
                  // 获取登录成功后的用户信息并存入vuex的user
                     ajax.getDataFromApi({
                         url: 'v1/authentication/detection',
@@ -50,8 +56,9 @@
                         Number(response.data.body) === 1 ? response.data.body = true :
                         response.data.body = false
                         let loginFlag = response.data.body
-                        localStorage.setItem('isLogin', loginFlag)
-                        this.$store.dispatch('setUserInfo',loginFlag)
+                        userInfo.isLogin = loginFlag
+                        localStorage.setItem('userInfo', JSON.stringify(userInfo))
+                        this.$store.dispatch('setUserInfo',userInfo)
                         location.href = '/#/site/index'
                     },(error) => {
                     })

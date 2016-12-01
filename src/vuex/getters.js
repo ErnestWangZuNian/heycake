@@ -1,1 +1,1 @@
-export const isLogin = state => state.user.isLogin
+export const isLogin = state => state.user.userInfo.isLogin

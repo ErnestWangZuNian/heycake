@@ -18,7 +18,7 @@ const routes = [
     { path: '/site/cart', component: Cart },
     { path: '/site/order-submit', component: OrderSubmit },
     { path: '/site/add-address', component: AddAddress },
-    { path: '/site/detail', component: Detail },
+    { path: '/site/detail/:id', component: Detail },
     { path: '/site/loading', component: Loading },
     { path: '/site/login', component: Login }
 ]
