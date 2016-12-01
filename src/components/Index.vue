@@ -27,7 +27,7 @@
                     <router-link to="products-list">
                         <li class="nav-list">
                             <i class="icon icon1"></i>
-                            <p>蛋糕目录{{loginFlag}}</p>
+                            <p>蛋糕目录</p>
                         </li>
                     </router-link>
                     <router-link to="new-arrivals">
