@@ -5,8 +5,23 @@
     flex: 0 0 px2rem(100);
     .item-cart{background: url(../img/images.png) no-repeat px2rem(-740) px2rem(-245);background-size: px2rem(778) px2rem(683); width: px2rem(35); height: px2rem(35); margin: px2rem(10) 0 0 px2rem(20)}
   };
+.score{
+  border-left: 1px solid $borderColor;
+  flex: 0 0 px2rem(168);
+  font-size: px2rem(24);
+  text-align: center;
+  p{
+    color: $subTitleColor;
+  }
+  button{
+   margin-top: px2rem(20);
+   @include btn(140,60,$subTitleColor,#fff,24,6)
+  }
 }
-
+}
+.price-score {
+  height: px2rem(140)
+}
 .product-img{
   border-bottom: px2rem(1) solid #ddd;
   img{ width: 100%;}

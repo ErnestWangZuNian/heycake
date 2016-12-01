@@ -10,6 +10,7 @@ body {
 }
 .container {
   width: 100%;
+  position: relative;
 }
 .swiper {
   width: 100%;
@@ -120,23 +121,6 @@ body {
   background: url(../img/images.png) no-repeat px2rem(-646) 0;
   background-size: px2rem(778) px2rem(683);
 };
-
-//底部操作区
-.operation {
-  position: fixed;
-  bottom: 0px;
-  height: px2rem(100);
-  border-top:px2rem(1) solid #ddd;
-  width: 100%;
-  background-color: #ffffff;
-}
-
-//分隔
-.splitter{
-  background-color: #f5f5f5;
-  height: px2rem(20);
-}
-
 //字体大小
 .font-20{font-size: px2rem(20)}
 .font-24{font-size: px2rem(24)}
@@ -159,4 +143,133 @@ body {
 
 //对齐
 .tleft{ text-align: left; };
+.tcenter {text-align: center};
 .tright{ text-align: right;};
+
+// 间距
+.mt20{
+  margin-top:px2rem(20);
+}
+//底部操作区
+.operation {
+  position: fixed;
+  bottom: 0px;
+  height: px2rem(100);
+  border-top:px2rem(1) solid #ddd;
+  width: px2rem(640);
+  background-color: #ffffff;
+}
+//  数量加减输入组件
+.countBox{
+      button{
+        @include btn(58,58,#eeeeee,#000000,24,0);
+        border: px2rem(1) solid #aaa;
+      };
+      input{
+      line-height:px2rem(58); 
+      border: 0; border-top: px2rem(1) solid #aaa;
+      border-bottom: px2rem(1) solid #aaa; 
+      font-size: px2rem(24); 
+      width: px2rem(100); 
+      text-align: center;
+      height: px2rem(58);
+     }
+    };
+//  规格遮罩
+.spec-mask{
+  width:100%;
+  height: px2rem(1500);
+  position: absolute;
+  top: 0;
+  left: 0;
+  background:#000;
+  opacity: 0.2;
+  z-index: 10;
+}
+//  规格选择弹框
+.select-spec {
+  position: fixed;
+  padding: px2rem(15);
+  width: px2rem(610);
+  z-index: 11;
+  bottom: 0;
+  background: #fff;
+  border-radius: px2rem(6) px2rem(6)  0 0;
+  .good{
+    @include grid();
+    height: px2rem(84);
+    padding-bottom: px2rem(28);
+    border-bottom: px2rem(1) solid $borderColor;
+    .good-img{
+      flex: 0 0 px2rem(110);
+      img{
+        width: px2rem(84);
+        height: 100%;
+      }
+    } 
+    .good-info{
+      font-size: px2rem(28);
+      .name{
+        margin-top: px2rem(8);
+        color: $titleColor;
+      }
+      .attrlist{
+       margin-top: px2rem(20);
+       color: $subTitleColor;
+      }
+    }
+    .close-select{
+      flex: 0 0 px2rem(40);
+      margin-top: 0;
+      height:px2rem(41);
+      cursor:pointer;
+      background: url(../img/images.png) no-repeat px2rem(-682) px2rem(-121); 
+     background-size: px2rem(778) px2rem(683);
+    }
+  }
+  .spec{
+    font-size: px2rem(24);
+    li{
+      padding: px2rem(20);
+    }
+    h3{
+      color: $colordarkBlock;
+      font-size: px2rem(28);
+    }
+    .spec-list{
+      margin-top: px2rem(20);
+      span{
+        display:  inline-block;
+        cursor: pointer;
+        margin-right: px2rem(10);
+        margin-top:px2rem(20);
+        @include btn(100,48,#eee,$colordarkBlock,24,35)
+      }
+      span.active{
+        @include btn(100,48,$subTitleColor,#fff,24,35)
+      }
+    }
+  }
+  .spec-count{
+    .name{
+      margin-right: px2rem(20);
+      margin-top: px2rem(10);
+    }
+    .tip{
+      margin-left: px2rem(20);
+       margin-top: px2rem(10);
+    }
+    padding: px2rem(20);
+    color: $colorLintGray;
+    font-size: px2rem(24);
+  }
+  .confirm-spec{
+    @include btn(100%,96,$subTitleColor,#fff,24,0)
+  }
+} 
+//分隔
+.splitter{
+  background-color: #f5f5f5;
+  height: px2rem(20);
+}
+

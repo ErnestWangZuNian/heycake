@@ -4,6 +4,10 @@ var utils = {
       if (val.picture) {
         val.picture = `/attachment/${val.picture}`
       }
+    } else if (val instanceof Array) {
+      val.forEach((value) => {
+        value = `/attachment/${value}`
+      })
     } else {
       val = `/attachment/${val}`
     }

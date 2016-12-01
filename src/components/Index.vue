@@ -15,11 +15,11 @@
             </div>
             <!--轮播图-->
             <div class="swiper">
-                <mt-swipe :auto="4000">
-                    <mt-swipe-item v-for="item in banner">
+                <swipe :auto="4000">
+                    <swipe-item v-for="item in banner">
                         <img :src="item" v-lazy="item.picture" alt="轮播">
-                    </mt-swipe-item>
-                </mt-swipe>
+                    </swipe-item>
+                </swipe>
             </div>
             <!--导航-->
             <div class="index-nav">
@@ -74,8 +74,8 @@
      export default {
          name: 'Index',
          components: {
-             mtSwipe: Swipe,
-             mtSwipeItem: SwipeItem,
+             Swipe,
+             SwipeItem,
              Loading,
              Lazyload,
              Loadmore 

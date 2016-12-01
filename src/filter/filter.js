@@ -1,6 +1,6 @@
 import Vue from 'vue'
-Vue.filter('imgDetail', function (value) {
-  // 返回处理后的值
-  let str = '/attachment${value}/'
-  return str
+Vue.filter('price', function (value) {
+  // 返回处理后的价格
+  value = '￥' + (value * 100 / 100).toFixed(2)
+  return value
 })

@@ -19,7 +19,10 @@ input{
 }
 /*定义字体颜色*/
 $colorLintGray: #888;
+$borderColor: #ddd;
 $colorLintBlock: #444;
+$titleColor: #69260c;
+$subTitleColor: #cd0c0c;
 $colordarkBlock: #231915;
 $colorBlock: #000;
 $colorBolder: #d4965b;
@@ -59,6 +62,7 @@ a {
   font-size:px2rem($font);
   color:$color;
   font-family: "microsoft yahei";
+  cursor: pointer;
 }
 // input框
 @mixin inputs($width:600,$height: 70,$bodercolor:#ddd,$font:24,$radius:0){

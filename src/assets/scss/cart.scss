@@ -8,14 +8,9 @@ ul.theCart{
     }
     h2{ font-size: px2rem(24); color: #68270b; margin: px2rem(4) 0; font-weight: normal;};
     p{font-size: px2rem(20); color: #666666;};
-    .countBox{
+    .good-count{
       margin-top:px2rem(5);
-      button{
-        @include btn(58,58,#eeeeee,#000000,24,0);
-        border: px2rem(1) solid #aaa;
-      };
-      input{line-height:px2rem(58); border: 0; border-top: px2rem(1) solid #aaa; border-bottom: px2rem(1) solid #aaa; font-size: px2rem(24); width: px2rem(100); text-align: center;}
-    };
+    }
     .price{font-size:px2rem(24);color: #cd0c0c; margin-top: px2rem(10); text-align: right; margin-right: px2rem(20)};
     .close{ position: relative; left: px2rem(45); top: px2rem(40); width:px2rem(41);height:px2rem(41);background: url(../img/images.png) no-repeat px2rem(-682) px2rem(-121);  background-size: px2rem(778) px2rem(683);}
   }

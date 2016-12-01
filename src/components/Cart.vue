@@ -13,9 +13,7 @@
           <div class="fl w285">
             <h2>咖啡山丘</h2>
             <p>规格</p>
-            <div class="countBox">
-              <button type="button">-</button><input type="text" value="1"><button type="button">+</button>
-            </div>
+            <count class="good-count"></count>
           </div>
           <div class="fl w130">
             <div class="price">￥138.00</div>
@@ -34,9 +32,7 @@
           <div class="fl w285">
             <h2>咖啡山丘</h2>
             <p>规格</p>
-            <div class="countBox">
-              <button type="button">-</button><input type="text" value="3"><button type="button">+</button>
-            </div>
+            <count class="good-count"></count>
           </div>
           <div class="fl w130">
             <div class="price">￥138.00</div>
@@ -66,6 +62,7 @@
   import {Swipe, SwipeItem } from 'mint-ui'
   import  Loading from './Loading'
   import ajax from '../utils/ajax.js'
+  import count from './common/count'
   //Swipe ， SwipeItem        幻灯片
   //InfiniteScroll           下拉刷新
   export default {
@@ -74,6 +71,7 @@
       Loading,
       Swipe,
       SwipeItem,
+      count
     },
     mounted () {
       this.fetchData()

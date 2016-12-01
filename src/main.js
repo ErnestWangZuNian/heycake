@@ -4,6 +4,7 @@ import VueResource from 'vue-resource'
 import Vuex from 'vuex'
 import routes from './router/router'
 import store from './vuex/index'
+import filters from './filter/filter'
 import { Lazyload } from 'mint-ui'
 import 'mint-ui/lib/style.css'
 Vue.use(VueRouter)
@@ -38,6 +39,7 @@ const router = new VueRouter({
 // 把路由和状态管理挂在根组件
 new Vue({
   router,
+  filters,
   store
 }).$mount('#app')
 
