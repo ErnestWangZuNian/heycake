@@ -7,7 +7,11 @@
                 <div class="logo">
                     <img src="../assets/img/logo.png" alt="">
                 </div>
-                <div class="login-flag" v-if='!loginFlag'>登录<span>|</span>注册</div>
+                <router-link to='login' v-if='!loginFlag'>
+                    <div class="login-flag" >
+                        登录<span>|</span>注册
+                    </div>
+                </router-link>
             </div>
             <!--轮播图-->
             <div class="swiper">
