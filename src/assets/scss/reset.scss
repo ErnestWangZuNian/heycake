@@ -62,11 +62,8 @@ a {
   font-size:px2rem($font);
   color:$color;
   font-family: "microsoft yahei";
-<<<<<<< HEAD
   cursor: pointer;
-=======
   display: inline-block;
->>>>>>> d8025d45a3b3e8638ba50451771f1c09e6a29f48
 }
 // input框
 @mixin inputs($width:600,$height: 70,$bodercolor:#ddd,$font:24,$radius:0){
