@@ -44,9 +44,9 @@
         <!--分隔符-->
         <div class="splitter"></div>
 
-        <router-link to=''><div class="listBox"><span class="detail"></span>积分明细</div></router-link>
-        <router-link to=''><div class="listBox"><span class="exchange"></span>积分兑换</div></router-link>
-        <router-link to=''><div class="listBox"><span class="evaluate"></span>我的评价</div></router-link>
+        <router-link to='my-score'><div class="listBox"><span class="detail"></span>积分明细</div></router-link>
+        <router-link to='score-exchange'><div class="listBox"><span class="exchange"></span>积分兑换</div></router-link>
+        <router-link to='my-comment'><div class="listBox"><span class="evaluate"></span>我的评价</div></router-link>
         <router-link to=''><div class="listBox"><span class="address"></span>收货地址</div></router-link>
         <router-link to=''><div class="listBox"><span class="about"></span>关于HEYCAKE</div></router-link>
         <div class="cf"></div>
