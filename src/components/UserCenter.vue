@@ -1,6 +1,6 @@
 <template>
   <div>
-    <loading v-if="loading"></loading>
+    <loading v-if="loading && loadShow"></loading>
     <div class="container" v-if="!loading">
       <div class="member-center">
         <div class="theTop">
@@ -40,7 +40,7 @@
         </div>
         <!--分隔符-->
         <div class="splitter"></div>
-        <router-link to=''><div class="listBox"><span class="order"></span>全部订单</div></router-link>
+        <router-link to='my-order'><div class="listBox"><span class="order"></span>全部订单</div></router-link>
         <!--分隔符-->
         <div class="splitter"></div>
 
@@ -75,6 +75,7 @@
     data () {
       return {
         loading: true,
+        loadShow: false,
         isLogin:this.$store.state.user.userInfo.isLogin  || '',   //是否登录
         userId:this.$store.state.user.userInfo.userId || '',      //当前用户ID
         userInfo:{}
@@ -83,25 +84,28 @@
     mounted () {
       //判断是否登录
       this.isLoginMethod()
-
-      //this.fetchData()
     },
     methods: {
       //判断是否登录
       isLoginMethod(){
         if(this.isLogin){
-          ajax.getDataFromApi({
-            url:'/v1/user-center'
-          },(response) => {
-            this.userInfo = response.data.body.list
-            this.loading = false
-          })
+          this.loadShow = true
+          this.getListData()
         }else{
           MessageBox.alert('未登录').then(action => {
             location.href = '/#/site/login'
           })
         }
       },
+      //获取列表数据
+      getListData(){
+        ajax.getDataFromApi({
+          url:'/v1/user-center'
+        },(response) => {
+          this.userInfo = response.data.body.list
+          this.loading = false
+        })
+      }
     },
   }
   require('../assets/scss/userCenter.scss')
