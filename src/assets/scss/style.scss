@@ -190,7 +190,7 @@ body {
 //  规格遮罩
 .spec-mask{
   width:100%;
-  height: px2rem(1500);
+  height:100%;
   position: absolute;
   top: 0;
   left: 0;
@@ -276,7 +276,7 @@ body {
     font-size: px2rem(24);
   }
   .confirm-spec{
-    @include btn(100%,96,$subTitleColor,#fff,24,0)
+    @include btn(640,96,$subTitleColor,#fff,24,0)
   }
 }
 //分隔

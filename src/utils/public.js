@@ -1,5 +1,6 @@
 var utils = {
-  imgDetail: function (val) {
+  //  图片处理
+  imgDetail (val) {
     if (val instanceof Object) {
       if (val.picture) {
         val.picture = `/attachment/${val.picture}`
@@ -12,6 +13,18 @@ var utils = {
       val = `/attachment/${val}`
     }
     return val
+  },
+ // 数组去重
+  unique (arr, value) {
+    let tempArr = []
+    let hash = {}
+    arr.forEach((elem) => {
+      if (!hash[elem.value]) {
+        hash[elem.value] = true
+        tempArr.push(elem)
+      }
+    })
+    return tempArr
   }
 }
 export default utils
