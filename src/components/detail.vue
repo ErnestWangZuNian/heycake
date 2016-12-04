@@ -14,7 +14,8 @@
       <div class="grid price-score">
         <div class="grid-cell">
           <p>{{goodInfo.name}}</p>
-          <p class="c-red mt20">{{goodInfo.price | priceRange}}</p>
+          <p class="c-red mt20" v-if="!priceStatus">{{goodInfo.price | priceRange}}</p>
+          <p class="c-red mt20" v-if="priceStatus">{{goodInfo.price | price}}</p>
         </div>
         <div class="grid-cell score" v-if="goodInfo.score > 0">
           <p> {{goodInfo.score}}积分 </p>
@@ -74,15 +75,16 @@
         </div>
       </div>
       <transition name="spec" enter-active-class="animated fadeInUpBig"  leave-active-class="animated fadeOutDownBig">
-        <div class="select-spec" v-if="isSelectSpec">
+        <div class="select-spec" v-if="specStatus.isSelectSpec">
         <div class="good">
           <div class="grid-cell good-img">
             <img src="" alt="" v-lazy="">
           </div>
           <div class="grid-cell good-info">
-            <p class="nane">咖啡山丘</p>
+            <p class="nane">{{goodInfo.name}}</p>
             <p class="attrlist">
-              <span> ￥168.00</span>
+              <span v-if="!priceStatus"> {{goodInfo.price | priceRange}}</span>
+              <span v-if="priceStatus"> {{goodInfo.price | price}}</span>
             </p>
           </div>
           <div class="grid-cell close-select" @click="closeSpec">
@@ -91,7 +93,7 @@
         </div>
         <ul class="spec">
           <li v-for="(item,index) in spec">
-            <h3>{{item.name}}</h3>
+            <p>{{item.name}}</p>
             <div class="spec-list">
               <button  type="button" v-for= "(elem,elIndex) in item.specList" @click="selectSpec(elem,item.specList,spec,index,elIndex,$evevt)" :class="{active:elem.isChecked,disabled: !elem.canChecked}"
               :disabled="!elem.canChecked">
@@ -102,10 +104,13 @@
         </ul>
         <div class="spec-count cf">
           <div class="name fl">数量</div>
-          <Count class="fl"></Count>
-          <div class="tip fl">（剩余100个）</div>
+          <Count class="fl" :count.sync="goodCount"></Count>
+          <div class="tip fl">（剩余{{selectedSpec.stock}}个）</div>
         </div>
-        <div class="confirm-spec">
+        <div class="confirm-spec" v-if="specStatus.specWay==='cart'" @click="confirmJoinCart(goodInfo.id,selectedSpec.id,goodCount)">
+          加入购物车
+        </div>
+        <div class="confirm-spec" v-if="specStatus.specWay==='purchase'" @click="confirmPurchase">
           去结算
         </div>
       </div>
@@ -134,11 +139,16 @@ export default {
     data() {
         return {
             loading: false,
-            isSelectSpec: false,
+            specStatus: {
+             isSelectSpec: false,
+             specWay: 'cart',
+            },
             goodDetailShow: {
                 isShow: false,
                 content: ''
             },
+            priceStatus: false,
+            goodCount: 12,
             spec: [],
             originalSpecList: [],
             selectedSpec: {},
@@ -257,17 +267,38 @@ export default {
                         this.selectedSpec = JSON.parse(JSON.stringify(val))
                     }
                 })
+               this.priceStatus = true
+               this.goodInfo.price = this.selectedSpec.price
+               console.log( this.goodInfo.price)
             }
         },
         //  点击加入购物车
         joinCart() {
-            this.isSelectSpec = true
+            this.specStatus.isSelectSpec = true
+            this.specStatus.specWay = 'cart'
+        },
+        // 点击立即购买
+        purchase() {
+            this.specStatus.isSelectSpec = true
+            this.specStatus.specWay = 'purchase'
         },
         //   关闭规格选择弹框
         closeSpec() {
-            this.isSelectSpec = false
+            this.specStatus.isSelectSpec = false
         },
-        //
+        //确认加入购物车
+        confirmJoinCart(goodId,specId,goodCount) {
+            ajax.postDataToApi({
+               url: '/v1/shopping-cart',
+               body: {
+                 goods_id: goodId,
+                 specification_id: specId,
+                 amount: goodCount
+               }
+            },(response) => {
+
+            }) 
+        }
     },
     // 
 }
