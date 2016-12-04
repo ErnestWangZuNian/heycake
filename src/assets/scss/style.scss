@@ -253,15 +253,19 @@ body {
     }
     .spec-list{
       margin-top: px2rem(20);
-      span{
+      button{
         display:  inline-block;
         cursor: pointer;
         margin-right: px2rem(10);
         margin-top:px2rem(20);
         @include btn(100,48,#eee,$colordarkBlock,24,35)
       }
-      span.active{
+      button.active{
         @include btn(100,48,$subTitleColor,#fff,24,35)
+      }
+      button.disabled{
+        @include btn(100,48,#eee,#fff,24,35);
+        cursor:not-allowed
       }
     }
   }

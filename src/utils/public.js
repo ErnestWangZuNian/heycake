@@ -14,16 +14,25 @@ var utils = {
     }
     return val
   },
- // 数组去重
+  // 数组去重
   unique (arr, value) {
     let tempArr = []
     let hash = {}
-    arr.forEach((elem) => {
-      if (!hash[elem.value]) {
-        hash[elem.value] = true
-        tempArr.push(elem)
-      }
-    })
+    if (value === undefined) {
+      arr.forEach((elem) => {
+        if (!hash[elem]) {
+          hash[elem] = true
+          tempArr.push(elem)
+        }
+      })
+    } else {
+      arr.forEach((elem) => {
+        if (!hash[elem.value]) {
+          hash[elem.value] = true
+          tempArr.push(elem)
+        }
+      })
+    }
     return tempArr
   }
 }
