@@ -3,7 +3,7 @@
     <loading v-if="loading"></loading>
     <div class="container" v-if="!loading">
       <ul class="theCart">
-        <li>
+        <li v-for="item in cartList">
           <div class="fl w76">
             <div class="selected"></div>
           </div>
@@ -11,12 +11,12 @@
             <div class="goods-img"><img src="../assets/img/goods1.jpg"> </div>
           </div>
           <div class="fl w285">
-            <h2>咖啡山丘</h2>
+            <h2>{{item.goods_name}}</h2>
             <p>规格</p>
-            <count class="good-count"></count>
+            <count class="good-count" :count="item.amount"></count>
           </div>
           <div class="fl w130">
-            <div class="price">￥138.00</div>
+            <div class="price">{{price | price}}</div>
             <div class="close"></div>
           </div>
           <div class="cf"></div>
@@ -79,17 +79,18 @@
     data () {
       return {
         loading: true,
+        cartList: [],
       }
     },
     methods: {
       fetchData () {
         this.loading = true
         ajax.getDataFromApi({
-          url: '/v2/goods?recommend=true'
-        }, (data) => {
-        this.loading = false;
-      },(data) => {
-          this.loading = false;
+          url: `/v1/shopping-cart`
+        }, (response) => {
+        this.loading = false
+        this.cartList = response.data.body.list
+      },(error) => {
         })
       }
     },
