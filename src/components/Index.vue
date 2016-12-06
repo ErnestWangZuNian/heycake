@@ -109,8 +109,8 @@
                  ajax.getDataFromApi({
                     url: '/v1/goods',
                     data: {
-                        hot: true,
-                        per_page: 4,
+                        // hot: true,
+                        // per_page: 4,
                         page: data
                     }
                 },(response) => {

@@ -34,6 +34,13 @@ var utils = {
       })
     }
     return tempArr
+  },
+  // 判断对象是否为空
+  isEmptyObject (obj) {
+    for (var key in obj) {
+      return false
+    }
+    return true
   }
 }
 export default utils

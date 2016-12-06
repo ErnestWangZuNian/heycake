@@ -22,7 +22,6 @@
                     <button>兑换</button>
                 </div>
             </div>
-
             <div class="splitter"></div>
 
             <div class="grid">
@@ -106,26 +105,52 @@
                     </ul>
                     <div class="spec-count cf">
                         <div class="name fl">数量</div>
-                        <Count class="fl" :count="goodCount"></Count>
+                        <div class="countBox cf fl">
+                            <button type="button" class="fl" @click="reduceCount">-</button>
+                            <input  type="text" class="fl" v-model="goodCount" @input="inputCount">
+                            <button type="button" class="fl" @click="addCount">+</button>
+                        </div>
                         <div class="tip fl">（剩余{{selectedSpec.stock}}个）</div>
                     </div>
-                    <div class="confirm-spec" v-if="specStatus.specWay==='cart'" @click="confirmJoinCart(goodInfo.id,selectedSpec.id,goodCount)">
+                    <button class="confirm-spec"  :disabled="selectedSpec.stock <= 0" v-if="specStatus.specWay==='cart'" @click="confirmJoinCart(goodInfo.id,selectedSpec.id,goodCount)" :class="{'disabled-spec': selectedSpec.stock <= 0}">
                         加入购物车
-                    </div>
-                    <div class="confirm-spec" v-if="specStatus.specWay==='purchase'" @click="confirmPurchase">
+                    </button>
+                    <div class="confirm-spec" v-if="specStatus.specWay==='purchase'"  :disabled="selectedSpec.stock <= 0" :class="{'disabled-spec': selectedSpec.stock <= 0}" @click="confirmPurchase">
                         去结算
                     </div>
                 </div>
             </transition>
         </div>
+        <!--未登录提示弹框-->
+        <modal :show='tip.errLogin'  v-on:close='errTipClose'>
+            <div slot='body'>
+                <div class="modal-error-tip" @click="errLoginTip">
+                    <div class="modal-img">
+                        <img src="../assets/img/modal_img.png" alt="">
+                    </div>
+                    <div class="modal-test">请先登录！</div>
+                </div>
+            </div>
+        </modal>
+        <!--未选择规格提示弹框-->
+         <modal :show='tip.errSpec'  v-on:close='errSpecTip'>
+            <div slot='body'>
+                <div class="modal-error-tip">
+                    <div class="modal-img">
+                        <img src="../assets/img/modal_img.png" alt="">
+                    </div>
+                    <div class="modal-test">请先添加规格！</div>
+                </div>
+            </div>
+        </modal>
     </div>
 </template>
 <script>
-import { Swipe, SwipeItem, Lazyload } from 'mint-ui'
+import { Swipe, SwipeItem, Lazyload, MessageBox } from 'mint-ui'
 import Loading from './Loading'
 import utils from '../utils/public'
 import ajax from '../utils/ajax'
-import Count from './common/count'
+import Modal from  './common/modal'
 export default {
     name: 'Detail',
     components: {
@@ -133,7 +158,8 @@ export default {
         Swipe,
         SwipeItem,
         Lazyload,
-        Count
+        MessageBox,
+        Modal
     },
     mounted() {
         this.fetchData()
@@ -141,6 +167,10 @@ export default {
     data() {
         return {
             loading: false,
+            tip: {
+              errLogin: false,
+              errSpec: false
+            },
             specStatus: {
              isSelectSpec: false,
              specWay: 'cart',
@@ -271,7 +301,6 @@ export default {
                 })
                this.priceStatus = true
                this.goodInfo.price = this.selectedSpec.price
-               console.log( this.goodInfo.price)
             }
         },
         //  点击加入购物车
@@ -290,6 +319,13 @@ export default {
         },
         //确认加入购物车
         confirmJoinCart(goodId,specId,goodCount) {
+            if (!this.$store.state.user.userInfo.isLogin) {
+                this.specStatus.isSelectSpec = false
+                this.tip.errLogin = true
+            } else if(utils.isEmptyObject(this.selectedSpec)) {
+                this.specStatus.isSelectSpec = false
+                this.tip.errSpec = true
+            }
             ajax.postDataToApi({
                url: '/v1/shopping-cart',
                body: {
@@ -297,9 +333,58 @@ export default {
                  specification_id: specId,
                  amount: goodCount
                }
-            },(response) => {
-
+              },(response) => {
+                this.specStatus.isSelectSpec = false
             }) 
+        },
+        //  确认去结算
+        confirmPurchase(){
+          if (!this.$store.state.user.userInfo.isLogin) {
+                this.specStatus.isSelectSpec = false,
+                this.tip.errLogin = true
+          } else if(utils.isEmptyObject(this.selectedSpec)) {
+                this.specStatus.isSelectSpec = false,
+                this.tip.errSpec = true
+          }
+          location.href = '/site/order-submit'
+        },
+        //  登录错误提示
+        errLoginTip () {
+         this.tip.errLogin = false,
+         location.href = '/#/site/login'
+        },
+        errSpecTip () {
+         this.tip.errSpec = false
+        },        
+        //  关闭错误提示框
+        errTipClose () {
+          this.tip.errLogin = false
+        },
+        // 增加数量
+        addCount () {
+         if(this.goodCount >= this.selectedSpec.stock){
+             this.goodCount = this.selectedSpec.stock
+         }else {
+           this.goodCount++
+         }
+        },
+        // 减少数量
+        reduceCount() {
+         if(this.goodCount <= 1) {
+           this.goodCount = 1
+         } else {
+           this.goodCount --
+         }
+        },
+        // 输入数量
+        inputCount() {
+          let re = /\D/
+          if (re.test(this.goodCount) || this.goodCount <= 1){
+            this.goodCount = 1
+          }
+          if(this.goodCount > this.selectedSpec.stock){
+              this.goodCount = this.selectedSpec.stock
+          }
         }
     },
     // 

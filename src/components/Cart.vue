@@ -8,7 +8,7 @@
             <div class="selected"></div>
           </div>
           <div class="fl w148">
-            <div class="goods-img"><img src="../assets/img/goods1.jpg"> </div>
+            <div class="goods-img"><img src="../assets/img/goods1.jpg"></div>
           </div>
           <div class="fl w285">
             <h2>{{item.goods_name}}</h2>
@@ -17,25 +17,6 @@
           </div>
           <div class="fl w130">
             <div class="price">{{price | price}}</div>
-            <div class="close"></div>
-          </div>
-          <div class="cf"></div>
-        </li>
-
-        <li>
-          <div class="fl w76">
-            <div class="selected selected1"></div>
-          </div>
-          <div class="fl w148">
-            <div class="goods-img"><img src="../assets/img/goods1.jpg"> </div>
-          </div>
-          <div class="fl w285">
-            <h2>咖啡山丘</h2>
-            <p>规格</p>
-            <count class="good-count"></count>
-          </div>
-          <div class="fl w130">
-            <div class="price">￥138.00</div>
             <div class="close"></div>
           </div>
           <div class="cf"></div>
@@ -59,19 +40,12 @@
   </div>
 </template>
 <script>
-  import {Swipe, SwipeItem } from 'mint-ui'
   import  Loading from './Loading'
   import ajax from '../utils/ajax.js'
-  import count from './common/count'
-  //Swipe ， SwipeItem        幻灯片
-  //InfiniteScroll           下拉刷新
   export default {
     name: 'NewArrivals',
     components: {
-      Loading,
-      Swipe,
-      SwipeItem,
-      count
+      Loading
     },
     mounted () {
       this.fetchData()
