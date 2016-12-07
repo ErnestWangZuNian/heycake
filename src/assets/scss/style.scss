@@ -300,6 +300,40 @@ body {
 .border-bottom {border-bottom: px2rem(1) solid #dddddd;}
 .border-left {border-left: px2rem(1) solid #dddddd;}
 .border-right {border-right: px2rem(1) solid #dddddd;}
+// 时间样式修改
+.timeModal{
+  .modal-content{
+    width: px2rem(600);
+  }
+  .time-header{
+   padding:0 px2rem(20) px2rem(20);
+   border-bottom: px2rem(2) solid $borderColor;
+   text-align: left;
+  }
+  .time-body{
+    @include grid();
+    padding: px2rem(30) 0 px2rem(60);
+    .grid-cell{
+      .title{
+        color: $subTitleColor,
+      }
+      .content{
+        height: px2rem(275);
+        overflow-y: scroll;
+        li{
+          padding: px2rem(18) 0;
+        }
+        li:hover{
+          background: #eee;
+        }
+        li.active{
+          background: #eee;
+        }
+      }
+    }
+    
+  }
+}
 // 弹框样式修改
 .modal-mask {
     position: fixed;

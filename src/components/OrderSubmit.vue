@@ -3,27 +3,65 @@
     <loading v-if="loading"></loading>
     <div class="container" v-if="!loading">
       <div class="order-tab">
-        <button class="btn-red">快递配送</button>
-        <button class="btn-gray">门店自提</button>
+        <button :class="[receiptway.expressHiglight ? 'btn-red' : 'btn-gray']" @click="expressDelivery">快递配送</button>
+        <button :class="[receiptway.storeHiglight ? 'btn-red' : 'btn-gray']" @click="storeDeliver">门店自提</button>
       </div>
 
-      <!--信息-->
-      <div class="order-info">
-        <div class="label-list">
+      <!--快递配送信息-->
+      <div class="order-info" v-if="receiptway.expressDelivery">
+        <div class="label-list" v-if="userInfo.address.length > 0">
           <div class="fl info">
             <section>
               <div class="icon icon-name"></div>
-              <div class="text">马飞燕</div>
+              <div class="text">{{userInfo.defalutAddress.name}}</div>
             </section>
 
             <section>
               <div class="icon icon-tel"></div>
-              <div class="text">13032375597</div>
+              <div class="text">{{userInfo.defalutAddress.tel_phone}}</div>
             </section>
 
             <section>
               <div class="icon icon-addr"></div>
-              <div class="text">重庆渝北区中智联东电大厦B区番石榴科技技术办公司</div>
+              <div class="text"><span>[默认]</span>{{userInfo.defalutAddress.detail_area}}</div>
+            </section>
+          </div>
+          <router-link to="my-address">
+              <div class="fl arrow">
+                <div class="icon-right"></div>
+              </div>
+          </router-link>
+          <div class="cf"></div>
+        </div>
+        <router-link v-if="userInfo.address.length <= 0" to="add-address">
+          <div class="none-address">
+            还没有地址，前去新增地址
+          </div>
+        </router-link>
+        <div class="label-message">
+          留言 <input class="inputs" type="text">
+        </div>
+      </div>
+      <!--门店自提信息-->
+      <div class="order-info" v-if="receiptway.storeDeliver">
+        <div class="label-list">
+          <div class="store-info">
+            自提信息
+          </div>
+          <div class="fl info">
+            <section>
+              <div class="icon icon-name"></div>
+              <div class="text">{{userInfo.defalutAddress.name}}</div>
+            </section>
+
+            <section>
+              <div class="icon icon-tel"></div>
+              <div class="text">{{userInfo.defalutAddress.tel_phone}}</div>
+            </section>
+
+            <section>
+              <div class="icon icon-addr"></div>
+              <div class="text"><span>[默认]</span>{{userInfo.defalutAddress.detail_area}}</div>
             </section>
           </div>
           <div class="fl arrow">
@@ -32,10 +70,17 @@
           <div class="cf"></div>
         </div>
         <div class="label-message">
-          留言 <input class="inputs" type="text">
+          <div class="label-list">
+            <label for="">自提人</label> <input class="inputs" type="text">
+          </div>
+          <div class="label-list">
+            <label for="">联系电话</label> <input class="inputs" type="text">
+          </div>
+          <div class="label-list">
+            <label for="">留言</label> <input class="inputs" type="text">
+          </div>
         </div>
       </div>
-
       <!--分隔-->
       <div class="order-splitter"></div>
 
@@ -43,17 +88,9 @@
       <div class="order-times">
         <div class="title">预约时间</div>
         <div class="times">
-          <datetime-picker
-            ref="picker"
-            type="datetime"
-            v-model="pickerValue"
-            >
-          </datetime-picker>
-          <input class="inputs" type="text" placeholder="开始时间" @click="startTime" v-model="pickerValue"> - <input class="inputs" type="text" placeholder="结束时间">
-          {{pickerValue}}
+          <input class="inputs" type="text" placeholder="开始时间" v-model="appointTime.selectedDate" @click="openTimeShow"> - <input class="inputs" type="text" placeholder="结束时间" v-model="appointTime.selectedTime" @click="openTimeShow">
         </div>
       </div>
-
       <!--分隔-->
       <div class="order-splitter"></div>
 
@@ -115,45 +152,127 @@
         <button class="btn">提交订单</button>
       </div>
     </div>
+     <!--预约时间选择-->
+        <select-time :time-show="appointTime.timeShow" :date="appointTime.date"     :time="appointTime.time" v-on:close="timeClose" v-on:getDate="getDate"
+        v-on:getTime="getTime">
+        </select-time>
   </div>
 </template>
 <script>
-  import {Swipe, SwipeItem, DatetimePicker } from 'mint-ui'
+  import {Swipe, SwipeItem } from 'mint-ui'
   import  Loading from './Loading'
   import ajax from '../utils/ajax.js'
+  import SelectTime from './common/selectTime'
   export default {
     name: 'OrderSubmit',
     components: {
       Loading,
       Swipe,
       SwipeItem,
-      DatetimePicker
+      SelectTime
     },
     mounted () {
-//      this.fetchData()
+     this.fetchData()
     },
     data () {
       return {
         loading: false,
-        pickerValue: '2016-08-10'
+        appointTime: {
+          timeShow: false,
+          date: [],
+          time: [],
+          selectedTime: '',
+          selectedDate: ''
+        },
+        receiptway:{
+          expressDelivery: false,
+          expressHiglight: false,
+          storeDeliver: true,
+          storeHiglight: true
+        },
+        userInfo: {
+          defalutAddress: {},
+          address: [],
+          store: []
+        }
       }
     },
     methods: {
+      //  获取页面数据
       fetchData () {
         this.loading = true
+        // 获取预约时间
         ajax.getDataFromApi({
-          url: '/v2/goods?recommend=true'
-        }, (data) => {
-        this.loading = false;
-      },(data) => {
-          this.loading = false;
+          url: '/v1/appointment-time'
+        },(response) => {
+          this.loading = false
+          this.appointTime.date = response.data.body.date
+          this.appointTime.time = response.data.body.time
         })
+        // 快递配送方式
+        if (this.receiptway.expressDelivery) {
+         // 获取我的地址
+         ajax.getDataFromApi({
+           url: '/v1/my-address',
+         },(response) => {
+           let addressList = response.data.body.list
+           let flag = false
+           this.userInfo.address = addressList
+           if( addressList.length > 0) {
+            addressList.forEach((val) => {
+               if(val.is_default === 1){
+                 flag = true
+                 this.userInfo.defalutAddress = val
+               }
+            })
+            if(!flag){
+              console.log('wamnhggg')
+              this.userInfo.defaultAddress = addressList[0]
+            }
+           }
+         })
+        }
+        // 门店配送方式
+        if (this.receiptway.storeDeliver) {
+         //获取门店列表
+         ajax.getDataFromApi({
+           url: '/v1/offlinestore'
+         },(response) => {
+           this.userInfo.store = response.data.body.list
+         })
+        }
       },
-      // 开始时间
-      startTime () {
-        this.$refs.picker.open()
+      // 打开时间选择
+      openTimeShow () {
+        this.appointTime.timeShow = true
+      },
+      // 关闭时间选择
+      timeClose () {
+        this.appointTime.timeShow = false
+      },
+      // 获取选择的日期
+      getDate (date) {
+        this.appointTime.selectedDate = date
+      },
+      // 获取选择的时间
+      getTime(time) {
+        this.appointTime.selectedTime = time
+      },
+      // 点击切换快递配送
+      expressDelivery() {
+        this.receiptway.expressDelivery = true
+        this.receiptway.expressHiglight = true
+        this.receiptway.storeDeliver = false
+        this.receiptway.storeHiglight = false
+      },
+      // 点击切换门店配送
+      storeDeliver () {
+        this.receiptway.storeDeliver = true
+        this.receiptway.storeHiglight = true
+        this.receiptway.expressDelivery = false
+        this.receiptway.expressHiglight = false
       }
-    },
+     },
   }
   require('../assets/scss/orderSubmit.scss')
 </script>

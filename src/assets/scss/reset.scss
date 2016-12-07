@@ -70,7 +70,7 @@ a {
   width: px2rem($width);
   height: px2rem($height);
   line-height:px2rem($height) ;
-  border:px2rem(1) solid $bodercolor;
+  border:px2rem(2) solid $bodercolor;
   font-size:px2rem($font);
   border-radius:px2rem($radius);
   padding: 0 px2rem(10);
@@ -99,7 +99,7 @@ a {
 @mixin grid($height:79,$font:24,$color:#333333) {
   display: flex;
   font-size: px2rem($font);
-  height:px2rem($height);
+  min-height:px2rem($height);
   align-items: center;
   padding: 0 px2rem(20);
   .grid-cell{

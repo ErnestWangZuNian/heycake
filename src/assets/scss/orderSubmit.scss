@@ -49,9 +49,19 @@
           -moz-box-flex:1;
           -webkit-box-flex:1;
           box-flex:1;
+          span{
+            margin-right: px2rem(10);
+            color: $subTitleColor;
+          }
         }
       };
     };
+    .store-info{
+      padding-bottom: px2rem(30);
+      font-size: px2rem(24);
+      border-bottom: px2rem(2) solid $borderColor;
+      margin-bottom: px2rem(24);
+     }
     .arrow{
       width: px2rem(70);
       .icon-right{
@@ -64,13 +74,29 @@
       }
     }
   }
+  .none-address{
+    text-align: center;
+    height: px2rem(120);
+    line-height: px2rem(120);
+    font-size: px2rem(24);
+  }
   .label-message{
     border-top: px2rem(1) solid #dddddd;
     font-size: px2rem(28);
     padding: px2rem(20) 0;
-    .inputs {
-      @include inputs(506,52,#ddd,24,10)
+    .label-list{
+      margin-top: px2rem(24);
+      label{
+        display: inline-block;
+        width: px2rem(113);
+        text-align: right;
+        margin-right: px2rem(10);
+      }
+      .inputs {
+        @include inputs(462,52,#ddd,24,10)
+      }
     }
+    
   }
 }
 

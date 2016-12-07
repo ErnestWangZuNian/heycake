@@ -150,7 +150,8 @@ import { Swipe, SwipeItem, Lazyload, MessageBox } from 'mint-ui'
 import Loading from './Loading'
 import utils from '../utils/public'
 import ajax from '../utils/ajax'
-import Modal from  './common/modal'
+import Modal from  './common/Modal'
+import SelectTime from './common/selectTime'
 export default {
     name: 'Detail',
     components: {
@@ -159,7 +160,8 @@ export default {
         SwipeItem,
         Lazyload,
         MessageBox,
-        Modal
+        Modal,
+        SelectTime
     },
     mounted() {
         this.fetchData()
@@ -346,7 +348,7 @@ export default {
                 this.specStatus.isSelectSpec = false,
                 this.tip.errSpec = true
           }
-          location.href = '/site/order-submit'
+          location.href = '/#/site/order-submit'
         },
         //  登录错误提示
         errLoginTip () {
