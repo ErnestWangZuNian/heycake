@@ -11,6 +11,7 @@ const MyOrder = resolve => require(['../components/MyOrder'], resolve)
 const MyScore = resolve => require(['../components/MyScore'], resolve)
 const ScoreExchange = resolve => require(['../components/ScoreExchange'], resolve)
 const MyComment = resolve => require(['../components/MyComment'], resolve)
+const MyAddress = resolve => require(['../components/MyAddress'], resolve)
 const Loading = resolve => require(['../components/Loading'], resolve)
 const Login = resolve => require(['../components/Login'], resolve)
 const routes = [
@@ -27,6 +28,7 @@ const routes = [
     { path: '/site/my-score', component: MyScore },
     { path: '/site/score-exchange', component: ScoreExchange },
     { path: '/site/my-comment', component: MyComment },
+    { path: '/site/my-address', component: MyAddress },
     { path: '/site/loading', component: Loading },
     { path: '/site/login', component: Login }
 ]
