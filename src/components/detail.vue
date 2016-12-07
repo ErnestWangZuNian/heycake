@@ -122,7 +122,7 @@
             </transition>
         </div>
         <!--未登录提示弹框-->
-        <modal :show='tip.errLogin'  v-on:close='errTipClose'>
+        <modal :show='tip.errLogin'  v-on:close='errTipClose' >
             <div slot='body'>
                 <div class="modal-error-tip" @click="errLoginTip">
                     <div class="modal-img">
@@ -148,7 +148,7 @@
 <script>
 import { Swipe, SwipeItem, Lazyload, MessageBox } from 'mint-ui'
 import Loading from './Loading'
-import utils from '../utils/public'
+import utils from '../utils/public'    //公共方法（图片处理，数组去重，判断对象是否为空）
 import ajax from '../utils/ajax'
 import Modal from  './common/Modal'
 import SelectTime from './common/selectTime'
@@ -337,7 +337,7 @@ export default {
                }
               },(response) => {
                 this.specStatus.isSelectSpec = false
-            }) 
+            })
         },
         //  确认去结算
         confirmPurchase(){
@@ -357,7 +357,7 @@ export default {
         },
         errSpecTip () {
          this.tip.errSpec = false
-        },        
+        },
         //  关闭错误提示框
         errTipClose () {
           this.tip.errLogin = false
@@ -389,7 +389,7 @@ export default {
           }
         }
     },
-    // 
+    //
 }
 require('../assets/scss/detail.scss')
 </script>
