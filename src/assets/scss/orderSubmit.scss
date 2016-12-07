@@ -57,7 +57,7 @@
       };
     };
     .store-info{
-      padding-bottom: px2rem(30);
+      padding: px2rem(30) 0;
       font-size: px2rem(24);
       border-bottom: px2rem(2) solid $borderColor;
       margin-bottom: px2rem(24);
@@ -215,7 +215,7 @@
     }
   }
   .btn{
-    @include btn(220,100,#cd0c0c,#ffffff,28,0)
+    @include btn(220,100,#cd0c0c,#ffffff,28,0);
     position: absolute;
     right: 0;
   }

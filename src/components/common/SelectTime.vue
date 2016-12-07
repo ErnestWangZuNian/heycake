@@ -1,5 +1,5 @@
 <template>
-    <modal :show="timeShow" class="timeModal" v-on:close='close'>
+    <modal :show="timeShow" class="time-modal" v-on:close='close'>
         <div slot="header">
             <div class="time-header">
               选择预约时间
@@ -18,6 +18,7 @@
                  <ul class="content">
                      <li v-for="item in time" @click="getTime(item)">{{item}}</li>
                  </ul>
+                 
              </div>
             </div>
         </div>

@@ -51,20 +51,20 @@
           <div class="fl info">
             <section>
               <div class="icon icon-name"></div>
-              <div class="text">{{userInfo.defalutAddress.name}}</div>
+              <div class="text">{{store.selectedStore.name}}</div>
             </section>
 
             <section>
               <div class="icon icon-tel"></div>
-              <div class="text">{{userInfo.defalutAddress.tel_phone}}</div>
+              <div class="text">{{store.selectedStore.contact_phone}}</div>
             </section>
 
             <section>
               <div class="icon icon-addr"></div>
-              <div class="text"><span>[默认]</span>{{userInfo.defalutAddress.detail_area}}</div>
+              <div class="text"><span>[默认]</span>{{store.selectedStore.address}}</div>
             </section>
           </div>
-          <div class="fl arrow">
+          <div class="fl arrow" @click="storeOpen">
             <div class="icon-right"></div>
           </div>
           <div class="cf"></div>
@@ -156,6 +156,14 @@
         <select-time :time-show="appointTime.timeShow" :date="appointTime.date"     :time="appointTime.time" v-on:close="timeClose" v-on:getDate="getDate"
         v-on:getTime="getTime">
         </select-time>
+      <!--门店选择-->
+        <select-store 
+        :store-show="store.storeShow" 
+        :store-list="store.storeList"
+        v-on:close="storeClose"
+        v-on:selectStore="selectStore"
+        >
+        </select-store>
   </div>
 </template>
 <script>
@@ -163,13 +171,15 @@
   import  Loading from './Loading'
   import ajax from '../utils/ajax.js'
   import SelectTime from './common/selectTime'
+  import SelectStore from './common/SelectStore'
   export default {
     name: 'OrderSubmit',
     components: {
       Loading,
       Swipe,
       SwipeItem,
-      SelectTime
+      SelectTime,
+      SelectStore
     },
     mounted () {
      this.fetchData()
@@ -185,15 +195,19 @@
           selectedDate: ''
         },
         receiptway:{
-          expressDelivery: false,
-          expressHiglight: false,
-          storeDeliver: true,
-          storeHiglight: true
+          expressDelivery: true,
+          expressHiglight: true,
+          storeDeliver: false,
+          storeHiglight: false
+        },
+        store: {
+          storeShow: false,
+          storeList: [],
+          selectedStore: {}
         },
         userInfo: {
           defalutAddress: {},
-          address: [],
-          store: []
+          address: []
         }
       }
     },
@@ -209,8 +223,6 @@
           this.appointTime.date = response.data.body.date
           this.appointTime.time = response.data.body.time
         })
-        // 快递配送方式
-        if (this.receiptway.expressDelivery) {
          // 获取我的地址
          ajax.getDataFromApi({
            url: '/v1/my-address',
@@ -231,16 +243,20 @@
             }
            }
          })
-        }
-        // 门店配送方式
-        if (this.receiptway.storeDeliver) {
          //获取门店列表
          ajax.getDataFromApi({
            url: '/v1/offlinestore'
          },(response) => {
-           this.userInfo.store = response.data.body.list
+           let data =  response.data.body.list
+           data.map((val,index) => {
+             index === 0 ? val.isSelected = true : val.isSelected = false
+             val.logo = `/attachment/${val.logo}`
+             return val
+           })
+           this.store.storeList = data
+           this.store.selectedStore = data[0]
+
          })
-        }
       },
       // 打开时间选择
       openTimeShow () {
@@ -271,6 +287,20 @@
         this.receiptway.storeHiglight = true
         this.receiptway.expressDelivery = false
         this.receiptway.expressHiglight = false
+        this.storeOpen()
+      },
+      // 打开门店弹窗
+      storeOpen () {
+         this.store.storeShow = true
+      },
+      // 关闭门店选择弹窗
+      storeClose () {
+        this.store.storeShow = false
+      },
+      // 选择门店
+      selectStore (item) {
+       this.store.selectedStore = item
+       this.storeClose()
       }
      },
   }
