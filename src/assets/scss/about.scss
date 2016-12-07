@@ -1,0 +1,9 @@
+@import 'style.scss';
+.about{
+  color: #000;
+  line-height: 1.8;
+  font-size: px2rem(24)!important;
+  h1{font-size: px2rem(28)}
+  h2{font-size: px2rem(24)}
+  p{ text-indent: px2rem(25); margin: px2rem(10);font-size: px2rem(24);}
+}

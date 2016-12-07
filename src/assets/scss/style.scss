@@ -111,14 +111,14 @@ body {
 .selected {
   width:px2rem(37);
   height:px2rem(37);
-  background: url(../img/images.png) no-repeat px2rem(-697) 0;
+  background: url(../img/images.png) no-repeat px2rem(-646) 0;
   background-size: px2rem(778) px2rem(683) ;
   margin-top: px2rem(46);
   margin-left: px2rem(20);
 };
 //取消单选就加上下面这个类
 .selected1 {
-  background: url(../img/images.png) no-repeat px2rem(-646) 0;
+  background: url(../img/images.png) no-repeat px2rem(-697) 0;
   background-size: px2rem(778) px2rem(683);
 };
 
@@ -357,4 +357,3 @@ body {
         }
       }
     }
-

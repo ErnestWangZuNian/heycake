@@ -24,11 +24,19 @@ module.exports = {
     proxyTable: {
       '/v1': {
         target: "http://heycake.cn",
+        // target: "http://192.168.1.150:1382",
         changeOrigin: true,
         pathRewrite: {
            '^/': ''
         }
-      }
+      },
+      '/area': {
+        target: "http://heycake.cn",
+        changeOrigin: true,
+        pathRewrite: {
+           '^/': ''
+        }
+      },
     },
       // CSS Sourcemaps off by default because relative paths are "buggy"
       // with this option, according to the CSS-Loader README
