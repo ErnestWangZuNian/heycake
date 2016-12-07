@@ -1,129 +1,156 @@
 <template>
-  <div>
-    <loading v-if="loading"></loading>
-    <div class="container" v-if="!loading">
-      <div v-if='isSelectSpec' class="spec-mask"></div>
-      <!--轮播图-->
-      <div class="swiper">
-        <swipe :auto="4000">
-          <swipe-item v-for="item in banner">
-            <img :src="item" v-lazy="item.picture" alt="轮播">
-          </swipe-item>
-        </swipe>
-      </div>
-      <div class="grid price-score">
-        <div class="grid-cell">
-          <p>{{goodInfo.name}}</p>
-          <p class="c-red mt20" v-if="!priceStatus">{{goodInfo.price | priceRange}}</p>
-          <p class="c-red mt20" v-if="priceStatus">{{goodInfo.price | price}}</p>
-        </div>
-        <div class="grid-cell score" v-if="goodInfo.score > 0">
-          <p> {{goodInfo.score}}积分 </p>
-          <button>兑换</button>
-        </div>
-      </div>
-
-      <div class="splitter"></div>
-
-      <div class="grid">
-        <div class="grid-cell">运费</div>
-        <div class="grid-cell tright c-888">￥10.00</div>
-      </div>
-
-      <div class="splitter"></div>
-
-      <div class="grid">
-        <div class="grid-cell">积分兑换</div>
-        <div class="grid-cell tright c-888">29999积分</div>
-        <div class="grid-cell u-w30">
-          <div class="item-after"></div>
-        </div>
-      </div>
-
-      <div class="splitter"></div>
-
-      <div class="grid">
-        <div class="grid-cell">规格</div>
-        <div class="grid-cell u-w30">
-          <div class="item-after"></div>
-        </div>
-      </div>
-
-      <div class="splitter"></div>
-
-      <div class="grid">
-        <div class="grid-cell">查看用户评价<span class="c-888">(2564条评价)</span></div>
-        <div class="grid-cell u-w30">
-          <div class="item-after"></div>
-        </div>
-      </div>
-        <div class="product-content" v-html="goodDetailShow.content">
-        </div>
-
-      <div class="operation">
-        <div class="grid operation-grid">
-          <div class="grid-cell u-w100">
-            <div class="item-cart position-rel">
-              <div class="position-abs nums">1</div>
+    <div>
+        <loading v-if="loading"></loading>
+        <div class="container" v-if="!loading">
+            <div v-if='specStatus.isSelectSpec' class="spec-mask"></div>
+            <!--轮播图-->
+            <div class="swiper">
+                <swipe :auto="4000">
+                    <swipe-item v-for="item in banner">
+                        <img :src="item" v-lazy="item.picture" alt="轮播">
+                    </swipe-item>
+                </swipe>
             </div>
-            <div class="tcenter c-aaa">购物车</div>
-          </div>
-          <div class="grid-cell tright">
-            <button class="btn-orange" type="button" @click="joinCart()">加入购物车</button>
-            <button class="btn-red" type="button" @click="purchase()">立即购买</button>
-          </div>
-        </div>
-      </div>
-      <transition name="spec" enter-active-class="animated fadeInUpBig"  leave-active-class="animated fadeOutDownBig">
-        <div class="select-spec" v-if="specStatus.isSelectSpec">
-        <div class="good">
-          <div class="grid-cell good-img">
-            <img src="" alt="" v-lazy="">
-          </div>
-          <div class="grid-cell good-info">
-            <p class="nane">{{goodInfo.name}}</p>
-            <p class="attrlist">
-              <span v-if="!priceStatus"> {{goodInfo.price | priceRange}}</span>
-              <span v-if="priceStatus"> {{goodInfo.price | price}}</span>
-            </p>
-          </div>
-          <div class="grid-cell close-select" @click="closeSpec">
-            <span></span>
-          </div>
-        </div>
-        <ul class="spec">
-          <li v-for="(item,index) in spec">
-            <p>{{item.name}}</p>
-            <div class="spec-list">
-              <button  type="button" v-for= "(elem,elIndex) in item.specList" @click="selectSpec(elem,item.specList,spec,index,elIndex,$evevt)" :class="{active:elem.isChecked,disabled: !elem.canChecked}"
-              :disabled="!elem.canChecked">
+            <div class="grid price-score">
+                <div class="grid-cell">
+                    <p>{{goodInfo.name}}</p>
+                    <p class="c-red mt20" v-if="!priceStatus">{{goodInfo.price | priceRange}}</p>
+                    <p class="c-red mt20" v-if="priceStatus">{{goodInfo.price | price}}</p>
+                </div>
+                <div class="grid-cell score" v-if="goodInfo.score > 0">
+                    <p> {{goodInfo.score}}积分 </p>
+                    <button>兑换</button>
+                </div>
+            </div>
+            <div class="splitter"></div>
+
+            <div class="grid">
+                <div class="grid-cell">运费</div>
+                <div class="grid-cell tright c-888">￥10.00</div>
+            </div>
+
+            <div class="splitter"></div>
+
+            <div class="grid">
+                <div class="grid-cell">积分兑换</div>
+                <div class="grid-cell tright c-888">29999积分</div>
+                <div class="grid-cell u-w30">
+                    <div class="item-after"></div>
+                </div>
+            </div>
+
+            <div class="splitter"></div>
+
+            <div class="grid">
+                <div class="grid-cell">规格</div>
+                <div class="grid-cell u-w30">
+                    <div class="item-after"></div>
+                </div>
+            </div>
+
+            <div class="splitter"></div>
+
+            <div class="grid">
+                <div class="grid-cell">查看用户评价<span class="c-888">(2564条评价)</span></div>
+                <div class="grid-cell u-w30">
+                    <div class="item-after"></div>
+                </div>
+            </div>
+            <div class="product-content" v-html="goodDetailShow.content">
+            </div>
+
+            <div class="operation">
+                <div class="grid operation-grid">
+                    <router-link to='/site/cart'>
+                        <div class="grid-cell u-w100">
+                            <div class="item-cart position-rel">
+                                <div class="position-abs nums">1</div>
+                            </div>
+                            <div class="tcenter c-aaa">购物车</div>
+                        </div>
+                    </router-link>
+                    <div class="grid-cell tright">
+                        <button class="btn-orange" type="button" @click="joinCart()">加入购物车</button>
+                        <button class="btn-red" type="button" @click="purchase()">立即购买</button>
+                    </div>
+                </div>
+            </div>
+            <transition name="spec" enter-active-class="animated fadeInUpBig" leave-active-class="animated fadeOutDownBig">
+                <div class="select-spec" v-if="specStatus.isSelectSpec">
+                    <div class="good">
+                        <div class="grid-cell good-img">
+                            <img src="" alt="" v-lazy="">
+                        </div>
+                        <div class="grid-cell good-info">
+                            <p class="nane">{{goodInfo.name}}</p>
+                            <p class="attrlist">
+                                <span v-if="!priceStatus"> {{goodInfo.price | priceRange}}</span>
+                                <span v-if="priceStatus"> {{goodInfo.price | price}}</span>
+                            </p>
+                        </div>
+                        <div class="grid-cell close-select" @click="closeSpec">
+                            <span></span>
+                        </div>
+                    </div>
+                    <ul class="spec">
+                        <li v-for="(item,index) in spec">
+                            <p>{{item.name}}</p>
+                            <div class="spec-list">
+                                <button type="button" v-for="(elem,elIndex) in item.specList" @click="selectSpec(elem,item.specList,spec,index,elIndex,$evevt)"
+                                    :class="{active:elem.isChecked,disabled: !elem.canChecked}" :disabled="!elem.canChecked">
                     {{elem.name}}
               </button>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="spec-count cf">
+                        <div class="name fl">数量</div>
+                        <div class="countBox cf fl">
+                            <button type="button" class="fl" @click="reduceCount">-</button>
+                            <input  type="text" class="fl" v-model="goodCount" @input="inputCount">
+                            <button type="button" class="fl" @click="addCount">+</button>
+                        </div>
+                        <div class="tip fl">（剩余{{selectedSpec.stock}}个）</div>
+                    </div>
+                    <button class="confirm-spec"  :disabled="selectedSpec.stock <= 0" v-if="specStatus.specWay==='cart'" @click="confirmJoinCart(goodInfo.id,selectedSpec.id,goodCount)" :class="{'disabled-spec': selectedSpec.stock <= 0}">
+                        加入购物车
+                    </button>
+                    <div class="confirm-spec" v-if="specStatus.specWay==='purchase'"  :disabled="selectedSpec.stock <= 0" :class="{'disabled-spec': selectedSpec.stock <= 0}" @click="confirmPurchase">
+                        去结算
+                    </div>
+                </div>
+            </transition>
+        </div>
+        <!--未登录提示弹框-->
+        <modal :show='tip.errLogin'  v-on:close='errTipClose'>
+            <div slot='body'>
+                <div class="modal-error-tip" @click="errLoginTip">
+                    <div class="modal-img">
+                        <img src="../assets/img/modal_img.png" alt="">
+                    </div>
+                    <div class="modal-test">请先登录！</div>
+                </div>
             </div>
-          </li>
-        </ul>
-        <div class="spec-count cf">
-          <div class="name fl">数量</div>
-          <Count class="fl" :count.sync="goodCount"></Count>
-          <div class="tip fl">（剩余{{selectedSpec.stock}}个）</div>
-        </div>
-        <div class="confirm-spec" v-if="specStatus.specWay==='cart'" @click="confirmJoinCart(goodInfo.id,selectedSpec.id,goodCount)">
-          加入购物车
-        </div>
-        <div class="confirm-spec" v-if="specStatus.specWay==='purchase'" @click="confirmPurchase">
-          去结算
-        </div>
-      </div>
-      </transition>
+        </modal>
+        <!--未选择规格提示弹框-->
+         <modal :show='tip.errSpec'  v-on:close='errSpecTip'>
+            <div slot='body'>
+                <div class="modal-error-tip">
+                    <div class="modal-img">
+                        <img src="../assets/img/modal_img.png" alt="">
+                    </div>
+                    <div class="modal-test">请先添加规格！</div>
+                </div>
+            </div>
+        </modal>
     </div>
-  </div>
 </template>
 <script>
-import { Swipe, SwipeItem, Lazyload } from 'mint-ui'
+import { Swipe, SwipeItem, Lazyload, MessageBox } from 'mint-ui'
 import Loading from './Loading'
 import utils from '../utils/public'
 import ajax from '../utils/ajax'
-import Count from './common/count'
+import Modal from  './common/modal'
 export default {
     name: 'Detail',
     components: {
@@ -131,7 +158,8 @@ export default {
         Swipe,
         SwipeItem,
         Lazyload,
-        Count
+        MessageBox,
+        Modal
     },
     mounted() {
         this.fetchData()
@@ -139,6 +167,10 @@ export default {
     data() {
         return {
             loading: false,
+            tip: {
+              errLogin: false,
+              errSpec: false
+            },
             specStatus: {
              isSelectSpec: false,
              specWay: 'cart',
@@ -148,7 +180,7 @@ export default {
                 content: ''
             },
             priceStatus: false,
-            goodCount: 12,
+            goodCount: 1,
             spec: [],
             originalSpecList: [],
             selectedSpec: {},
@@ -269,7 +301,6 @@ export default {
                 })
                this.priceStatus = true
                this.goodInfo.price = this.selectedSpec.price
-               console.log( this.goodInfo.price)
             }
         },
         //  点击加入购物车
@@ -288,6 +319,13 @@ export default {
         },
         //确认加入购物车
         confirmJoinCart(goodId,specId,goodCount) {
+            if (!this.$store.state.user.userInfo.isLogin) {
+                this.specStatus.isSelectSpec = false
+                this.tip.errLogin = true
+            } else if(utils.isEmptyObject(this.selectedSpec)) {
+                this.specStatus.isSelectSpec = false
+                this.tip.errSpec = true
+            }
             ajax.postDataToApi({
                url: '/v1/shopping-cart',
                body: {
@@ -295,9 +333,58 @@ export default {
                  specification_id: specId,
                  amount: goodCount
                }
-            },(response) => {
-
+              },(response) => {
+                this.specStatus.isSelectSpec = false
             }) 
+        },
+        //  确认去结算
+        confirmPurchase(){
+          if (!this.$store.state.user.userInfo.isLogin) {
+                this.specStatus.isSelectSpec = false,
+                this.tip.errLogin = true
+          } else if(utils.isEmptyObject(this.selectedSpec)) {
+                this.specStatus.isSelectSpec = false,
+                this.tip.errSpec = true
+          }
+          location.href = '/site/order-submit'
+        },
+        //  登录错误提示
+        errLoginTip () {
+         this.tip.errLogin = false,
+         location.href = '/#/site/login'
+        },
+        errSpecTip () {
+         this.tip.errSpec = false
+        },        
+        //  关闭错误提示框
+        errTipClose () {
+          this.tip.errLogin = false
+        },
+        // 增加数量
+        addCount () {
+         if(this.goodCount >= this.selectedSpec.stock){
+             this.goodCount = this.selectedSpec.stock
+         }else {
+           this.goodCount++
+         }
+        },
+        // 减少数量
+        reduceCount() {
+         if(this.goodCount <= 1) {
+           this.goodCount = 1
+         } else {
+           this.goodCount --
+         }
+        },
+        // 输入数量
+        inputCount() {
+          let re = /\D/
+          if (re.test(this.goodCount) || this.goodCount <= 1){
+            this.goodCount = 1
+          }
+          if(this.goodCount > this.selectedSpec.stock){
+              this.goodCount = this.selectedSpec.stock
+          }
         }
     },
     // 

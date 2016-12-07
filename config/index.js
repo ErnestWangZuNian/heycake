@@ -23,10 +23,10 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/v1': {
-        target: 'http://heycake.cn',
+        target: "http://heycake.cn",
         changeOrigin: true,
         pathRewrite: {
-          '^/': ''
+           '^/': ''
         }
       }
     },

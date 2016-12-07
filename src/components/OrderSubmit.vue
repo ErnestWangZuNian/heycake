@@ -43,7 +43,14 @@
       <div class="order-times">
         <div class="title">预约时间</div>
         <div class="times">
-          <input class="inputs" type="text" placeholder="开始时间"> - <input class="inputs" type="text" placeholder="结束时间">
+          <datetime-picker
+            ref="picker"
+            type="datetime"
+            v-model="pickerValue"
+            >
+          </datetime-picker>
+          <input class="inputs" type="text" placeholder="开始时间" @click="startTime" v-model="pickerValue"> - <input class="inputs" type="text" placeholder="结束时间">
+          {{pickerValue}}
         </div>
       </div>
 
@@ -111,7 +118,7 @@
   </div>
 </template>
 <script>
-  import {Swipe, SwipeItem } from 'mint-ui'
+  import {Swipe, SwipeItem, DatetimePicker } from 'mint-ui'
   import  Loading from './Loading'
   import ajax from '../utils/ajax.js'
   export default {
@@ -120,6 +127,7 @@
       Loading,
       Swipe,
       SwipeItem,
+      DatetimePicker
     },
     mounted () {
 //      this.fetchData()
@@ -127,6 +135,7 @@
     data () {
       return {
         loading: false,
+        pickerValue: '2016-08-10'
       }
     },
     methods: {
@@ -139,6 +148,10 @@
       },(data) => {
           this.loading = false;
         })
+      },
+      // 开始时间
+      startTime () {
+        this.$refs.picker.open()
       }
     },
   }

@@ -236,10 +236,10 @@ body {
     .close-select{
       flex: 0 0 px2rem(40);
       margin-top: 0;
-      height:px2rem(41);
+      height:px2rem(40);
       cursor:pointer;
       background: url(../img/images.png) no-repeat px2rem(-683) px2rem(-121);
-     background-size: px2rem(778) px2rem(683);
+      background-size: px2rem(778) px2rem(683);
     }
   }
   .spec{
@@ -285,6 +285,9 @@ body {
   .confirm-spec{
     @include btn(640,96,$subTitleColor,#fff,24,0)
   }
+  .disabled-spec{
+    @include btn(640,96,$colorLintGray,#fff,24,0)
+  }
 }
 //分隔
 .splitter{
@@ -297,4 +300,61 @@ body {
 .border-bottom {border-bottom: px2rem(1) solid #dddddd;}
 .border-left {border-left: px2rem(1) solid #dddddd;}
 .border-right {border-right: px2rem(1) solid #dddddd;}
+// 弹框样式修改
+.modal-mask {
+    position: fixed;
+    display: table;
+    z-index: 9998;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .5);
+    cursor:pointer;
+  }
+  .modal-dialog {
+    display: table-cell;
+    vertical-align: middle;
+  }
+  .text-center{
+    text-align: center;
+  }
+  .modal-content {
+    width: px2rem(400);
+    position: relative;
+    padding: px2rem(15) 0;
+    margin: 0 auto;
+    font-size: px2rem(24);
+    background-color: #fff;
+    border-radius: px2rem(10);
+    text-align: center;
+    cursor: pointer;
+    .modal-close {
+      position: absolute;
+      right: px2rem(10);
+      top: px2rem(10);
+      width: px2rem(40);
+      height: px2rem(40);
+      background: url(../img/images.png) no-repeat px2rem(-683) px2rem(-121);
+      background-size: px2rem(778) px2rem(683);
+      cursor: pointer;
+    }
+    .modal-test{
+        font-size: px2rem(24);
+        margin-top: px2rem(10);
+      }
+  }
+  //  错误提示
+  .modal-error-tip{
+      width: px2rem(200);
+      margin: 0 auto;
+      .modal-img{
+        width: 100%;
+        height: px2rem(120);
+        img{
+          width: px2rem(120);
+          height: px2rem(120);
+        }
+      }
+    }
 
