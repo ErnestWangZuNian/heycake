@@ -41,6 +41,19 @@ var utils = {
       return false
     }
     return true
+  },
+  // 删除数组的某一项
+  arrayDelete (arr, val) {
+    let arrIndex = -1
+    arr.forEach((val, index) => {
+      if (arr[index] === val) {
+        arrIndex = index
+      }
+    })
+    if (arrIndex !== -1) {
+      arr = arr.splice(arrIndex, 1)
+    }
+    return arr
   }
 }
 export default utils

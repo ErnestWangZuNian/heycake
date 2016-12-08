@@ -5,18 +5,22 @@
       <ul class="theCart">
         <li v-for="item in cartList">
           <div class="fl w76">
-            <div class="selected"></div>
+            <div  class="selected" :class="[item.isSelected ? 'selected1' : 'selected']" @click="selectedCart(item)"></div>
           </div>
           <div class="fl w148">
             <div class="goods-img"><img src="../assets/img/goods1.jpg"></div>
           </div>
-          <div class="fl w285">
+          <div class="fl w285 goods-text">
             <h2>{{item.goods_name}}</h2>
             <p>规格</p>
-            <count class="good-count" :count="item.amount"></count>
+            <div class="countBox cf ">
+              <button type="button" class="fl" @click="reduceCount(item)">-</button>
+              <input type="text" class="fl" v-model="item.amount" @input="inputCount(item)">
+              <button type="button" class="fl" @click="addCount(item)">+</button>
+            </div>
           </div>
           <div class="fl w130">
-            <div class="price">{{price | price}}</div>
+            <div class="price">{{item.itemTotalPrice | price}}</div>
             <div class="close"></div>
           </div>
           <div class="cf"></div>
@@ -25,11 +29,11 @@
 
       <div class="settlement">
         <div class="fl w130">
-          <div class="selected"></div>
+          <div class="selected" :class="[isSelectedAll ? 'selected1' : 'selected',checkAll ? 'selected1' : 'selected']" @click="selectedCartAll()"></div>
           <span>全选</span>
         </div>
         <div class="fl w285">
-          <p class="total">合计：<span>￥138.00</span></p>
+          <p class="total">合计：<span>{{price | price}}</span></p>
         </div>
         <div class="fl">
           <button type="button">结算</button>
@@ -40,34 +44,108 @@
   </div>
 </template>
 <script>
-  import  Loading from './Loading'
-  import ajax from '../utils/ajax.js'
-  export default {
-    name: 'NewArrivals',
-    components: {
-      Loading
-    },
-    mounted () {
-      // this.fetchData()
-    },
-    data () {
-      return {
-        loading: false,
-        cartList: [],
+import Loading from './Loading'
+import ajax from '../utils/ajax.js'
+import utils from '../utils/public'
+export default {
+  name: 'Cart',
+  components: {
+    Loading
+  },
+  mounted () {
+    this.fetchData()
+  },
+  data () {
+    return {
+      loading: true,
+      cartList: [],
+      selectedCartList: [],
+      isSelectedAll: false
+    }
+  },
+  computed: {
+    price () {
+      let totalPrice = 0
+      if(this.selectedCartList.length > 0) {
+       this.selectedCartList.forEach((val) => {
+         totalPrice += val.itemTotalPrice * 100
+       })
       }
-    },
-    methods: {
-      fetchData () {
-        this.loading = true
-        ajax.getDataFromApi({
-          url: `/v1/shopping-cart`
-        }, (response) => {
+      return totalPrice/100 
+     },
+    checkAll () {
+      let checkAll = false
+      if(this.selectedCartList.length === this.cartList.length){
+           checkAll = true
+      }
+      if(this.selectedCartList.length === 0) {
+           checkAll = false
+      }
+      return checkAll
+    }
+
+  },
+  methods: {
+    // 获取数据
+    fetchData () {
+      this.loading = true
+      ajax.getDataFromApi({
+        url: `/v1/shopping-cart`
+      }, (response) => {
         this.loading = false
-        this.cartList = response.data.body.list
-      },(error) => {
+        let data = response.data.body.list
+        data.map((val) => {
+          val.isSelected = false
+          val.itemTotalPrice = (val.price * 100 * val.amount) /100
         })
-      }
+        this.cartList = response.data.body.list
+      }, (error) => {
+      })
     },
+    // 选择商品
+    selectedCart (item) {
+      item.isSelected = !item.isSelected
+      item.isSelected ? this.selectedCartList.push(item) : utils.arrayDelete(this.selectedCartList,item)
+    },
+    // 增加数量
+    addCount (item) {
+      item.amount++
+      item.itemTotalPrice =  item.amount * item.price
+    },
+    // 减少数量
+    reduceCount (item) {
+      if (item.amount <= 1) {
+        item.amount = 1
+      } else {
+        item.amount--
+      }
+       item.itemTotalPrice =  item.amount * item.price
+    },
+    // 输入数量
+    inputCount (item) {
+      let re = /\D/
+      if (re.test(item.amount) || item.amount <= 1) {
+        item.amount = 1
+      }
+      item.itemTotalPrice =  item.amount * item.price
+    },
+    // 全选
+    selectedCartAll () {
+      let price = 0
+      this.isSelectedAll = !this.isSelectedAll
+      if (this.isSelectedAll)  {
+        this.cartList.forEach((val) => {
+          this.selectedCartList.push(val)
+        })
+      } else {
+        this.selectedCartList = []
+      }
+      this.cartList.map((val) => {
+        val.isSelected = this.isSelectedAll
+        return val
+      })
+    }
   }
-  require('../assets/scss/cart.scss')
+}
+require('../assets/scss/cart.scss')
 </script>

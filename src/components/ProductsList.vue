@@ -38,10 +38,10 @@
               <p>新品推荐</p>
             </li>
           </router-link>
-          <router-link to="cart">
+          <router-link to="user-center">
             <li class="nav-list">
               <i class="icon icon3"></i>
-              <p>我的订单</p>
+              <p>我的主页</p>
             </li>
           </router-link>
           <router-link to="cart">

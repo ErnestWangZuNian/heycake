@@ -38,10 +38,10 @@
               <p>新品推荐</p>
             </li>
           </router-link>
-          <router-link to="cart">
+          <router-link  to="user-center">
             <li class="nav-list">
               <i class="icon icon3"></i>
-              <p>我的订单</p>
+              <p>我的主页</p>
             </li>
           </router-link>
           <router-link to="cart">
@@ -56,29 +56,15 @@
       <!--产品列表-->
       <div class="list">
         <ul>
-          <a href="javascript:;">
-            <li class="cf">
+                <li class="cf" v-for="item in newGoods" @click="gotoDetail(item)">
               <div class="div-img">
-                <img src="../assets/img/list01.jpg">
+                <img :src="item.picture">
               </div>
 
               <div class='div-info'>
-                <p><span>Mango Mousse</span>鲜芒盛宴</p>
+                <p><span>{{item.english_name}}</span>{{item.name}}</p>
               </div>
             </li>
-          </a>
-
-          <a href="javascript:;">
-            <li class="cf">
-              <div class="div-img">
-                <img src="../assets/img/list01.jpg">
-              </div>
-
-              <div class='div-info'>
-                <p><span>Mango Mousse</span>鲜芒盛宴</p>
-              </div>
-            </li>
-          </a>
         </ul>
       </div>
 
@@ -104,18 +90,28 @@
     data () {
       return {
         loading: true,
+        newGoods: []
       }
     },
     methods: {
+      //  获取数据
       fetchData () {
         this.loading = true
         ajax.getDataFromApi({
-          url: '/v2/goods?recommend=true'
-        }, (data) => {
-        this.loading = false;
-      },(data) => {
-          this.loading = false;
+          url: '/v1/goods?recommend=true'
+        }, (response) => {
+        this.loading = false
+        let data = response.data.body.list
+        data.map(val => {
+          val.picture = `/attachment/${val.picture}`
+          return val
         })
+        this.newGoods = data
+      })
+      },
+      //跳转到详情页面
+      gotoDetail (item) {
+        location.href="/site/detail/${item.id}"
       }
     },
   }

@@ -31,7 +31,7 @@ $colorBolder: #d4965b;
 a {
     color:$colorBlock; text-decoration:none;cursor: pointer;
     &:link,&:visited, &:active{color: $colorBlock;}
-    &:hover, &:focus {color:$colorBolder; text-decoration:underline;outline:none;}
+    &:hover, &:focus {color:$colorBolder; text-decoration:none;outline:none;}
 }
 /*清理浮动*/
 .fl{
