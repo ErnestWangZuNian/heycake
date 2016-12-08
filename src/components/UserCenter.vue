@@ -17,22 +17,22 @@
 
         </div>
         <div class="theNav">
-          <div class="navBox">
+          <div class="navBox" @click="statusJump('at00')">
             <div class="nav-img img1"></div>
             <div class="nav-name">待支付</div>
           </div>
 
-          <div class="navBox">
+          <div class="navBox" @click="statusJump('wfs0')">
             <div class="nav-img img2"></div>
             <div class="nav-name">待发货</div>
           </div>
 
-          <div class="navBox">
+          <div class="navBox" @click="statusJump('wfd1')">
             <div class="nav-img img3"></div>
             <div class="nav-name">待收货</div>
           </div>
 
-          <div class="navBox">
+          <div class="navBox" @click="statusJump('wfc0')">
             <div class="nav-img img4"></div>
             <div class="nav-name">待评价</div>
           </div>
@@ -115,6 +115,10 @@
         localStorage.clear('userInfo')
         this.$store.dispatch('setUserInfo', userInfo)
         location.href = '/#/site/index'
+      },
+      //待支付、代发货、待收货、待评价 点击跳转
+      statusJump(status){
+        location.href = `/#/site/my-order/${status}`
       }
     }
   }

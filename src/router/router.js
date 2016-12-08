@@ -28,6 +28,7 @@ const routes = [
     { path: '/site/edit-address/:id', component: AddAddress },
     { path: '/site/detail/:id', component: Detail },
     { path: '/site/my-order', component: MyOrder },
+    { path: '/site/my-order/:status', component: MyOrder },
     { path: '/site/my-score', component: MyScore },
     { path: '/site/score-exchange', component: ScoreExchange },
     { path: '/site/my-comment', component: MyComment },

@@ -87,7 +87,7 @@
         userId:this.$store.state.user.userInfo.userId || '',      //当前用户ID
         userInfo:{},
         listData:[],
-        status:''
+        status: this.$route.params.status || ''
       }
     },
     methods: {
