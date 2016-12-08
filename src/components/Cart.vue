@@ -48,11 +48,11 @@
       Loading
     },
     mounted () {
-      this.fetchData()
+      // this.fetchData()
     },
     data () {
       return {
-        loading: true,
+        loading: false,
         cartList: [],
       }
     },

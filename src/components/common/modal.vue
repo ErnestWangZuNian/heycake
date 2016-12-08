@@ -33,6 +33,9 @@
       show: {
         type: Boolean,
         required: true
+      },
+      width: {
+        default: 400
       }
     },
     methods: {

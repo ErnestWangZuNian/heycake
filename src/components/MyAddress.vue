@@ -51,7 +51,7 @@
   import {Swipe, SwipeItem,MessageBox } from 'mint-ui'
   import  Loading from './Loading'
   import ajax from '../utils/ajax.js'
-  import modal from './common/modal'
+  import Modal from './common/Modal'
   export default {
     name: 'myAddress',
     components: {
@@ -59,7 +59,7 @@
       Swipe,
       SwipeItem,
       MessageBox,
-      modal
+      Modal
     },
     mounted () {
       this.isLoginMethod()

@@ -31,7 +31,7 @@
   </div>
 </template>
 <script>
-  import {Swipe, SwipeItem } from 'mint-ui'
+  import {Swipe, SwipeItem,MessageBox } from 'mint-ui'
   import  Loading from './Loading'
   import ajax from '../utils/ajax.js'
   export default {
@@ -40,6 +40,7 @@
       Loading,
       Swipe,
       SwipeItem,
+      MessageBox
     },
     mounted () {
       this.isLoginMethod()

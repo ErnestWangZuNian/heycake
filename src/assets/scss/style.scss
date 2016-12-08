@@ -300,6 +300,90 @@ body {
 .border-bottom {border-bottom: px2rem(1) solid #dddddd;}
 .border-left {border-left: px2rem(1) solid #dddddd;}
 .border-right {border-right: px2rem(1) solid #dddddd;}
+// 时间样式修改
+.time-modal{
+  .modal-content{
+    width: px2rem(600);
+  }
+  .time-header{
+   padding:0 px2rem(20) px2rem(20);
+   border-bottom: px2rem(2) solid $borderColor;
+   text-align: left;
+  }
+  .time-body{
+    @include grid();
+    padding: px2rem(30) 0 px2rem(60);
+    .grid-cell{
+      .title{
+        color: $subTitleColor,
+      }
+      .content{
+        height: px2rem(275);
+        overflow-y: scroll;
+        li{
+          padding: px2rem(18) 0;
+        }
+        li:hover{
+          background: #eee;
+        }
+        li.active{
+          background: #eee;
+        }
+      }
+    }
+    
+  }
+}
+// 门店选择样式修改
+.store-modal{
+  .modal-content{
+       width: px2rem(560);
+       padding: px2rem(20);
+  }
+  .store-header{
+    padding:0 px2rem(20) px2rem(20);
+    border-bottom: px2rem(2) solid $borderColor;
+    text-align: left;
+  }
+  .store-body{
+    height: px2rem(400);
+    overflow-y: scroll;
+    li{
+      margin-top: px2rem(20);
+      @include grid();
+      padding: px2rem(20) 0 px2rem(20) px2rem(10);
+      border: px2rem(2) solid $borderColor;
+      .selected{
+       flex: 0 0 px2rem(44);
+       margin: 0 px2rem(20) 0 0;
+      }
+      .selected1{
+        flex: 0 0 px2rem(44);
+        margin: 0 px2rem(20) 0 0;
+      }
+      .store-img{
+        flex: 0 0 px2rem(120);
+        height: px2rem(120);
+        margin-right: px2rem(10);
+        img{
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .store-test{
+         text-align: left;
+         font-size: px2rem(22);
+         height: px2rem(120);
+         .store-test-title{
+           color: $subTitleColor;
+         }
+         .store-test-subtitle{
+           margin-top: px2rem(5);
+         }
+      }
+    }
+  }
+}
 // 弹框样式修改
 .modal-mask {
     position: fixed;
