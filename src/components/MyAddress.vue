@@ -121,7 +121,7 @@
       },
       //编辑地址方法
       editMethod(id){
-        location.href=`/#/site/add-address/${id}`
+        location.href=`/#/site/edit-address/${id}`
       },
     },
   }

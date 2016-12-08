@@ -6,7 +6,7 @@
         <div class="card-bg">
           <div class="text">
             <p class="tcenter">当前积分</p>
-            <p class="tcenter font-60">2325</p>
+            <p class="tcenter font-60">{{scoreData}}</p>
           </div>
         </div>
       </div>
@@ -18,7 +18,7 @@
             <span class="c-888">{{item.publish_time}}</span>
           </div>
           <div class="grid-cell tright">
-            <template v-if='item.type=="购买" || item.type == "交易"'>
+            <template v-if='item.type=="购买" || item.type == "交易" || item.type == "增加"'>
               <span class="c-red font-36">+{{item.score}}</span>
             </template>
             <template v-else>
@@ -47,6 +47,7 @@
     },
     mounted () {
       this.isLoginMethod()
+      this.getScore()
     },
     data () {
       return {
@@ -55,6 +56,7 @@
         isLogin:this.$store.state.user.userInfo.isLogin  || '',   //是否登录
         userId:this.$store.state.user.userInfo.userId || '',      //当前用户ID
         listData:[],
+        scoreData:{},
       }
     },
     methods: {
@@ -66,7 +68,7 @@
         }else{
           MessageBox.alert('未登录').then(action => {
             location.href = '/#/site/login'
-        })
+          })
         }
       },
       //获取列表数据
@@ -75,10 +77,18 @@
           url:'/v1/score-detail',
         },(response)=>{
           this.listData = response.data.body.list;
-        //数据请求完成,改变loading值,关闭load，显示渲染后的页面
-        this.loading = false;
+          //数据请求完成,改变loading值,关闭load，显示渲染后的页面
+          this.loading = false;
         })
       },
+      //获取当前用户积分
+      getScore(){
+        ajax.getDataFromApi({
+          url:'/v1/user-center'
+        },(response)=>{
+          this.scoreData = response.data.body.list.total
+        })
+      }
     },
   }
   require('../assets/scss/myScore.scss')

@@ -129,12 +129,23 @@
       },
       //提交按钮
       saveMethod(){
-        ajax.postDataToApi({
-          url:'/v1/my-address',
-          data:this.formData,
-        },(response)=>{
-          location.href = '/#/site/my-address'
-        })
+        if(this.thisId){
+          //编辑地址，保存
+          ajax.putDataToApi({
+            url:`/v1/my-address/${this.formData.id}`,
+            body:this.formData
+          },(response)=>{
+            location.href = '/#/site/my-address'
+          })
+        }else{
+          //新增地址，保存
+          ajax.postDataToApi({
+            url:'/v1/my-address',
+            body:this.formData,
+          },(response)=>{
+            location.href = '/#/site/my-address'
+          })
+        }
       }
     },
   }
