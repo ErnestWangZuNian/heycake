@@ -1,5 +1,5 @@
 @import 'style.scss';
-.grid {
+.my-order-grid {
   @include grid();
   img{ width: px2rem(100); height: px2rem(100); margin-right: px2rem(20)}
   .u-w100{

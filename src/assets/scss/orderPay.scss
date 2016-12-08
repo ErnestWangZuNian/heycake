@@ -1,0 +1,18 @@
+@import 'style.scss';
+.order-info { font-size:px2rem(28); line-height: px2rem(60); color: #444444; padding: px2rem(20);}
+.pay-title{ height: px2rem(90); line-height: px2rem(90); font-size: px2rem(32); color: #444444;padding:0 px2rem(20); border-bottom: px2rem(2) solid #dddddd;}
+.order-pay-grid{
+  @include grid();
+  height: px2rem(170);
+  .grid-cell{
+    border-radius: px2rem(10); border:px2rem(1) solid #ddd; height: px2rem(90);
+    .pay-img{ margin: px2rem(20); font-size:px2rem(30);
+      img{ margin-right: px2rem(20)}
+    }
+  }
+  .border-red{ border-color:red; }
+  .grid-cell:first-child{ margin-right: px2rem(20); }
+}
+
+.pay-method{}
+.order-pay-btn{@include btn(400,72,#dd1f1f,#ffffff,32,8)}

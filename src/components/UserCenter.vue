@@ -51,7 +51,7 @@
         <router-link to='about'><div class="listBox"><span class="about"></span>关于HEYCAKE</div></router-link>
         <div class="cf"></div>
         <div class="loginout">
-          <button type="button">退出登录</button>
+          <button type="button" @click="loginOut()">退出登录</button>
         </div>
         <p class="find-help">
           如需帮助，欢迎致电：400-1139-499
@@ -88,10 +88,10 @@
     methods: {
       //判断是否登录
       isLoginMethod(){
-        if(this.isLogin){
+        if (this.isLogin) {
           this.loadShow = true
           this.getListData()
-        }else{
+        } else {
           MessageBox.alert('未登录').then(action => {
             location.href = '/#/site/login'
           })
@@ -100,13 +100,23 @@
       //获取列表数据
       getListData(){
         ajax.getDataFromApi({
-          url:'/v1/user-center'
-        },(response) => {
+          url: '/v1/user-center'
+        }, (response) => {
           this.userInfo = response.data.body.list
-          this.loading = false
-        })
+        this.loading = false
+      })
+      },
+      //退出登录
+      loginOut(){
+        let userInfo = {
+          isLogin: false,
+          userId: null
+        }
+        localStorage.clear('userInfo')
+        this.$store.dispatch('setUserInfo', userInfo)
+        location.href = '/#/site/index'
       }
-    },
+    }
   }
   require('../assets/scss/userCenter.scss')
 </script>

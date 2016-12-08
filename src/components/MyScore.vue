@@ -18,7 +18,7 @@
             <span class="c-888">{{item.publish_time}}</span>
           </div>
           <div class="grid-cell tright">
-            <template v-if='item.type=="购买" || item.type == "交易"'>
+            <template v-if='item.type=="购买" || item.type == "交易" || item.type == "增加"'>
               <span class="c-red font-36">+{{item.score}}</span>
             </template>
             <template v-else>

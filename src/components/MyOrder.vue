@@ -2,7 +2,7 @@
   <div>
     <loading v-if="loading && loadShow"></loading>
     <div class="container" v-if="!loading">
-      <div class="grid bgc-f5f5f5 height-90">
+      <div class="my-order-grid bgc-f5f5f5 height-90">
         <div class="grid-cell tright c-888">订单筛选：</div>
         <div class="grid-cell tleft c-333">
           <select class="selects" v-model='status' @change="getListData()">
@@ -21,13 +21,13 @@
 
       <template v-for='item in listData'>
         <div class="orders">
-          <div class="grid height-85 border-bottom">
+          <div class="my-order-grid height-85 border-bottom">
             <div class="grid-cell">下单时间：<span class="c-666">{{item.create_time}}</span></div>
             <div class="grid-cell tright u-1of4">{{item.status_code}}</div>
           </div>
 
           <ul>
-            <li class="grid height-150 border-bottom" v-for='child in item.items'>
+            <li class="my-order-grid height-150 border-bottom" v-for='child in item.items'>
               <div class="grid-cell u-w100">
                 <img :src="child.cover">
               </div>
@@ -45,7 +45,7 @@
               </div>
             </li>
           </ul>
-          <div class="grid height-85 border-bottom">
+          <div class="my-order-grid height-85 border-bottom">
             <div class="grid-cell c-888">
               支付金额：
               <span class="c-red">￥{{item.total_sum}}</span>
@@ -53,7 +53,7 @@
               <template v-else>（含运费：{{item.logistics_price}}元）</template>
             </div>
             <div class="grid-cell tright u-1of4">
-              <template v-if='item.status_code == "待支付" '><span class="btn-red">去支付</span></template>
+              <template v-if='item.status_code == "待支付" '><span class="btn-red" @click="goPay(item.id)">去支付</span></template>
             </div>
           </div>
         </div>
@@ -118,6 +118,10 @@
            //数据请求完成,改变loading值,关闭load，显示渲染后的页面
             this.loading = false;
           })
+      },
+      //去支付跳转
+      goPay(id){
+        location.href=`/#/site/order-pay/${id}`
       },
       //列表数据处理
       dataDispose(data){

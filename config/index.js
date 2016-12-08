@@ -37,6 +37,13 @@ module.exports = {
            '^/': ''
         }
       },
+      '/wx': {
+        target: "http://heycake.cn",
+        changeOrigin: true,
+        pathRewrite: {
+          '^/': ''
+        }
+      },
     },
       // CSS Sourcemaps off by default because relative paths are "buggy"
       // with this option, according to the CSS-Loader README
