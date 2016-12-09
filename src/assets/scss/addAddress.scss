@@ -8,8 +8,11 @@
   .sele { margin: px2rem(10) 0}
   .select-line {
     @include selects();
-    option{ font-size: px2rem(14)}
+    width: 100%;
+    option{ font-size: px2rem(14);
+    }
   };
+  .select-line:first-child { margin-bottom: px2rem(20)};
   .default{
     height:px2rem(88);
     border-bottom: px2rem(1) solid #dddddd;
