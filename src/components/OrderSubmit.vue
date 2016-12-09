@@ -71,13 +71,15 @@
         </div>
         <div class="label-message">
           <div class="label-list">
-            <label for="">自提人</label> <input class="inputs" type="text">
+            <label>自提人</label> <input class="inputs" type="text" v-model='formData.name' @focus="focusMethod('name')" @blur="blurMethod('name')">
           </div>
+          <div class='err-class tright'v-if="validator.name.errIsShow">{{validator.name.errText}}</div>
           <div class="label-list">
-            <label for="">联系电话</label> <input class="inputs" type="text">
+            <label>联系电话</label> <input class="inputs" type="text" v-model='formData.telphone' @focus="focusMethod('telphone')" @blur="blurMethod('telphone')">
           </div>
+          <div class='err-class tright' v-if="validator.telphone.errIsShow">{{validator.telphone.errText}}</div>
           <div class="label-list">
-            <label for="">留言</label> <input class="inputs" type="text">
+            <label>留言</label> <input class="inputs" type="text" v-model='formData.message'>
           </div>
         </div>
       </div>
@@ -157,8 +159,8 @@
         v-on:getTime="getTime">
         </select-time>
       <!--门店选择-->
-        <select-store 
-        :store-show="store.storeShow" 
+        <select-store
+        :store-show="store.storeShow"
         :store-list="store.storeList"
         v-on:close="storeClose"
         v-on:selectStore="selectStore"
@@ -208,6 +210,23 @@
         userInfo: {
           defalutAddress: {},
           address: []
+        },
+        formData:{
+          name:'',
+          telphone:'',
+          message:''
+        },
+        validator:{
+          name:{
+            errText:'姓名不能为空',
+            errIsShow: false,
+            isFlag: false
+          },
+          telphone:{
+            errText:'手机号码不能为空',
+            errIsShow: false,
+            isFlag: false
+          },
         }
       }
     },
@@ -301,7 +320,57 @@
       selectStore (item) {
        this.store.selectedStore = item
        this.storeClose()
-      }
+      },
+      //验证方法
+      //验证focus
+      focusMethod(currentObj){
+        switch (currentObj){
+          case 'name':
+            this.validator.name.errIsShow = false
+            break;
+          case 'telphone':
+            this.validator.telphone.errIsShow = false
+            break;
+        }
+      },
+      blurMethod(currentObj){
+        switch (currentObj){
+          case 'name':
+            let formDataName = this.formData.name
+            let validatorName = this.validator.name
+            let nameRe = /^\w{4,16}$/
+
+            if(formDataName === ''){
+              validatorName.errText = '姓名不能为空'
+              validatorName.errIsShow = true
+              validatorName.isFlag = false
+            }else if(!nameRe.test(formDataName)){
+              validatorName.errText = '请输入4到16为姓名'
+              validatorName.errIsShow = true
+              validatorName.isFlag = false
+            }else{
+              validatorName.isFlag = true
+            }
+            break;
+          case 'telphone':
+            let telRe = /^1[3|4|5|8]\d{9}$/
+            let formDataTel = this.formData.telphone
+            let validatorTel = this.validator.telphone
+
+            if(formDataTel === ''){
+              validatorTel.errText = '手机号码不能为空'
+              validatorTel.errIsShow = true
+              validatorTel.isFlag = false
+            }else if(!telRe.test(formDataTel)){
+              validatorTel.errText = '请输入正确的手机号码'
+              validatorTel.errIsShow = true
+              validatorTel.isFlag = false
+            }else{
+              validatorTel.isFlag = true
+            }
+            break;
+        }
+      },
      },
   }
   require('../assets/scss/orderSubmit.scss')
