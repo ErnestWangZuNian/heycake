@@ -11,7 +11,7 @@
        height: px2rem(196);
        background: url(../img/images.png) repeat;
        background-size: px2rem(778) px2rem(663);
-       background-position: 0 px2rem(194);
+       background-position: 0 px2rem(196);
    }
 }
 .login-content{
@@ -34,6 +34,7 @@
    }
    input {
        height: 100%;
+       width: px2rem(440);
        font-size: px2rem(24);
        line-height: px2rem(32);
        color: #a9a9a9;
@@ -47,7 +48,7 @@
    .password{
        label{
           background: url(../img/login_lock_icon.png) no-repeat;
-          background-size: px2rem(22) px2rem(32);          
+          background-size: px2rem(22) px2rem(32);
        }
    }
    .login-tip {

@@ -2,7 +2,7 @@
   <div>
     <loading v-if="loading"></loading>
     <div class="container" v-if="!loading">
-      <div class="about">
+      <div class="about-us">
         <h1>HEY CAKE品牌简介</h1>
         <p>HEY CAKE是重庆睿时餐饮公司旗下的连锁品牌，是重庆首家单品精品咖啡和重庆“裸”蛋糕领导品牌，秉承着“我们源自天然，只生产健康”的品牌理念，精选全球顶级咖啡豆，挑选优质供应商，从种植、生产、烘焙多个环节保障咖啡正宗、原香的品质，致力打造品质一流的现磨精品咖啡店。根据现代白领和商务人士对时尚、格调生活的追求来提供便捷时尚健康的消费体验。在蛋糕、甜点、面包等产品领域，我们甄选世界各地的优质原料，坚持“健康、品质、有机”的理念，保障所有产品无添加、无人工香精、纯手工制作、纯动物奶油。</p>
         <p>两年以来，Hey cake用高速的品牌发展势头来回馈消费者，目前在重庆核心商务区和社区已有30多家门店，覆盖主城九区，为更多的消费者提供安全放心的优质产品。</p>
@@ -24,8 +24,9 @@
   import {Swipe, SwipeItem,MessageBox } from 'mint-ui'
   import  Loading from './Loading'
   import ajax from '../utils/ajax.js'
+  import utils from '../utils/public'
   export default {
-    name: 'MyScore',
+    name: 'About',
     components: {
       Loading,
       Swipe,

@@ -296,7 +296,18 @@ body {
   height: px2rem(20);
 }
 
+/*错误样式*/
 .err-class { height: px2rem(32); line-height: px2rem(32); color: red; font-size: px2rem(24);}
+/*Toast提示样式*/
+.mint-toast { width: 100%;}
+.mint-toast-text { font-size: px2rem(24); display: block;}
+/*弹窗样式*/
+.mint-msgbox {}
+.mint-msgbox-content { padding: px2rem(30) px2rem(20); padding-bottom: px2rem(50)}
+.mint-msgbox-title { font-size: px2rem(26)}
+.mint-msgbox-message { font-size: px2rem(24)}
+.mint-msgbox-btns { height:px2rem(60); line-height: px2rem(60);}
+.mint-msgbox-btn { font-size: px2rem(24)}
 
 //border
 .border{ border: px2rem(1) solid #dddddd;}
