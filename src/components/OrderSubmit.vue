@@ -274,8 +274,9 @@
            })
            this.store.storeList = data
            this.store.selectedStore = data[0]
-
-         })
+         });
+         // 获取购物车信息
+         console.log(this.$route.params)
       },
       // 打开时间选择
       openTimeShow () {

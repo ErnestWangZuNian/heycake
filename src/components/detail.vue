@@ -322,6 +322,7 @@ export default {
                 this.originalSpecList.forEach((val) => {
                     if (val.value.toString() === selectSpec.toString()) {
                         this.selectedSpec = JSON.parse(JSON.stringify(val))
+                        this.selectedSpec.selectedSpec = val.value
                     }
                 })
                this.rangeStatus = true
@@ -379,7 +380,7 @@ export default {
         confirmPurchase (){
           let flag = this.judge()
           if ( flag) {
-            location.href = '/#/site/order-submit'
+            location.href = `/#/site/order-submit/${this.selectedSpec.id}`
           }
         },
         // 确认立即兑换

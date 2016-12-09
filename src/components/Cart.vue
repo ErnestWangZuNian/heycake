@@ -160,14 +160,8 @@ export default {
         body: {id: id}
       },(response) => {
         localStorage.sett
-        location.href = '/#/site/order-submit'
+        location.href = `/#/site/order-submit/${id}`
       })
-      // this.$http.get('/v1/shopping-cart/',{ data: {id: id} }).then((response) => {
-      //     // success callback
-      //     console.log('wanggg')
-      // }, (response) => {
-      //     // error callback
-      // });
     }
   }
 }

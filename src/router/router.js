@@ -24,6 +24,7 @@ const routes = [
     { path: '/site/user-center', component: UserCenter },
     { path: '/site/cart', component: Cart },
     { path: '/site/order-submit', component: OrderSubmit },
+    { path: '/site/order-submit/:id', component: OrderSubmit },
     { path: '/site/add-address', component: AddAddress },
     { path: '/site/edit-address/:id', component: AddAddress },
     { path: '/site/detail/:id', component: Detail },
