@@ -44,7 +44,10 @@ ul.theCart{
   .total{ margin: 0 px2rem(20); font-size: px2rem(24);
     span{ color: #b00002;}
   };
-  button{
-    @include btn(160,64,#b00002,#ffffff,28,6);
+  .btn-gray{
+     @include btn(160,64,$colorLintGray,#ffffff,28,6)
+  }
+  .btn-red{
+      @include btn(160,64,#b00002,#ffffff,28,6)
   }
 }

@@ -1,6 +1,7 @@
 @import 'style.scss';
 .grid {
   @include grid();
+  cursor: pointer;
   .u-w100{
     flex: 0 0 px2rem(100);
     .item-cart{background: url(../img/images.png) no-repeat px2rem(-740) px2rem(-245);background-size: px2rem(778) px2rem(683); width: px2rem(35); height: px2rem(35); margin: px2rem(10) 0 0 px2rem(20)}

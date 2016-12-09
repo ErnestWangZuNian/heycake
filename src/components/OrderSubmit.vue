@@ -216,19 +216,20 @@
       fetchData () {
         this.loading = true
         // 获取预约时间
-        ajax.getDataFromApi({
-          url: '/v1/appointment-time'
-        },(response) => {
-          this.loading = false
-          this.appointTime.date = response.data.body.date
-          this.appointTime.time = response.data.body.time
-        })
+        // ajax.getDataFromApi({
+        //   url: '/v1/appointment-time'
+        // },(response) => {
+        //   this.loading = false
+        //   this.appointTime.date = response.data.body.date
+        //   this.appointTime.time = response.data.body.time
+        // })
          // 获取我的地址
          ajax.getDataFromApi({
            url: '/v1/my-address',
          },(response) => {
            let addressList = response.data.body.list
            let flag = false
+           this.loading = false
            this.userInfo.address = addressList
            if( addressList.length > 0) {
             addressList.forEach((val) => {
@@ -238,7 +239,6 @@
                }
             })
             if(!flag){
-              console.log('wamnhggg')
               this.userInfo.defaultAddress = addressList[0]
             }
            }

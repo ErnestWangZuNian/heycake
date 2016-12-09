@@ -31,6 +31,7 @@ const routes = [
     { path: '/site/my-order/:status', component: MyOrder },
     { path: '/site/my-score', component: MyScore },
     { path: '/site/score-exchange', component: ScoreExchange },
+    { path: '/site/score-exchange/:detail', component: ScoreExchange },
     { path: '/site/my-comment', component: MyComment },
     { path: '/site/my-address', component: MyAddress },
     { path: '/site/about', component: About },

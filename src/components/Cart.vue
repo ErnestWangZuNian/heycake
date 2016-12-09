@@ -36,7 +36,7 @@
           <p class="total">合计：<span>{{price | price}}</span></p>
         </div>
         <div class="fl">
-          <button type="button">结算</button>
+          <button type="submit"  :class="[isSettment ? 'btn-red' :'btn-gray']" :disabled="!isSettment" @click="settlement">结算</button>
         </div>
         <div class="cf"></div>
       </div>
@@ -82,8 +82,12 @@ export default {
            checkAll = false
       }
       return checkAll
+    },
+    isSettment () {
+      let flag = false
+      this.selectedCartList.length <= 0 ? flag = false : flag = true
+      return flag
     }
-
   },
   methods: {
     // 获取数据
@@ -144,6 +148,26 @@ export default {
         val.isSelected = this.isSelectedAll
         return val
       })
+    },
+    //  结算
+    settlement () {
+      let id= []
+      this.selectedCartList.forEach((val) => {
+        id.push(val.id)
+      })
+      ajax.postDataToApi({
+        url: `/v1/shopping-cart/settlements`,
+        body: {id: id}
+      },(response) => {
+        localStorage.sett
+        location.href = '/#/site/order-submit'
+      })
+      // this.$http.get('/v1/shopping-cart/',{ data: {id: id} }).then((response) => {
+      //     // success callback
+      //     console.log('wanggg')
+      // }, (response) => {
+      //     // error callback
+      // });
     }
   }
 }

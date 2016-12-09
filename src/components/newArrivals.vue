@@ -111,7 +111,7 @@
       },
       //跳转到详情页面
       gotoDetail (item) {
-        location.href="/site/detail/${item.id}"
+        location.href=`/#/site/detail/${item.id}`
       }
     },
   }

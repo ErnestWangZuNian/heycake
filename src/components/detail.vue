@@ -14,34 +14,35 @@
             <div class="grid price-score">
                 <div class="grid-cell">
                     <p>{{goodInfo.name}}</p>
-                    <p class="c-red mt20" v-if="!priceStatus">{{goodInfo.price | priceRange}}</p>
-                    <p class="c-red mt20" v-if="priceStatus">{{goodInfo.price | price}}</p>
+                    <p class="c-red mt20" v-if="!rangeStatus">{{goodInfo.price | priceRange}}</p>
+                    <p class="c-red mt20" v-if="rangeStatus">{{goodInfo.price | price}}</p>
                 </div>
                 <div class="grid-cell score" v-if="goodInfo.score > 0">
-                    <p> {{goodInfo.score}}积分 </p>
-                    <button>兑换</button>
+                    <p v-if="!rangeStatus"> {{goodInfo.score}}积分 </p>
+                    <p v-if="rangeStatus"> {{selectedSpec.score}}积分 </p>
+                    <button @click="scorePurchage">兑换</button>
                 </div>
             </div>
             <div class="splitter"></div>
 
             <div class="grid">
                 <div class="grid-cell">运费</div>
-                <div class="grid-cell tright c-888">￥10.00</div>
+                <div class="grid-cell tright c-888">{{freight}}</div>
             </div>
 
             <div class="splitter"></div>
 
-            <div class="grid">
+            <!--<div class="grid">
                 <div class="grid-cell">积分兑换</div>
                 <div class="grid-cell tright c-888">29999积分</div>
                 <div class="grid-cell u-w30">
                     <div class="item-after"></div>
                 </div>
-            </div>
+            </div>-->
 
             <div class="splitter"></div>
 
-            <div class="grid">
+            <div class="grid" @click="openSpec">
                 <div class="grid-cell">规格</div>
                 <div class="grid-cell u-w30">
                     <div class="item-after"></div>
@@ -64,7 +65,7 @@
                     <router-link to='/site/cart'>
                         <div class="grid-cell u-w100">
                             <div class="item-cart position-rel">
-                                <div class="position-abs nums">1</div>
+                                <div class="position-abs nums">{{cartCount}}</div>
                             </div>
                             <div class="tcenter c-aaa">购物车</div>
                         </div>
@@ -84,8 +85,8 @@
                         <div class="grid-cell good-info">
                             <p class="nane">{{goodInfo.name}}</p>
                             <p class="attrlist">
-                                <span v-if="!priceStatus"> {{goodInfo.price | priceRange}}</span>
-                                <span v-if="priceStatus"> {{goodInfo.price | price}}</span>
+                                <span v-if="!rangeStatus"> {{goodInfo.price | priceRange}}</span>
+                                <span v-if="rangeStatus"> {{goodInfo.price | price}}</span>
                             </p>
                         </div>
                         <div class="grid-cell close-select" @click="closeSpec">
@@ -118,28 +119,26 @@
                     <div class="confirm-spec" v-if="specStatus.specWay==='purchase'"  :disabled="selectedSpec.stock <= 0" :class="{'disabled-spec': selectedSpec.stock <= 0}" @click="confirmPurchase">
                         去结算
                     </div>
+                    <div class="confirm-spec" v-if="specStatus.specWay==='scoreChange'"  :disabled="selectedSpec.stock <= 0" :class="{'disabled-spec': selectedSpec.stock <= 0}" @click="confirmScoreChange">
+                        立即兑换
+                    </div>
                 </div>
             </transition>
         </div>
         <!--未登录提示弹框-->
-        <modal :show='tip.errLogin'  v-on:close='errTipClose' >
+        <modal :show='errTip.isShow'  v-on:close='errTipClose' >
             <div slot='body'>
-                <div class="modal-error-tip" @click="errLoginTip">
+                <div class="modal-error-tip" @click="errLoginTip" v-if="errTip.login">
                     <div class="modal-img">
-                        <img src="../assets/img/modal_img.png" alt="">
+                        <img :src="errTip.url" alt="">
                     </div>
-                    <div class="modal-test">请先登录！</div>
+                    <div class="modal-test">{{errTip.test}}</div>
                 </div>
-            </div>
-        </modal>
-        <!--未选择规格提示弹框-->
-         <modal :show='tip.errSpec'  v-on:close='errSpecTip'>
-            <div slot='body'>
-                <div class="modal-error-tip">
+                  <div class="modal-error-tip" @click="errLoginTip">
                     <div class="modal-img">
-                        <img src="../assets/img/modal_img.png" alt="">
+                        <img :src="errTip.url" alt="">
                     </div>
-                    <div class="modal-test">请先添加规格！</div>
+                    <div class="modal-test">{{errTip.test}}</div>
                 </div>
             </div>
         </modal>
@@ -169,10 +168,12 @@ export default {
     data() {
         return {
             loading: false,
-            tip: {
-              errLogin: false,
-              errSpec: false
-            },
+            errTip: {
+                  isShow: false,
+                  login: false,
+                  url: '../assets/img/modal_img.png',
+                  text: '请先登录!'
+              },
             specStatus: {
              isSelectSpec: false,
              specWay: 'cart',
@@ -181,13 +182,16 @@ export default {
                 isShow: false,
                 content: ''
             },
-            priceStatus: false,
+            rangeStatus: false,
             goodCount: 1,
+            scoreInfo: {},
             spec: [],
             originalSpecList: [],
             selectedSpec: {},
+            freight: '',
             banner: [],
-            goodInfo: {}
+            goodInfo: {},
+            cartCount: 0
         }
     },
     methods: {
@@ -210,10 +214,29 @@ export default {
             }, (response) => {
                 this.goodDetailShow.content = response.data
                 this.goodDetailShow.isShow = true
+            });
+            //  获取商品运费
+            ajax.getDataFromApi({
+                url: `/v1/freight-details`
+            },(response) => {
+              let freight = response.data.body
+              freight === '' ? freight="包邮" : ''
+              this.freight = freight
+            });
+            //  获取购物车数量
+            this.getcartCount()
+        },
+        // 获取商品数量
+        getcartCount (callback) {
+          ajax.getDataFromApi({
+                url: `/v1/shopping-cart`
+            },(response) => {
+               this.cartCount = response.data.body.list.length
+               callback && callback()
             })
         },
         // 处理页面数据 ==> 组织规格的数据结构
-        modifyData(data) {
+        modifyData (data) {
             let specifications = data.specifications
             let specList = data.specification_objects
             this.originalSpecList = data.specification_objects
@@ -301,11 +324,15 @@ export default {
                         this.selectedSpec = JSON.parse(JSON.stringify(val))
                     }
                 })
-               this.priceStatus = true
+               this.rangeStatus = true
                this.goodInfo.price = this.selectedSpec.price
             }
         },
-        //  点击加入购物车
+        //  点击规格打开规格选择
+        openSpec () {
+         this.specStatus.isSelectSpec = true
+        },
+       //  点击加入购物车
         joinCart() {
             this.specStatus.isSelectSpec = true
             this.specStatus.specWay = 'cart'
@@ -315,20 +342,26 @@ export default {
             this.specStatus.isSelectSpec = true
             this.specStatus.specWay = 'purchase'
         },
+        // 点击积分兑换
+        scorePurchage () {
+            this.specStatus.isSelectSpec = true
+            this.specStatus.specWay = 'scoreChange'
+            //  获取用户积分信息
+            ajax.getDataFromApi({
+              url: '/v1/user-center'
+            },(response) => {
+              this.scoreInfo = response.data.body.list
+            })
+        },
         //   关闭规格选择弹框
-        closeSpec() {
+        closeSpec () {
             this.specStatus.isSelectSpec = false
         },
         //确认加入购物车
-        confirmJoinCart(goodId,specId,goodCount) {
-            if (!this.$store.state.user.userInfo.isLogin) {
-                this.specStatus.isSelectSpec = false
-                this.tip.errLogin = true
-            } else if(utils.isEmptyObject(this.selectedSpec)) {
-                this.specStatus.isSelectSpec = false
-                this.tip.errSpec = true
-            }
-            ajax.postDataToApi({
+        confirmJoinCart (goodId,specId,goodCount) {
+            let flag = this.judge()
+            if(flag) {
+              ajax.postDataToApi({
                url: '/v1/shopping-cart',
                body: {
                  goods_id: goodId,
@@ -336,23 +369,51 @@ export default {
                  amount: goodCount
                }
               },(response) => {
-                this.specStatus.isSelectSpec = false
+                this.getcartCount(() => {
+                 this.specStatus.isSelectSpec = false
+                })
             })
+        }
         },
         //  确认去结算
-        confirmPurchase(){
+        confirmPurchase (){
+          let flag = this.judge()
+          if ( flag) {
+            location.href = '/#/site/order-submit'
+          }
+        },
+        // 确认立即兑换
+        confirmScoreChange () {
+          let flag = this.judge()
+          let scoreFlag = false
+          console.log(this.scoreInfo.total)
+          if (this.selectedSpec.score > this.scoreInfo.total)           {
+             this.errTip.isShow = true
+             this.errTip.test = "您的积分不足！"
+          }
+          if (flag && scoreFlag ) {
+              location.href = '/#/site/order-submit'
+          }
+        },
+        // 登录和规格判断
+        judge () {
+          let flag = false
           if (!this.$store.state.user.userInfo.isLogin) {
                 this.specStatus.isSelectSpec = false,
-                this.tip.errLogin = true
+                this.errTip.isShow = true
+                this.errTip.test = "请先登录！"
           } else if(utils.isEmptyObject(this.selectedSpec)) {
                 this.specStatus.isSelectSpec = false,
-                this.tip.errSpec = true
+                this.errTip.isShow = true
+                this.errTip.test = "请先选择规格！"
+          } else {
+                flag = true
           }
-          location.href = '/#/site/order-submit'
+          return flag
         },
         //  登录错误提示
         errLoginTip () {
-         this.tip.errLogin = false,
+         this.errTip.isShow = false,
          location.href = '/#/site/login'
         },
         errSpecTip () {
@@ -360,7 +421,7 @@ export default {
         },
         //  关闭错误提示框
         errTipClose () {
-          this.tip.errLogin = false
+          this.errTip.isShow = false
         },
         // 增加数量
         addCount () {
