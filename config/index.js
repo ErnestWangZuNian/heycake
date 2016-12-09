@@ -23,16 +23,16 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/v1': {
-        // target: "http://heycake.cn",
-        target: "http://192.168.1.150:1382",
+        target: "http://heycake.cn",
+        // target: "http://192.168.1.150:1382",
         changeOrigin: true,
         pathRewrite: {
            '^/': ''
         }
       },
       '/area': {
-        // target: "http://heycake.cn",
-        target: "http://192.168.1.150:1382",
+        target: "http://heycake.cn",
+        // target: "http://192.168.1.150:1382",
         changeOrigin: true,
         pathRewrite: {
            '^/': ''

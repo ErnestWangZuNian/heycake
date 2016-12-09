@@ -98,6 +98,7 @@
           url:`/v1/my-address/${id}/edit`
         },(response)=>{
           this.formData = response.data.body
+          this.formData.default = 1
         })
       },
       //获取City数据
