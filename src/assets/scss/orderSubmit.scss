@@ -185,6 +185,11 @@
     display: inline-block;
     margin-right: px2rem(20);
   };
+  .selected1{
+     display: inline-block;
+     margin-right: px2rem(20);
+    }
+      
   .text{
     position: relative;
     top:px2rem(-10);
@@ -201,10 +206,11 @@
 
 //提交订单
 .order-submit{
-  padding: 0 px2rem(20);
+  padding: 0 0 0 px2rem(20) ;
   background-color: #eeeeee;
   height: px2rem(100);
-  position: relative;
+  position: fixed;
+  bottom: 0;
   line-height: px2rem(100);
   p{
     display: inline-block;
@@ -215,9 +221,8 @@
     }
   }
   .btn{
+    margin-left:px2rem(174);
     @include btn(220,100,#cd0c0c,#ffffff,28,0);
-    position: absolute;
-    right: 0;
   }
 }
 

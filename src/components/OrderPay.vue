@@ -6,7 +6,7 @@
         <div class="order-info">
           <p>订单编号：<span class="c-red">{{listData.order_number}}</span></p>
           <p>支付方式：<span>在线支付</span></p>
-          <p>支付金额：<span class="c-red">￥{{listData.pay_money}}</span></p>
+          <p>支付金额：<span class="c-red">{{listData.pay_money | price}}</span></p>
         </div>
         <div class="splitter"></div>
         <div class="pay-title">支付选择：</div>

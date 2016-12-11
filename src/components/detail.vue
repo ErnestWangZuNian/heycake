@@ -84,10 +84,14 @@
                         </div>
                         <div class="grid-cell good-info">
                             <p class="nane">{{goodInfo.name}}</p>
-                            <p class="attrlist">
+                            <p class="attrlist" v-if="specStatus.specWay!=='scoreChange'">
                                 <span v-if="!rangeStatus"> {{goodInfo.price | priceRange}}</span>
                                 <span v-if="rangeStatus"> {{goodInfo.price | price}}</span>
                             </p>
+                             <p class="attrlist" v-if="specStatus.specWay==='scoreChange'">
+                                <span v-if="!rangeStatus">{{goodInfo.score}}积分可兑换</span>
+                                <span v-if="rangeStatus">{{selectedSpec.score}}积分可兑换</span>
+                             </p>
                         </div>
                         <div class="grid-cell close-select" @click="closeSpec">
                             <span></span>
@@ -322,7 +326,6 @@ export default {
                 this.originalSpecList.forEach((val) => {
                     if (val.value.toString() === selectSpec.toString()) {
                         this.selectedSpec = JSON.parse(JSON.stringify(val))
-                        this.selectedSpec.selectedSpec = val.value
                     }
                 })
                this.rangeStatus = true
@@ -380,20 +383,27 @@ export default {
         confirmPurchase (){
           let flag = this.judge()
           if ( flag) {
-            location.href = `/#/site/order-submit/${this.selectedSpec.id}`
+            localStorage.setItem('buyWay', 'purchase')
+            localStorage.setItem('purchaseGood', JSON.stringify(this.selectedSpec))
+            localStorage.setItem('count',this.goodCount)
+            location.href = `/#/site/order-submit/${this.goodInfo.id}`
           }
         },
         // 确认立即兑换
         confirmScoreChange () {
           let flag = this.judge()
           let scoreFlag = false
-          console.log(this.scoreInfo.total)
           if (this.selectedSpec.score > this.scoreInfo.total)           {
              this.errTip.isShow = true
              this.errTip.test = "您的积分不足！"
+          } else{
+              scoreFlag = true
           }
           if (flag && scoreFlag ) {
-              location.href = '/#/site/order-submit'
+              localStorage.setItem('buyWay', 'score')
+              localStorage.setItem('purchaseGood', JSON.stringify(this.selectedSpec))
+              localStorage.setItem('count',this.goodCount)
+              location.href = `/#/site/order-submit/${this.goodInfo.id}`
           }
         },
         // 登录和规格判断

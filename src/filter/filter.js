@@ -26,3 +26,10 @@ Vue.filter('priceRange', (value) => {
     }
   }
 })
+// 针对规格数组显示进行处理
+Vue.filter('spec', (value) => {
+  if (value !== undefined) {
+    let val = value.join('-')
+    return val
+  }
+})

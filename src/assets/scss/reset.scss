@@ -78,6 +78,9 @@ a {
   font-family: "microsoft yahei";
   display: inline-block;
 }
+.inputs {
+    @include inputs
+}
 
 // select框
 @mixin selects($width:290,$height: 70,$bodercolor:#ddd,$font:24,$radius:6){

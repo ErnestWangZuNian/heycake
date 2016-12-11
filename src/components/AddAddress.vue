@@ -230,7 +230,7 @@
           case 'name':
             let formDataName = this.formData.name
             let validatorName = this.validator.name
-            let nameRe = /^\w{4,16}$/
+            let nameRe =  /^[a-zA-Z\u4e00-\u9fa5]{2,16}$/
 
             if(formDataName === ''){
               validatorName.errText = '姓名不能为空'

@@ -10,13 +10,13 @@
                <div class="grid-cell">
                  <P class="title">预约日期</p>
                  <ul class="content">
-                    <li v-for="item in date" @click="getDate(item)">{{item}}</li>
+                    <li class="list" :class="[selectedDate===item ? 'active' : 'list']" v-for="item in date" @click="getDate(item)">{{item}}</li>
                  </ul>
              </div>
              <div class="grid-cell">
                  <P class="title">预约时间</p>
                  <ul class="content">
-                     <li v-for="item in time" @click="getTime(item)">{{item}}</li>
+                     <li class="list" :class="[selectedTime===item ? 'active' : 'list']" v-for="item in time" @click="getTime(item)">{{item}}</li>
                  </ul>
                  
              </div>
@@ -37,6 +37,12 @@
             },
             date: {
                 type: Array
+            },
+            selectedDate: {
+                type: String
+            },
+            selectedTime: {
+                type: String
             },
             time: {
                 type: Array

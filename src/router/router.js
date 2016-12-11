@@ -15,6 +15,7 @@ const MyAddress = resolve => require(['../components/MyAddress'], resolve)
 const About = resolve => require(['../components/About'], resolve)
 const OrderPay = resolve => require(['../components/OrderPay'], resolve)
 const Loading = resolve => require(['../components/Loading'], resolve)
+const ScoreSuccess = resolve => require(['../components/ScoreSuccess'], resolve)
 const Login = resolve => require(['../components/Login'], resolve)
 const routes = [
     { path: '', redirect: '/site/index' },
@@ -36,8 +37,11 @@ const routes = [
     { path: '/site/my-comment', component: MyComment },
     { path: '/site/my-address', component: MyAddress },
     { path: '/site/about', component: About },
+    { path: '/site/order-pay/', component: OrderPay },
     { path: '/site/order-pay/:id', component: OrderPay },
     { path: '/site/loading', component: Loading },
+    { path: '/site/score-success', component: ScoreSuccess },
+    { path: '/site/score-success/:id', component: ScoreSuccess },
     { path: '/site/login', component: Login }
 ]
 export default routes
