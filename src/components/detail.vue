@@ -239,6 +239,7 @@ export default {
                callback && callback()
             })
         },
+        
         // 处理页面数据 ==> 组织规格的数据结构
         modifyData (data) {
             let specifications = data.specifications
