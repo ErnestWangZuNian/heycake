@@ -17,7 +17,7 @@
             <div class="swiper">
                 <swipe :auto="4000">
                     <swipe-item v-for="item in banner">
-                        <img :src="item" v-lazy="item.picture" alt="轮播">
+                        <img :src="item" alt="轮播">
                     </swipe-item>
                 </swipe>
             </div>
@@ -66,7 +66,7 @@
     </div>
 </template>
 <script>
-     import { Swipe, SwipeItem,Lazyload, Loadmore  } from 'mint-ui'
+     import { Swipe, SwipeItem,Loadmore  } from 'mint-ui'
      import Loading from './Loading'
      import ajax from '../utils/ajax'
      import utils from '../utils/public'
@@ -77,7 +77,6 @@
              Swipe,
              SwipeItem,
              Loading,
-             Lazyload,
              Loadmore 
          },
         computed: {
@@ -134,11 +133,6 @@
                 //  获取蛋糕热卖商品列表
                 this.getHotCakeList()
              },
-         // 下拉刷新
-            loadTop () {
-                console.log('wangg')
-                // this.getHotCakeList(2)
-            },
          // 点击列表去到详情
             gotoDetail: function (id) {
                 location.href=`/#/site/detail/${id}`

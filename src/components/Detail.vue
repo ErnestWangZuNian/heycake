@@ -51,6 +51,7 @@
 
             <div class="splitter"></div>
 
+
             <div class="grid">
                 <div class="grid-cell">查看用户评价<span class="c-888">(2564条评价)</span></div>
                 <div class="grid-cell u-w30">
@@ -117,15 +118,15 @@
                         </div>
                         <div class="tip fl">（剩余{{selectedSpec.stock}}个）</div>
                     </div>
-                    <button class="confirm-spec"  :disabled="selectedSpec.stock <= 0" v-if="specStatus.specWay==='cart'" @click="confirmJoinCart(goodInfo.id,selectedSpec.id,goodCount)" :class="{'disabled-spec': selectedSpec.stock <= 0}">
+                    <button class="confirm-spec" type="submit" :disabled="selectedSpec.stock <= 0" v-if="specStatus.specWay==='cart'" @click="confirmJoinCart(goodInfo.id,selectedSpec.id,goodCount)" :class="{'disabled-spec': selectedSpec.stock <= 0}">
                         加入购物车
                     </button>
-                    <div class="confirm-spec" v-if="specStatus.specWay==='purchase'"  :disabled="selectedSpec.stock <= 0" :class="{'disabled-spec': selectedSpec.stock <= 0}" @click="confirmPurchase">
+                    <button class="confirm-spec"  type="submit" v-if="specStatus.specWay==='purchase'"  :disabled="selectedSpec.stock <= 0" :class="{'disabled-spec': selectedSpec.stock <= 0}" @click="confirmPurchase">
                         去结算
-                    </div>
-                    <div class="confirm-spec" v-if="specStatus.specWay==='scoreChange'"  :disabled="selectedSpec.stock <= 0" :class="{'disabled-spec': selectedSpec.stock <= 0}" @click="confirmScoreChange">
+                    </button>
+                     <button class="confirm-spec" type="submit" v-if="specStatus.specWay==='scoreChange'" :disabled="selectedSpec.stock <= 0" :class="{'disabled-spec': selectedSpec.stock <= 0}" @click="confirmScoreChange">
                         立即兑换
-                    </div>
+                    </button>
                 </div>
             </transition>
         </div>

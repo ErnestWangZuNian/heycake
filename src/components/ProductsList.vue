@@ -4,19 +4,12 @@
     <div class="container" v-if="!loading">
       <!--轮播图-->
       <div class="swiper">
-        <swipe :auto="4000">
+        <swipe :auto="4000" v-for="item in banner">
           <swipe-item>
-            <img src="../assets/img/swiper.jpg" alt="">
-          </swipe-item>
-          <swipe-item>
-            <img src="../assets/img/swiper.jpg" alt="">
-          </swipe-item>
-          <swipe-item>
-            <img src="../assets/img/swiper.jpg" alt="">
+            <img :src="item" alt="">
           </swipe-item>
         </swipe>
       </div>
-
       <!--导航-->
       <div class="index-nav index-nav5">
         <ul class="cf">
@@ -55,118 +48,92 @@
 
       <!--产品列表-->
       <div class="products-list">
-        <dl>
-          <dt>蛋糕</dt>
+        <dl v-for="item in goodInfo"  >
+          <dt>{{item.category}}</dt>
           <dd>
             <ul>
-              <a href="javascript:;">
-                <li class="cf">
-                  <img src="../assets/img/list01.jpg">
+                <li class="cf" v-for="el in item.goodList" @click="gotoDetail(el.id)">
+                  <img :src="el.picture">
                   <div>
-                    <h3>Yistory Cake</h3>
-                    <h2>咖啡山丘</h2>
-                    <p>咖啡山丘的文字介绍信息</p>
-                    <span>￥108 - 198</span>
+                    <h3>{{el.english_name}}</h3>
+                    <h2>{{el.name}}</h2>
+                    <p>{{el.category}}</p>
+                    <span>{{el.price | priceRange}}</span>
                   </div>
                 </li>
-              </a>
-              <a href="javascript:;">
-                <li class="cf">
-                  <img src="../assets/img/list02.jpg">
-                  <div>
-                    <h3>Hey Monsdyt</h3>
-                    <h2>榴莲忘返</h2>
-                    <p>榴莲美味健康难以忘怀</p>
-                    <span>￥168 - 298</span>
-                  </div>
-                </li>
-              </a>
-              <a href="javascript:;">
-                <li class="cf">
-                  <img src="../assets/img/list01.jpg">
-                  <div>
-                    <h3>Yistory Cake</h3>
-                    <h2>咖啡山丘</h2>
-                    <p>咖啡山丘的文字介绍信息</p>
-                    <span>￥108 - 198</span>
-                  </div>
-                </li>
-              </a>
-              <a href="javascript:;">
-                <li class="cf">
-                  <img src="../assets/img/list02.jpg">
-                  <div>
-                    <h3>Hey Monsdyt</h3>
-                    <h2>榴莲忘返</h2>
-                    <p>榴莲美味健康难以忘怀</p>
-                    <span>￥168 - 298</span>
-                  </div>
-                </li>
-              </a>
             </ul>
           </dd>
         </dl>
-
-        <template>
-          <mt-loadmore :top-method="loadTop" @top-status-change="handleTopChange">
-            <ul>
-              <li v-for="item in list">{{ item }}</li>
-            </ul>
-            <div slot="top" class="mint-loadmore-top">
-              <span v-show="topStatus !== 'loading'" :class="{ 'rotate': topStatus === 'drop' }">↓</span>
-              <span v-show="topStatus === 'loading'">Loading...</span>
-            </div>
-          </mt-loadmore>
-        </template>
       </div>
     </div>
   </div>
 </template>
 <script>
-  import {Swipe, SwipeItem, Loadmore } from 'mint-ui'
-  import  Loading from './Loading'
-  import ajax from '../utils/ajax.js'
-  //Swipe ， SwipeItem        幻灯片
-  //InfiniteScroll           下拉刷新
-  export default {
+import { Swipe, SwipeItem} from 'mint-ui'
+import Loading from './Loading'
+import ajax from '../utils/ajax.js'
+import utils from '../utils/public'
+export default {
     name: 'ProductsList',
     components: {
-      Loading,
-      Swipe,
-      SwipeItem,
-      Loadmore
+        Loading,
+        Swipe,
+        SwipeItem
     },
-    mounted () {
-      this.fetchData()
+    mounted() {
+        this.fetchData()
     },
-    data () {
-      return {
-        loading: true,
-        list:[0],
-        topStatus: '',
-      }
+    data() {
+        return {
+            loading: true,
+            list: [0],
+            topStatus: '',
+            goodInfo: [],
+            banner: []
+        }
     },
     methods: {
-      handleTopChange(status) {
-        this.topStatus = status;
-      },
-
-      fetchData () {
-        console.log('wangggg')
-        this.loading = true
-        ajax.getDataFromApi({
-          url: '/v2/goods?recommend=true'
-        }, (data) => {
-          console.log('wwwwww')
-        this.loading = false;
-      },(data) => {
-          // console.log(data)
-          console.log('wwwwww')
-          this.loading = false;
-          console.log('wwwwww')
-        })
-      }
-    },
-  }
-  require('../assets/scss/productsList.scss')
+        //  获取数据
+        fetchData() {
+            this.loading = true
+            ajax.getDataFromApi({
+                url: '/v1/goods'
+            }, (response) => {
+                let data =response.data.body.list.map(utils.imgDetail)
+                this.loading = false
+                this.modifyData(data)
+            })
+             //  获取轮播图
+            ajax.getDataFromApi({
+              url: '/v1/banner',
+            },(response) => {
+              this.banner = response.data.body.map(utils.imgDetail)
+            })
+        },
+        // 整理数据
+        modifyData(data) {
+            let category = []
+            data.forEach((val) => {
+                category.push(val.parent_name)
+            })
+            category = utils.unique(category)
+            category.forEach((val, index) => {
+                this.goodInfo.push({
+                    category: val,
+                    goodList: []
+                })
+                data.forEach((val1) => {
+                    if (val1.parent_name === val) {
+                        this.goodInfo[index].goodList.push(val1)
+                    }
+                })
+            })
+        },
+        // 跳转到详情
+        gotoDetail (id) {
+          location.href=`/#/site/detail/${id}`
+        }
+    }
+}
+require('../assets/scss/productsList.scss')
 </script>

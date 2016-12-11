@@ -5,12 +5,13 @@ import Vuex from 'vuex'
 import routes from './router/router'
 import store from './vuex/index'
 import filters from './filter/filter'
-import { Lazyload } from 'mint-ui'
+import { Lazyload, InfiniteScroll } from 'mint-ui'
 import 'mint-ui/lib/style.css'
 Vue.use(VueRouter)
 Vue.use(VueResource)
 Vue.use(Vuex)
 Vue.use(Lazyload)
+Vue.use(InfiniteScroll)
 // 设置错误处理页面
 Vue.http.headers = { 'Content-Type': 'application/x-www-form-urlencoded' }
 Vue.http.options.emulateJSON = true

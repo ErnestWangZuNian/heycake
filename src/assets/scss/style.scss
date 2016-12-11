@@ -200,14 +200,14 @@ body {
   left: 0;
   background:#000;
   opacity: 0.2;
-  z-index: 10;
+  z-index: 998;
 }
 //  规格选择弹框
 .select-spec {
   position: fixed;
   padding: px2rem(15);
   width: px2rem(610);
-  z-index: 11;
+  z-index: 999;
   bottom: 0;
   background: #fff;
   border-radius: px2rem(6) px2rem(6)  0 0;

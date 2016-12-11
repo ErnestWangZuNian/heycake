@@ -9,6 +9,7 @@
       ul{
         li{
           border-bottom: px2rem(1) solid #ddd;
+          cursor:pointer;
           padding: px2rem(20) 0;
           img{width: px2rem(180);
             height: px2rem(180);
@@ -23,7 +24,7 @@
             color: #121212;
             h2{font-size: px2rem(28);font-weight: normal;};
             h3{font-size: px2rem(28);font-weight: normal;margin:px2rem(5) 0;};
-            p{font-size: px2rem(16);margin-top: px2rem(15); color: #888888;};
+            p{font-size: px2rem(24);margin-top: px2rem(15); color: #888888;};
             span{font-size: px2rem(32); color: #d4965b}
           };
         }
