@@ -3,15 +3,15 @@
          <div class="pay-status">
            <div class="pay-status-flag">
            <div class="pay-status-img">
-             <img src="../assets/img/pay_success.png" alt="">
+             <img src="../assets/img/pay_fail.png" alt="">
            </div>
            <div class="pay-status-text">
-             您好，您已兑换成功！
+             您好，您的支付失败！
            </div>
          </div>
          <div class="go-to-order">
-           <button @click="gotoOrder">
-              回到我的主页
+           <button>
+              查看我的订单
            </button>
          </div>
          </div>
@@ -19,12 +19,7 @@
 </template>
 <script>
 export default {
-  name: "ScoreSuccess",
-  methods: {
-     gotoOrder () {
-         location.href = '/#/site/user-center'
-     }
-  }
+  name: "OrderFail"
 }
 require('../assets/scss/pay-status.scss')
 </script>

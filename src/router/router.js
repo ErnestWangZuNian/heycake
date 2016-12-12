@@ -15,6 +15,8 @@ const MyAddress = resolve => require(['../components/MyAddress'], resolve)
 const About = resolve => require(['../components/About'], resolve)
 const OrderPay = resolve => require(['../components/OrderPay'], resolve)
 const Loading = resolve => require(['../components/Loading'], resolve)
+const OrderSuccess = resolve => require(['../components/OrderSuccess'], resolve)
+const OrderFail = resolve => require(['../components/OrderFail'], resolve)
 const ScoreSuccess = resolve => require(['../components/ScoreSuccess'], resolve)
 const Login = resolve => require(['../components/Login'], resolve)
 const routes = [
@@ -40,8 +42,9 @@ const routes = [
     { path: '/site/order-pay/', component: OrderPay },
     { path: '/site/order-pay/:id', component: OrderPay },
     { path: '/site/loading', component: Loading },
-    { path: '/site/score-success', component: ScoreSuccess },
-    { path: '/site/score-success/:id', component: ScoreSuccess },
+    {path: '/site/order-success', component: OrderSuccess},
+    {path: '/site/order-fail', component: OrderFail},
+    {path: '/site/score-success', component: ScoreSuccess},
     { path: '/site/login', component: Login }
 ]
 export default routes

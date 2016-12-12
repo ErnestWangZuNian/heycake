@@ -21,7 +21,7 @@
           </div>
           <div class="fl w130">
             <div class="price">{{item.itemTotalPrice | price}}</div>
-            <div class="close"></div>
+            <div class="close" @click="deleteCart(item)"></div>
           </div>
           <div class="cf"></div>
         </li>
@@ -149,18 +149,38 @@ export default {
         return val
       })
     },
+    //  删除购物车
+    deleteCart (item) {
+      let collection = []
+      collection.push(item.id)
+      ajax.deleteDataFromApi({
+        url: `/v1/shopping-cart/`,
+        body: {
+          collection: collection
+        }
+      },(response) => {
+         utils.arrayDelete(this.cartList,item)
+      })
+    },
     //  结算
     settlement () {
       let id= []
+      let collection = []
       this.selectedCartList.forEach((val) => {
         id.push(val.id)
+        collection.push({
+          profile_id: val.id,
+          amount: val.amount
+        })
       })
       ajax.postDataToApi({
         url: `/v1/shopping-cart/settlements`,
         body: {id: id}
       },(response) => {
-        localStorage.sett
-        location.href = `/#/site/order-submit/${id}`
+        localStorage.setItem('cartGoodsId', JSON.stringify(id))
+        localStorage.setItem('collection', JSON.stringify(collection))
+        localStorage.setItem('buyWay','cart')
+        location.href = `/#/site/order-submit/`
       })
     }
   }
