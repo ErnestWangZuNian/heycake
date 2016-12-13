@@ -132,9 +132,9 @@
             order_line:datas
           }
         },(response)=>{
-          MessageBox.alert('您的评价已发表成功！').then(action=>{
-          localtion.href = '/#/site/user-center'
-        })
+          MessageBox.alert('您的评价已发表成功！').then(action => {
+            location.href = '/#/site/user-center'
+          })
         })
       }
     },

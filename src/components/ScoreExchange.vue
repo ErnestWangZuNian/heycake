@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="h100">
     <loading v-if="loading && loadShow"></loading>
-    <div class="container" v-if="!loading">
+    <div class="container container-bg" v-if="!loading">
       <div v-if='specStatus.isSelectSpec' class="spec-mask"></div>
       <div class="exchange">
         <ul>
