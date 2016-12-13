@@ -48,12 +48,18 @@
             text-align: center;
             font-size: px2rem(18);
             margin-top: px2rem(10);
+            height: px2rem(25);
+            line-height: px2rem(25);
+            overflow: hidden;
         }
         h4{
             color: $colorLintBlock;
             text-align: center;
             font-size: px2rem(28);
             margin-top: px2rem(4);
+            height: px2rem(44);
+            line-height: px2rem(44);
+            overflow: hidden;
         }
     }
     li:hover{

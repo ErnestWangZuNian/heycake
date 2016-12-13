@@ -4,12 +4,13 @@
     <div class="container" v-if="!loading">
       <!--轮播图-->
       <div class="swiper">
-        <swipe :auto="4000" v-for="item in banner">
-          <swipe-item>
-            <img :src="item" alt="">
+        <swipe :auto="4000">
+          <swipe-item v-for="item in banner">
+            <img :src="item">
           </swipe-item>
         </swipe>
       </div>
+
       <!--导航-->
       <div class="index-nav index-nav5">
         <ul class="cf">
