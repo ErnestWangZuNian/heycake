@@ -12,7 +12,7 @@
           </div>
           <div class="fl w285 goods-text">
             <h2>{{item.goods_name}}</h2>
-            <p>规格</p>
+            <p>规格：{{item.specifications | spec}}</p>
             <div class="countBox cf ">
               <button type="button" class="fl" @click="reduceCount(item)">-</button>
               <input type="text" class="fl" v-model="item.amount" @input="inputCount(item)">
@@ -71,7 +71,7 @@ export default {
          totalPrice += val.itemTotalPrice * 100
        })
       }
-      return totalPrice/100 
+      return totalPrice/100
      },
     checkAll () {
       let checkAll = false
