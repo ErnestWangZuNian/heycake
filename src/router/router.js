@@ -14,6 +14,7 @@ const MyComment = resolve => require(['../components/MyComment'], resolve)
 const MyAddress = resolve => require(['../components/MyAddress'], resolve)
 const About = resolve => require(['../components/About'], resolve)
 const OrderPay = resolve => require(['../components/OrderPay'], resolve)
+const OrderEvaluate = resolve => require(['../components/OrderEvaluate'], resolve)
 const Loading = resolve => require(['../components/Loading'], resolve)
 const ScoreSuccess = resolve => require(['../components/ScoreSuccess'], resolve)
 const Login = resolve => require(['../components/Login'], resolve)
@@ -39,6 +40,7 @@ const routes = [
     { path: '/site/about', component: About },
     { path: '/site/order-pay/', component: OrderPay },
     { path: '/site/order-pay/:id', component: OrderPay },
+    { path: '/site/order-evaluate/:id', component: OrderEvaluate },
     { path: '/site/loading', component: Loading },
     { path: '/site/score-success', component: ScoreSuccess },
     { path: '/site/score-success/:id', component: ScoreSuccess },

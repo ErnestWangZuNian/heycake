@@ -53,7 +53,9 @@
               <template v-else>（含运费：{{item.logistics_price}}元）</template>
             </div>
             <div class="grid-cell tright u-1of4">
-              <template v-if='item.status_code == "待支付" '><span class="btn-red" @click="goPay(item.id)">去支付</span></template>
+              <template v-if='item.status_code == "待支付" '><span class="btn-myorder" @click="goPay(item.id)">去支付</span></template>
+              <template v-if='item.status_code == "待收货" '><span class="btn-myorder" @click="confirmGoods(item.id)">确认收货</span></template>
+              <template v-if='item.status_code == "待评价" '><span class="btn-myorder" @click="goEvaluate(item.id)">去评价</span></template>
             </div>
           </div>
         </div>
@@ -122,6 +124,20 @@
       //去支付跳转
       goPay(id){
         location.href=`/#/site/order-pay/${id}`
+      },
+      //确认收货
+      confirmGoods(id){
+        MessageBox.confirm('是否已收到货？').then(action =>{
+          ajax.putDataToApi({
+            url:`/v1/confirm-receipt/${id}`
+          },(response)=>{
+            this.getListData()
+          })
+        })
+      },
+      //去评价
+      goEvaluate(id){
+        location.href=`/#/site/order-evaluate/${id}`
       },
       //列表数据处理
       dataDispose(data){

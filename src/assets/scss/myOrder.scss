@@ -14,7 +14,7 @@
   .title { height: px2rem(60); font-size: px2rem(22); line-height: px2rem(30)};
   .price{ height: px2rem(60); font-size: px2rem(30); color: #cd0c0c;};
  }
-.btn-red {
+.btn-myorder {
   @include btn(180,66,#cd0c0c,#ffffff,24,6)
 }
 .btn-orange {
