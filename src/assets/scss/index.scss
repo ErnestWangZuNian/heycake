@@ -37,7 +37,8 @@
         width: px2rem(240);
         margin-right: px2rem(10);
         padding: px2rem(22) px2rem(24) px2rem(16);
-        border: px2rem(1) solid  #fff;
+        margin-bottom: px2rem(20);
+        border: px2rem(2) solid  #fff;
         cursor: pointer;
         img{
             width: px2rem(240);
@@ -48,8 +49,8 @@
             text-align: center;
             font-size: px2rem(18);
             margin-top: px2rem(10);
-            height: px2rem(25);
-            line-height: px2rem(25);
+            height: px2rem(40);
+            line-height: px2rem(40);
             overflow: hidden;
         }
         h4{
@@ -57,12 +58,12 @@
             text-align: center;
             font-size: px2rem(28);
             margin-top: px2rem(4);
-            height: px2rem(44);
-            line-height: px2rem(44);
+            height: px2rem(40);
+            line-height: px2rem(40);
             overflow: hidden;
         }
     }
     li:hover{
-         border: px2rem(1) solid  #d4965b
+         border: px2rem(2) solid  #d4965b
     }
 }
