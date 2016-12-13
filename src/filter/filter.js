@@ -18,7 +18,7 @@ Vue.filter('priceRange', (value) => {
         val = '￥' + (val * 100 / 100).toFixed(2)
         return val
       })
-      newValue = newValue.join('-')
+      newValue = newValue.join(' - ')
       return newValue
     } else {
       value = '￥' + (value * 100 / 100).toFixed(2)

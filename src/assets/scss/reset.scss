@@ -100,12 +100,21 @@ a {
 
 //网格布局
 @mixin grid($height:79,$font:24,$color:#333333) {
-  display: flex;
+  display: -webkit-box; /* 老版本语法: Safari, iOS, Android browser, older WebKit browsers. */
+  display: -moz-box; /* 老版本语法: Firefox (buggy) */
+  display: -ms-flexbox; /* 混合版本语法: IE 10 */
+  display: -webkit-flex; /* 新版本语法: Chrome 21+ */
+  display: flex; /* 新版本语法: Opera 12.1, Firefox 22+ */
+
   font-size: px2rem($font);
   min-height:px2rem($height);
   align-items: center;
   padding: 0 px2rem(20);
   .grid-cell{
+    -webkit-box-align: center;
+    -moz-align-items: center;
+    -webkit-align-items: center;
+    align-items: center;
     flex:1;
     color: $color;
   };

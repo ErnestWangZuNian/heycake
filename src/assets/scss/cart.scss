@@ -1,5 +1,6 @@
 @import 'style.scss';
 ul.theCart{
+  margin-bottom: px2rem(110);
   li{
     border-bottom:px2rem(1) solid #ccc;
     padding: px2rem(10) 0;
@@ -36,7 +37,7 @@ ul.theCart{
   border-top: px2rem(1) #ddd solid;
   border-bottom: px2rem(1) #ddd solid;
   position: fixed;
-  bottom: px2rem(100);
+  bottom: px2rem(0);
   background-color: rgb(238, 238, 238);
   font-size: px2rem(28);
   color: #666;
