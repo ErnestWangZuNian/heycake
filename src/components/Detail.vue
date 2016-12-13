@@ -464,6 +464,7 @@ export default {
         }
     },
     //
+    
 }
 require('../assets/scss/detail.scss')
 </script>

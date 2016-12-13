@@ -1,0 +1,22 @@
+@import 'style.scss';
+.pay-status {
+    width: px2rem(500);
+    margin: 0 auto;
+    padding: px2rem(86) 0;
+    .pay-status-img{
+      text-align: center;
+    }
+    .pay-status-text{
+      margin-top: px2rem(50);
+      font-size: px2rem(32);
+      color: $colorLintGray;
+      text-align: center;
+    }
+    .go-to-order {
+      width:px2rem(479);
+      margin: px2rem(78) auto 0;
+      button{
+          @include btn(479,87,$subTitleColor,#fff,32,10)
+      }
+    }
+}
