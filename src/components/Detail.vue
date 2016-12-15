@@ -155,7 +155,7 @@ import Loading from './Loading'
 import utils from '../utils/public'    //公共方法（图片处理，数组去重，判断对象是否为空）
 import ajax from '../utils/ajax'
 import Modal from  './common/Modal'
-import SelectTime from './common/selectTime'
+import SelectTime from './common/SelectTime'
 export default {
     name: 'Detail',
     components: {
