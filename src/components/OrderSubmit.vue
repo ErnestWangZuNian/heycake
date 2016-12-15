@@ -183,7 +183,7 @@ import { Swipe, SwipeItem } from 'mint-ui'
 import Loading from './Loading'
 import ajax from '../utils/ajax.js'
 import utils from '../utils/public'
-import SelectTime from './common/selectTime'
+import SelectTime from './common/SelectTime'
 import SelectStore from './common/SelectStore'
 export default {
     name: 'OrderSubmit',
