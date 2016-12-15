@@ -137,6 +137,11 @@
         },(response)=>{
           this.formData = response.data.body
           this.formData.default = 1
+          this.validator.name.isFlag = true
+          this.validator.telPhone.isFlag = true
+          this.validator.cityId.isFlag = true
+          this.validator.countyId.isFlag = true
+          this.validator.detailArea.isFlag = true
         })
       },
       //获取City数据
