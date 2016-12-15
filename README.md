@@ -14,7 +14,7 @@ ajax, 项目启动在main.js中,项目全部用es6编写 ，样式采用sass编�
 
 ##### 安装npm模块      npm install 
 
-##### 安装sass模块     npm node-sass  sass-loader  --save
+##### 安装sass模块     npm install node-sass  sass-loader  --save
 
 ##### 安装vue全家桶    npm install vue-router vue-resource vuex --save
 
