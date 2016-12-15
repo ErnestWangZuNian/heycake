@@ -55,7 +55,7 @@
                   userInfo.userId = response.data.body.user_id
                   // 获取登录成功后的用户信息并存入vuex的user
                   ajax.getDataFromApi({
-                    url: 'v1/authentication/detection',
+                    url: '/v1/authentication/detection',
                     header: {'X-Overpowered-Token':token}
                   },(response) => {
                     Number(response.data.body) === 1 ? response.data.body = true :
