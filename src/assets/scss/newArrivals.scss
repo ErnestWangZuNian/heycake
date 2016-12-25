@@ -7,7 +7,13 @@
     li{
       margin-top: px2rem(20);
       .div-img{
-        img{width: px2rem(640); height: px2rem(535)}
+        img{
+            width: px2rem(640); 
+            height: px2rem(535);
+            background-image: url(../img/no_goods.png);
+            background-repeat: no-repeat;
+            background-position: 50%;
+            }
       };
       .div-info{
         background-color: #000000;

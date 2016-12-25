@@ -52,17 +52,19 @@
         <dl v-for="item in goodInfo"  >
           <dt>{{item.category}}</dt>
           <dd>
-            <ul>
-                <li class="cf" v-for="el in item.goodList" @click="gotoDetail(el.id)">
-                  <img :src="el.picture">
-                  <div>
-                    <h3>{{el.english_name}}</h3>
-                    <h2>{{el.name}}</h2>
-                    <p>{{el.category}}</p>
-                    <span>{{el.price | priceRange}}</span>
-                  </div>
-                </li>
-            </ul>
+            <loadmore :bottom-method="loadTop"  :auto-fill="false" :bottom-loading-text="text.loding"  :bottom-drop-text="text.drop" :bottom-status-change="bottomStatusChange">
+              <ul>
+                  <li class="cf" v-for="el in item.goodList" @click="gotoDetail(el.id)">
+                    <img :src="el.picture">
+                    <div>
+                      <h3>{{el.english_name}}</h3>
+                      <h2>{{el.name}}</h2>
+                      <p>{{el.category}}</p>
+                      <span>{{el.price | priceRange}}</span>
+                    </div>
+                  </li>
+              </ul>
+            </loadmore>
           </dd>
         </dl>
       </div>
@@ -70,7 +72,7 @@
   </div>
 </template>
 <script>
-import { Swipe, SwipeItem} from 'mint-ui'
+import { Swipe, SwipeItem,Loadmore  } from 'mint-ui'
 import Loading from './Loading'
 import ajax from '../utils/ajax.js'
 import utils from '../utils/public'
@@ -79,7 +81,8 @@ export default {
     components: {
         Loading,
         Swipe,
-        SwipeItem
+        SwipeItem,
+        Loadmore
     },
     mounted() {
         this.fetchData()

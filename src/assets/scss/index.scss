@@ -32,6 +32,10 @@
 .product-list {
     padding: px2rem(28) px2rem(20);
     padding-right: px2rem(0);
+    .mint-loadmore{
+        overflow: visible;
+        margin-top: px2rem(20)
+    }
     li{
         float: left;
         width: px2rem(240);
@@ -42,7 +46,10 @@
         cursor: pointer;
         img{
             width: px2rem(240);
-            height: px2rem(240)
+            height: px2rem(240);
+            background-image: url(../img/no_goods.png);
+            background-repeat: no-repeat;
+            background-position: 50%;
         }
         h3{
             color: $colorLintGray;
