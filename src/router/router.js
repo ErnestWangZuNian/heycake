@@ -20,33 +20,86 @@ const OrderSuccess = resolve => require(['../components/OrderSuccess'], resolve)
 const OrderFail = resolve => require(['../components/OrderFail'], resolve)
 const ScoreSuccess = resolve => require(['../components/ScoreSuccess'], resolve)
 const Login = resolve => require(['../components/Login'], resolve)
-const routes = [
-    { path: '', redirect: '/site/index' },
-    { path: '/site/index', component: Index },
-    { path: '/site/products-list', component: ProductsList },
-    { path: '/site/new-arrivals', component: NewArrivals },
-    { path: '/site/user-center', component: UserCenter },
-    { path: '/site/cart', component: Cart },
-    { path: '/site/order-submit', component: OrderSubmit },
-    { path: '/site/order-submit/:id', component: OrderSubmit },
-    { path: '/site/add-address', component: AddAddress },
-    { path: '/site/edit-address/:id', component: AddAddress },
-    { path: '/site/detail/:id', component: Detail },
-    { path: '/site/my-order', component: MyOrder },
-    { path: '/site/my-order/:status', component: MyOrder },
-    { path: '/site/my-score', component: MyScore },
-    { path: '/site/score-exchange', component: ScoreExchange },
-    { path: '/site/score-exchange/:detail', component: ScoreExchange },
-    { path: '/site/my-comment', component: MyComment },
-    { path: '/site/my-address', component: MyAddress },
-    { path: '/site/about', component: About },
-    { path: '/site/order-pay/', component: OrderPay },
-    { path: '/site/order-pay/:id', component: OrderPay },
-    { path: '/site/order-evaluate/:id', component: OrderEvaluate },
-    { path: '/site/loading', component: Loading },
-    {path: '/site/order-success', component: OrderSuccess},
-    {path: '/site/order-fail', component: OrderFail},
-    {path: '/site/score-success', component: ScoreSuccess},
-    { path: '/site/login', component: Login }
-]
+const routes = [{
+  path: '',
+  redirect: '/site/index'
+}, {
+  path: '/site/index',
+  component: Index
+}, {
+  path: '/site/products-list',
+  component: ProductsList
+}, {
+  path: '/site/new-arrivals',
+  component: NewArrivals
+}, {
+  path: '/site/user-center',
+  component: UserCenter
+}, {
+  path: '/site/cart',
+  component: Cart
+}, {
+  path: '/site/order-submit',
+  component: OrderSubmit
+}, {
+  path: '/site/order-submit/:id',
+  component: OrderSubmit
+}, {
+  path: '/site/add-address',
+  component: AddAddress
+}, {
+  path: '/site/edit-address/:id',
+  component: AddAddress
+}, {
+  path: '/site/detail/:id',
+  component: Detail
+}, {
+  path: '/site/my-order',
+  component: MyOrder
+}, {
+  path: '/site/my-order/:status',
+  component: MyOrder
+}, {
+  path: '/site/my-score',
+  component: MyScore
+}, {
+  path: '/site/score-exchange',
+  component: ScoreExchange
+}, {
+  path: '/site/score-exchange/:detail',
+  component: ScoreExchange
+}, {
+  path: '/site/my-comment',
+  component: MyComment
+}, {
+  path: '/site/my-address',
+  component: MyAddress
+}, {
+  path: '/site/about',
+  component: About
+}, {
+  path: '/site/order-pay/',
+  component: OrderPay
+}, {
+  path: '/site/order-pay/:id',
+  component: OrderPay
+}, {
+  path: '/site/order-evaluate/:id',
+  component: OrderEvaluate
+}, {
+  path: '/site/loading',
+  component: Loading
+}, {
+  path: '/site/order-success',
+  component: OrderSuccess
+}, {
+  path: '/site/order-fail',
+  component: OrderFail
+}, {
+  path: '/site/score-success',
+  component: ScoreSuccess
+}, {
+  path: '/site/login',
+  component: Login
+}]
 export default routes

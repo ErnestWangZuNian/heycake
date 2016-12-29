@@ -1,6 +1,5 @@
 @import 'px2rem.scss';
 @import 'style.scss';
-
 .user-info{
     height: px2rem(80);
     padding: 0 px2rem(20);
@@ -17,9 +16,20 @@
             height: 100%;
         }
     }
+    .current-position{
+        position: absolute;
+        left: px2rem(130);
+        text-align: center;
+        width:px2rem(326);
+        line-height: px2rem(80);
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        cursor: pointer;
+    }
     .login-flag{
         position: absolute;
-        right: px2rem(20);
+        right: px2rem(0);
         top: 50%;
         cursor: pointer;
         transform: translateY(-50%);
@@ -72,5 +82,46 @@
     }
     li:hover{
          border: px2rem(2) solid  #d4965b
+    }
+}
+.address-modal {
+    .input-address{
+        padding: px2rem(20) px2rem(20) px2rem(10);
+        input{
+            width: 100%;
+            height: px2rem(50);
+            line-height: px2rem(50);
+            background: #fff;
+            text-indent: px2rem(10);
+            border: px2rem(2) solid #ddd;
+        }
+    }
+    .address{
+        .title{
+            width: 100%;
+            height: px2rem(40);
+            line-height: px2rem(40);
+            text-align: left;
+            margin-left: px2rem(20);
+        }
+        ul{
+            background: #fff;
+            text-align: left;
+            font-size: px2rem(18);
+            li{
+                padding: px2rem(10) px2rem(20)
+            }
+        }
+    }
+    .modal-mask{
+        background: #fff;
+    }
+    .modal-content{
+        width: px2rem(640);
+        height: 100%;
+    }
+    .modal-body{
+        background: #f5f5f5;
+        margin-top: px2rem(20);
     }
 }
