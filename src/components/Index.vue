@@ -8,7 +8,7 @@
           <img src="../assets/img/logo.png" alt="">
         </div>
         <div class="current-position" id="current-position" @click="openAddress">
-          送至:<span>{{location.tip}}</span><i></i>
+          送至:<span>{{address.current.street}}</span><i></i>
         </div>
         <router-link to='login' v-if='!loginFlag'>
           <div class="login-flag">
@@ -81,13 +81,13 @@
         <div class="address location-address">
           <p class="title">定位地址</p>
           <ul>
-            <li class="list">{{location.tip}}</li>
+            <li class="list">{{address.current.street}}</li>
           </ul>
         </div>
         <div class="address narbar-address">
           <p class="title">附近地址</p>
           <ul>
-            <li class="list" v-for="item in address.around">{{item.address}}</li>
+            <li class="list" v-for="item in address.around">{{item.name}}</li>
           </ul>
         </div>
       </div>
@@ -138,10 +138,10 @@
         },
         location: {
           lnglatXY: [],
-          tip: '',
         },
         address: {
           show: false,
+          current: [],
           around: []
         }
       }
@@ -167,7 +167,8 @@
               timeout: 10000, //超过10秒后停止定位，默认：无穷大
               buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
               zoomToAccuracy: true, //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
-              buttonPosition: 'RB'
+              buttonPosition: 'RB',
+              extensions: 'all'
             })
             map.addControl(geolocation)
             geolocation.getCurrentPosition()
@@ -178,36 +179,15 @@
         function onComplete(data) {
           let lnglatX = data.position.getLng()
           let lnglatY = data.position.getLat()
+          self.address.current = data.addressComponent
           self.location.lnglatXY = [lnglatX, lnglatY]
-          self.getNaberAddres()
-          self.changeCoordinateToCity(self.location.lnglatXY)
+          // self.location.around = data.crosses
+          self.getNaberAddres(self.location.lnglatXY)
         }
         //解析定位错误信息
         function onError(data) {
           self.location.tip = "请您允许定位，这样我们才能更好为你服务"
         }
-      },
-      // 获取到的经纬度转换成城市
-      changeCoordinateToCity(lnglatXY) {
-        let self = this
-          //逆地理编码
-        function regeocoder() {
-          let geocoder = new AMap.Geocoder({
-            radius: 1,
-            extensions: "all"
-          })
-          geocoder.getAddress(lnglatXY, function (status, result) {
-            if (status === 'complete' && result.info === 'OK') {
-              geocoder_CallBack(result)
-            }
-          })
-        }
-        //返回地址描述
-        function geocoder_CallBack(data) {
-          var address = data.regeocode.formattedAddress
-          self.location.tip = address
-        }
-        regeocoder()
       },
       // 获取热卖蛋糕列表
       getHotCakeList(data = 1) {
@@ -253,17 +233,17 @@
           this.text.loding = "没有更多数据了！"
         }
       },
-      //  获取附件请求地址
+      //  获取附近请求地址
       getNaberAddres() {
         let location = (this.location.lnglatXY.join(','))
         let key = '6ec262982ede339365a6f9d9b5370f1b'
-        let radius = 500
-        let offset = 5
-        let types = "建筑|小区|公司"
+        let radius = 100
+        let offset = 30
+        let types = "银行|酒店|学校|餐饮|建筑物|风景名胜"
         Vue.http.get(`http://restapi.amap.com/v3/place/around?key=${key}&location=${location}&radius=${radius}&offset=${offset}&types=${types}`)
         .then(response => {
           this.address.around = response.data.pois
-          console.log(response)
+          this.address.current =  response.data.pois[0]
         })
       },
       // 关闭地址弹窗

@@ -103,11 +103,13 @@
             line-height: px2rem(40);
             text-align: left;
             margin-left: px2rem(20);
+            font-size: px2rem(28);
         }
         ul{
             background: #fff;
             text-align: left;
-            font-size: px2rem(18);
+            font-size: px2rem(24);
+            color: $colorLintBlock;
             li{
                 padding: px2rem(10) px2rem(20)
             }
