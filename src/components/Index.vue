@@ -8,7 +8,7 @@
           <img src="../assets/img/logo.png" alt="">
         </div>
         <div class="current-position" id="current-position" @click="openAddress">
-          送至:<span>{{address.current.street}}</span><i></i>
+          送至:<span>{{address.checked.name}}</span><i></i>
         </div>
         <router-link to='login' v-if='!loginFlag'>
           <div class="login-flag">
@@ -67,31 +67,41 @@
       </div>
     </div>
     <!--地址选择弹窗-->
-    <div class="address-modal"> 
+    <div class="address-modal">
       <modal :show="address.show" v-on:close="addressClose">
-      <div slot="header">
-        <div class="store-header">
-          选取地址
+        <div slot="header">
+          <div class="store-header">
+            选取地址
+          </div>
         </div>
-      </div>
-      <div slot="body">
-        <div class="input-address">
-          <input type="" name="" value="" placeholder="输入小区，学校，建筑物等">
+        <div slot="body">
+          <div class="input-address">
+            <input type="" name="searchAddress" value="" id='searchAddress' placeholder="输入小区，学校，建筑物等" v-model="address.searchKeyword" @change="searchAddress()">
+          </div>
+          <div class="noSearchAddress" v-if="address.searchKeyword===''">
+            <div class="address location-address">
+              <p class="title">定位地址</p>
+              <ul>
+                <li class="list" @click="changeArea(address.current)">{{address.current.name}}<span class="area">{{address.current.adname}}</span></li>
+              </ul>
+            </div>
+            <div class="address narbar-address">
+              <p class="title">附近地址</p>
+              <ul>
+                <li class="list" @click="changeArea(item)" v-for="item in address.around">{{item.name}}<span class="area">{{item.adname}}</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="searchAddress" v-if="address.searchKeyword!==''">
+            <div class="address search-address">
+              <p class="title">搜索地址</p>
+              <ul>
+                <li class="list" @click="changeArea(item)" v-for="item in address.search">{{item.name}}<span class="area">{{item.adname}}</span></li>
+              </ul>
+            </div>
+          </div>
         </div>
-        <div class="address location-address">
-          <p class="title">定位地址</p>
-          <ul>
-            <li class="list">{{address.current.street}}</li>
-          </ul>
-        </div>
-        <div class="address narbar-address">
-          <p class="title">附近地址</p>
-          <ul>
-            <li class="list" v-for="item in address.around">{{item.name}}</li>
-          </ul>
-        </div>
-      </div>
-    </modal>
+      </modal>
     </div>
   </div>
 </template>
@@ -141,7 +151,10 @@
         },
         address: {
           show: false,
+          checked: {},
           current: [],
+          searchKeyword: '',
+          search: [],
           around: []
         }
       }
@@ -233,25 +246,66 @@
           this.text.loding = "没有更多数据了！"
         }
       },
-      //  获取附近请求地址
+      //  获取附近100米标注性建筑物请求地址
       getNaberAddres() {
         let location = (this.location.lnglatXY.join(','))
         let key = '6ec262982ede339365a6f9d9b5370f1b'
-        let radius = 100
-        let offset = 30
+        let currentReadius = 100
+        let radius = 1000
+        let offset = 6
         let types = "银行|酒店|学校|餐饮|建筑物|风景名胜"
+        Vue.http.get(`http://restapi.amap.com/v3/place/around?key=${key}&location=${location}&radius=${currentReadius}&offset=${offset}&types=${types}`)
+        .then(response => {
+          this.address.current =  response.data.pois[0]
+          this.address.checked =  response.data.pois[0]
+        })
         Vue.http.get(`http://restapi.amap.com/v3/place/around?key=${key}&location=${location}&radius=${radius}&offset=${offset}&types=${types}`)
         .then(response => {
           this.address.around = response.data.pois
-          this.address.current =  response.data.pois[0]
         })
       },
       // 关闭地址弹窗
       addressClose() {
         this.address.show = false
       },
+      //开启地址弹窗
       openAddress() {
         this.address.show = true
+      },
+      // 改变定位
+      changeArea(address) {
+      //  this.address.current.name = address.name
+       this.address.checked.name =JSON.parse(JSON.stringify(address.name))
+       this.addressClose()
+      },
+      // 搜索定位
+      searchAddress() {
+        console.log('wanggg')
+        let map = new AMap.Map('container')
+        let autocomplete = null
+        map.plugin(['AMap.Autocomplete','AMap.PlaceSearch'],function(){
+          var autoOptions = {
+            city: "北京", //城市，默认全国
+            input: "keyword"//使用联想输入的input的id
+          };
+          autocomplete= new AMap.Autocomplete(autoOptions);
+          var placeSearch = new AMap.PlaceSearch({
+                city:'北京',
+                map:map
+          })
+          AMap.event.addListener(autocomplete, "select", function(e){
+            //TODO 针对选中的poi实现自己的功能
+            placeSearch.search(e.poi.name)
+         })
+        })
+        // let key = '6ec262982ede339365a6f9d9b5370f1b'
+        // let keywords = this.address.search
+        // let types = '银行|学校|小区|建筑|公司'
+        // let city = '重庆'
+        // Vue.http.get(`http://restapi.amap.com/v3/place/text?key=${key}&keywords=${keywords}&types=${types}&city=${city}`)
+        // .then(response => {
+        //   this.address.search = response.data.pois
+        // })
       }
     }
   }

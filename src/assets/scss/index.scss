@@ -111,7 +111,12 @@
             font-size: px2rem(24);
             color: $colorLintBlock;
             li{
-                padding: px2rem(10) px2rem(20)
+                padding: px2rem(10) px2rem(20);
+                position: relative;
+                .area{
+                    position: absolute;
+                    right: px2rem(20);
+                }
             }
         }
     }
