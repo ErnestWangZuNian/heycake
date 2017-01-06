@@ -6,15 +6,19 @@ import routes from './router/router'
 import store from './vuex/index'
 import filters from './filter/filter'
 import { Lazyload, InfiniteScroll } from 'mint-ui'
+import VueJsonp from 'vue-jsonp'
 import 'mint-ui/lib/style.css'
 Vue.use(VueRouter)
 Vue.use(VueResource)
 Vue.use(Vuex)
 Vue.use(Lazyload)
 Vue.use(InfiniteScroll)
+Vue.use(VueJsonp)
 // 设置错误处理页面
 Vue.http.headers = { 'Content-Type': 'application/x-www-form-urlencoded' }
 Vue.http.options.emulateJSON = true
+Vue.http.options.xhr = { withCredentials: true }
+//  vue拦截器用于处理不同的错误
 Vue.http.interceptors.push((request, next) => {
   next((response) => {
     if (!response.ok) {

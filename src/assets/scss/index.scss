@@ -1,134 +1,197 @@
 @import 'px2rem.scss';
 @import 'style.scss';
-.user-info{
-    height: px2rem(80);
-    padding: 0 px2rem(20);
-    font-size: px2rem(30);
-    color: $colordarkBlock;
-    position: relative;
-    .logo{
-        position: absolute;
-        left: 0;
-        width: px2rem(120);
-        height: 100%;
-        img{
-            width: 100%;
-            height: 100%;
-        }
+.user-info {
+  height: px2rem(80);
+  padding: 0 px2rem(20);
+  font-size: px2rem(30);
+  color: $colordarkBlock;
+  position: relative;
+  .logo {
+    position: absolute;
+    left: 0;
+    width: px2rem(120);
+    height: 100%;
+    img {
+      width: 100%;
+      height: 100%;
     }
-    .current-position{
-        position: absolute;
-        left: px2rem(130);
-        text-align: center;
-        width:px2rem(326);
-        line-height: px2rem(80);
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        cursor: pointer;
-    }
-    .login-flag{
-        position: absolute;
-        right: px2rem(0);
-        top: 50%;
-        cursor: pointer;
-        transform: translateY(-50%);
-    }
-    span{
-        margin: 0 px2rem(20)
-    }
+  }
+  .current-position {
+    position: absolute;
+    left: px2rem(130);
+    text-align: center;
+    width: px2rem(326);
+    line-height: px2rem(80);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: pointer;
+  }
+  .login-flag {
+    position: absolute;
+    right: px2rem(0);
+    top: 50%;
+    cursor: pointer;
+    transform: translateY(-50%);
+  }
+  span {
+    margin: 0 px2rem(20)
+  }
 }
 
 .product-list {
-    padding: px2rem(28) px2rem(20);
-    padding-right: px2rem(0);
-    .mint-loadmore{
-        overflow: visible;
-        margin-top: px2rem(20)
+  padding: px2rem(28) px2rem(20);
+  padding-right: px2rem(0);
+  .mint-loadmore {
+    overflow: visible;
+    margin-top: px2rem(20)
+  }
+  li {
+    float: left;
+    width: px2rem(240);
+    margin-right: px2rem(10);
+    padding: px2rem(22) px2rem(24) px2rem(16);
+    margin-bottom: px2rem(20);
+    border: px2rem(2) solid #fff;
+    cursor: pointer;
+    img {
+      width: px2rem(240);
+      height: px2rem(240);
+      background-image: url(../img/no_goods.png);
+      background-repeat: no-repeat;
+      background-position: 50%;
     }
-    li{
-        float: left;
-        width: px2rem(240);
-        margin-right: px2rem(10);
-        padding: px2rem(22) px2rem(24) px2rem(16);
-        margin-bottom: px2rem(20);
-        border: px2rem(2) solid  #fff;
-        cursor: pointer;
-        img{
-            width: px2rem(240);
-            height: px2rem(240);
-            background-image: url(../img/no_goods.png);
-            background-repeat: no-repeat;
-            background-position: 50%;
-        }
-        h3{
-            color: $colorLintGray;
-            text-align: center;
-            font-size: px2rem(18);
-            margin-top: px2rem(10);
-            height: px2rem(40);
-            line-height: px2rem(40);
-            overflow: hidden;
-        }
-        h4{
-            color: $colorLintBlock;
-            text-align: center;
-            font-size: px2rem(28);
-            margin-top: px2rem(4);
-            height: px2rem(40);
-            line-height: px2rem(40);
-            overflow: hidden;
-        }
+    h3 {
+      color: $colorLintGray;
+      text-align: center;
+      font-size: px2rem(18);
+      margin-top: px2rem(10);
+      height: px2rem(40);
+      line-height: px2rem(40);
+      overflow: hidden;
     }
-    li:hover{
-         border: px2rem(2) solid  #d4965b
+    h4 {
+      color: $colorLintBlock;
+      text-align: center;
+      font-size: px2rem(28);
+      margin-top: px2rem(4);
+      height: px2rem(40);
+      line-height: px2rem(40);
+      overflow: hidden;
     }
+  }
+  li:hover {
+    border: px2rem(2) solid #d4965b
+  }
 }
+
+.naberStore {
+  .bg {
+    width: 100%;
+    height: px2rem(22);
+    background: #f5f5f5;
+    border: 1px solid #ddd;
+  }
+  .title {
+    padding: px2rem(30) px2rem(20);
+    font-size: px2rem(24);
+    color: $colordarkBlock;
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
+  }
+  .storeList {
+    li {
+      padding: px2rem(26) px2rem(20);
+      border-bottom: px2rem(1) solid #ddd;
+      cursor:pointer;
+      .img {
+        float: left;
+        width: px2rem(158);
+        height: px2rem(122);
+        margin-right: px2rem(20);
+        border-radius: px2rem(20);
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .content {
+        float: left;
+        width: px2rem(420);
+        h2 {
+          font-size: px2rem(22);
+          color: $colordarkBlock;
+          margin-top: px2rem(10);
+        }
+        h3 {
+          margin-top: px2rem(20);
+          font-size: px2rem(20);
+          color: #aaa;
+        }
+        .place {
+          margin-top: px2rem(20);
+          .palce-name {
+            display: inline-block;
+            width: px2rem(280);
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+          .distance {
+            display: inline-block;
+            margin-left: px2rem(60)
+          }
+        }
+      }
+    }
+  }
+}
+
 .address-modal {
-    .input-address{
-        padding: px2rem(20) px2rem(20) px2rem(10);
-        input{
-            width: 100%;
-            height: px2rem(50);
-            line-height: px2rem(50);
-            background: #fff;
-            text-indent: px2rem(10);
-            border: px2rem(2) solid #ddd;
+  .input-address {
+    padding: px2rem(20) px2rem(20) px2rem(10);
+    input {
+      width: 100%;
+      height: px2rem(50);
+      line-height: px2rem(50);
+      background: #fff;
+      text-indent: px2rem(10);
+      border: px2rem(2) solid #ddd;
+    }
+  }
+  .address {
+    .title {
+      width: 100%;
+      height: px2rem(40);
+      line-height: px2rem(40);
+      text-align: left;
+      margin-left: px2rem(20);
+      font-size: px2rem(28);
+    }
+    ul {
+      background: #fff;
+      text-align: left;
+      font-size: px2rem(24);
+      color: $colorLintBlock;
+      li {
+        padding: px2rem(10) px2rem(20);
+        position: relative;
+        .area {
+          position: absolute;
+          right: px2rem(20);
         }
+      }
     }
-    .address{
-        .title{
-            width: 100%;
-            height: px2rem(40);
-            line-height: px2rem(40);
-            text-align: left;
-            margin-left: px2rem(20);
-            font-size: px2rem(28);
-        }
-        ul{
-            background: #fff;
-            text-align: left;
-            font-size: px2rem(24);
-            color: $colorLintBlock;
-            li{
-                padding: px2rem(10) px2rem(20);
-                position: relative;
-                .area{
-                    position: absolute;
-                    right: px2rem(20);
-                }
-            }
-        }
-    }
-    .modal-mask{
-        background: #fff;
-    }
-    .modal-content{
-        width: px2rem(640);
-        height: 100%;
-    }
-    .modal-body{
-        background: #f5f5f5;
-        margin-top: px2rem(20);
-    }
+  }
+  .modal-mask {
+    background: #fff;
+  }
+  .modal-content {
+    width: px2rem(640);
+    height: 100%;
+  }
+  .modal-body {
+    background: #f5f5f5;
+    margin-top: px2rem(20);
+  }
 }
