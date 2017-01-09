@@ -24,7 +24,7 @@ module.exports = {
     proxyTable: {
       '/v1': {
         // target: "http://heycake.cn",
-        target: "http://192.168.1.150:1382",
+        target: "http://192.168.1.150:998",
         changeOrigin: true,
         pathRewrite: {
            '^/': ''
@@ -32,7 +32,7 @@ module.exports = {
       },
       '/area': {
         // target: "http://heycake.cn",
-        target: "http://192.168.1.150:1382",
+        target: "http://192.168.1.150:998",
         changeOrigin: true,
         pathRewrite: {
            '^/': ''
@@ -40,7 +40,7 @@ module.exports = {
       },
       '/wx': {
         // target: "http://heycake.cn",
-        target: "http://192.168.1.150:1382",
+        target: "http://192.168.1.150:998",
         changeOrigin: true,
         pathRewrite: {
           '^/': ''

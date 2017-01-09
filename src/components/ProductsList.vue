@@ -2,13 +2,20 @@
   <div>
     <loading v-if="loading"></loading>
     <div class="container" v-if="!loading">
-      <!--轮播图-->
-      <div class="swiper">
-        <swipe :auto="4000">
-          <swipe-item v-for="item in banner">
-            <img :src="item">
-          </swipe-item>
-        </swipe>
+     <!--附近门店推荐-->
+      <div class="naberStore">
+        <ul class="storeList">
+          <li class="cf">
+            <div class="img">
+              <img src="../assets/img/store.png" alt="">
+            </div>
+            <div class="content">
+              <h2 class="name">金科十年城</h2>
+              <h3 class="tel">13368343973</h3>
+              <h3 class="place"><span class="palce-name">金科十年城</span> <span class="distance">800m</span></h3>
+            </div>
+          </li>
+        </ul>
       </div>
       <!--导航-->
       <div class="index-nav index-nav5">
@@ -44,6 +51,16 @@
             </li>
           </router-link>
         </ul>
+      </div>
+      <!--分类筛选商品-->
+      <div class="select-category">
+        <div class="select-category-content">
+          <span>分类筛选：</span>
+          <span class="slec">全部</span>
+          <ul>
+            <li></li>
+          </ul>
+        </div>
       </div>
       <!--产品列表-->
       <div class="products-list">
