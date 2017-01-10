@@ -6,13 +6,13 @@
       <div class="swiper">
         <swipe :auto="4000">
           <swipe-item>
-            <img src="../assets/img/swiper.jpg" alt="">
+            <img src="../../assets/img/swiper.jpg" alt="">
           </swipe-item>
           <swipe-item>
-            <img src="../assets/img/swiper.jpg" alt="">
+            <img src="../../assets/img/swiper.jpg" alt="">
           </swipe-item>
           <swipe-item>
-            <img src="../assets/img/swiper.jpg" alt="">
+            <img src="../../assets/img/swiper.jpg" alt="">
           </swipe-item>
         </swipe>
       </div>
@@ -73,8 +73,8 @@
 </template>
 <script>
   import {Swipe, SwipeItem } from 'mint-ui'
-  import  Loading from './Loading'
-  import ajax from '../utils/ajax.js'
+  import  Loading from '../common/Loading'
+  import ajax from '../../utils/ajax.js'
   //Swipe ， SwipeItem        幻灯片
   //InfiniteScroll           下拉刷新
   export default {
@@ -115,5 +115,5 @@
       }
     },
   }
-  require('../assets/scss/newArrivals.scss')
+  require('../../assets/scss/newArrivals.scss')
 </script>

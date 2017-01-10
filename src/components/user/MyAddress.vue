@@ -49,9 +49,9 @@
 </template>
 <script>
   import {Swipe, SwipeItem,MessageBox } from 'mint-ui'
-  import  Loading from './Loading'
-  import ajax from '../utils/ajax.js'
-  import Modal from './common/Modal'
+  import  Loading from '../common/Loading'
+  import ajax from '../../utils/ajax.js'
+  import Modal from '../common/Modal'
   export default {
     name: 'myAddress',
     components: {
@@ -125,5 +125,5 @@
       },
     },
   }
-  require('../assets/scss/myAddress.scss')
+  require('../../assets/scss/myAddress.scss')
 </script>

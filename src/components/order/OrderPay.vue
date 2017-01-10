@@ -13,10 +13,10 @@
       </div>
       <div class="order-pay-grid">
         <div class="grid-cell" :class="{'border-red':flag.isWX}" @click="wxClick()">
-          <div class="pay-img"><img src="../assets/img/icon_wechart.png">微信支付</div>
+          <div class="pay-img"><img src="../../assets/img/icon_wechart.png">微信支付</div>
         </div>
         <div class="grid-cell" :class="{'border-red':flag.isZFB}" @click="zfbClick()">
-          <div class="pay-img"><img src="../assets/img/icon_zhifubao.png">支付宝支付</div>
+          <div class="pay-img"><img src="../../assets/img/icon_zhifubao.png">支付宝支付</div>
         </div>
       </div>
 
@@ -26,9 +26,9 @@
 </template>
 <script>
   import {Swipe, SwipeItem,MessageBox } from 'mint-ui'
-  import  Loading from './Loading'
-  import ajax from '../utils/ajax.js'
-  import Modal from './common/Modal'
+  import  Loading from '../common/Loading'
+  import ajax from '../../utils/ajax.js'
+  import Modal from '../common/Modal'
   export default {
     name: 'myAddress',
     components: {
@@ -103,5 +103,5 @@
       },
     },
   }
-  require('../assets/scss/orderPay.scss')
+  require('../../assets/scss/orderPay.scss')
 </script>

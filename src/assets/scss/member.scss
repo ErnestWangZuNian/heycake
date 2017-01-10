@@ -1,0 +1,43 @@
+@import 'style.scss';
+//  会员主页
+.home-member {
+  padding: px2rem(28) px2rem(45);
+  background: #e5e5e5;
+  width: px2rem(560);
+  height: px2rem(330);
+  font-size: px2rem(26);
+  .info {
+    width: px2rem(550);
+    height: px2rem(330);
+    background: url(../img/hyzx_bj.png) no-repeat;
+    background-size: px2rem(550) px2rem(330);
+    color: #fff;
+    .card-number {
+      padding: px2rem(30) px2rem(32);
+    }
+    .card-info-list {
+      padding: px2rem(50) px2rem(32) 0;
+      .card-info-row {
+        display: inline-block;
+        width: 48%;
+      }
+    }
+  }
+  .nav {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    padding: px2rem(20) px2rem(0);
+    background: #000;
+    color: #fff;
+    li {
+      float: left;
+      width: 33%;
+      text-align: center;
+    }
+    .nav-border{
+          border-right: px2rem(2) solid #888;
+    }
+  }
+}

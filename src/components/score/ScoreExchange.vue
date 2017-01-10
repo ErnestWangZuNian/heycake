@@ -84,10 +84,10 @@
 </template>
 <script>
  import { Swipe, SwipeItem, MessageBox } from 'mint-ui'
-import Loading from './Loading'
-import ajax from '../utils/ajax.js'
-import utils from '../utils/public'
-import Modal from  './common/Modal'
+import Loading from '../common/Loading'
+import ajax from '../../utils/ajax.js'
+import utils from '../../utils/public'
+import Modal from  '../common/Modal'
 export default {
     name: 'ScoreExchange',
     components: {
@@ -113,7 +113,7 @@ export default {
             errTip: {
                 isShow: false,
                 login: false,
-                url: '../assets/img/modal_img.png',
+                url: '../../assets/img/modal_img.png',
                 text: '请先登录!'
             },
             scoreInfo: {},
@@ -322,5 +322,5 @@ export default {
         },
     }
 }
-require('../assets/scss/scoreExchange.scss')
+require('../../assets/scss/scoreExchange.scss')
 </script>

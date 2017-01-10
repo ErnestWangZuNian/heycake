@@ -8,7 +8,7 @@
             <div  class="selected" :class="[item.isSelected ? 'selected1' : 'selected']" @click="selectedCart(item)"></div>
           </div>
           <div class="fl w148">
-            <div class="goods-img"><img src="../assets/img/goods1.jpg"></div>
+            <div class="goods-img"><img src="../../assets/img/goods1.jpg"></div>
           </div>
           <div class="fl w285 goods-text">
             <h2>{{item.goods_name}}</h2>
@@ -44,9 +44,9 @@
   </div>
 </template>
 <script>
-import Loading from './Loading'
-import ajax from '../utils/ajax.js'
-import utils from '../utils/public'
+import Loading from '../common/Loading'
+import ajax from '../../utils/ajax.js'
+import utils from '../../utils/public'
 export default {
   name: 'Cart',
   components: {
@@ -185,5 +185,5 @@ export default {
     }
   }
 }
-require('../assets/scss/cart.scss')
+require('../../assets/scss/cart.scss')
 </script>

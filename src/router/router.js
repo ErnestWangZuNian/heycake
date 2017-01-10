@@ -1,25 +1,30 @@
 // require.ensure 是 Webpack 的特殊语法，用来设置 code-split point
-const Index = resolve => require(['../components/Index'], resolve)
-const ProductsList = resolve => require(['../components/ProductsList'], resolve)
-const NewArrivals = resolve => require(['../components/NewArrivals'], resolve)
-const UserCenter = resolve => require(['../components/UserCenter'], resolve)
-const Cart = resolve => require(['../components/Cart'], resolve)
-const OrderSubmit = resolve => require(['../components/OrderSubmit'], resolve)
-const AddAddress = resolve => require(['../components/AddAddress'], resolve)
-const Detail = resolve => require(['../components/Detail'], resolve)
-const MyOrder = resolve => require(['../components/MyOrder'], resolve)
-const MyScore = resolve => require(['../components/MyScore'], resolve)
-const ScoreExchange = resolve => require(['../components/ScoreExchange'], resolve)
-const MyComment = resolve => require(['../components/MyComment'], resolve)
-const MyAddress = resolve => require(['../components/MyAddress'], resolve)
-const About = resolve => require(['../components/About'], resolve)
-const OrderPay = resolve => require(['../components/OrderPay'], resolve)
-const OrderEvaluate = resolve => require(['../components/OrderEvaluate'], resolve)
-const Loading = resolve => require(['../components/Loading'], resolve)
-const OrderSuccess = resolve => require(['../components/OrderSuccess'], resolve)
-const OrderFail = resolve => require(['../components/OrderFail'], resolve)
-const ScoreSuccess = resolve => require(['../components/ScoreSuccess'], resolve)
-const Login = resolve => require(['../components/Login'], resolve)
+const Index = resolve => require(['../components/goods/Index'], resolve)
+const ProductsList = resolve => require(['../components/goods/ProductsList'], resolve)
+const NewArrivals = resolve => require(['../components/goods/NewArrivals'], resolve)
+const UserCenter = resolve => require(['../components/user/UserCenter'], resolve)
+const Cart = resolve => require(['../components/goods/Cart'], resolve)
+const OrderSubmit = resolve => require(['../components/order/OrderSubmit'], resolve)
+const AddAddress = resolve => require(['../components/user/AddAddress'], resolve)
+const Detail = resolve => require(['../components/goods/Detail'], resolve)
+const MyOrder = resolve => require(['../components/order/MyOrder'], resolve)
+const MyScore = resolve => require(['../components/score/MyScore'], resolve)
+const ScoreExchange = resolve => require(['../components/score/ScoreExchange'], resolve)
+const MyComment = resolve => require(['../components/user/MyComment'], resolve)
+const MyAddress = resolve => require(['../components/user/MyAddress'], resolve)
+const About = resolve => require(['../components/store/About'], resolve)
+const OrderPay = resolve => require(['../components/order/OrderPay'], resolve)
+const OrderEvaluate = resolve => require(['../components/order/OrderEvaluate'], resolve)
+const Loading = resolve => require(['../components/common/Loading'], resolve)
+const OrderSuccess = resolve => require(['../components/order/OrderSuccess'], resolve)
+const OrderFail = resolve => require(['../components/order/OrderFail'], resolve)
+const ScoreSuccess = resolve => require(['../components/score/ScoreSuccess'], resolve)
+const Login = resolve => require(['../components/user/Login'], resolve)
+const MemberIndex = resolve => require(['../components/member/Home'], resolve)
+const MemberRecharge = resolve => require(['../components/member/Recharge'], resolve)
+const MemberRechargeDetail = resolve => require(['../components/member/RechargeDetail'], resolve)
+const MemberConsumption = resolve => require(['../components/member/Consumption'], resolve)
+const MemberConsumptionDetail = resolve => require(['../components/member/ConsumptionDetail'], resolve)
 const routes = [{
   path: '',
   redirect: '/site/index'
@@ -101,5 +106,20 @@ const routes = [{
 }, {
   path: '/site/login',
   component: Login
+}, {
+  path: '/site/member',
+  component: MemberIndex
+}, {
+  path: '/site/member-recharge',
+  component: MemberRecharge
+}, {
+  path: '/site/member-recharge-detail',
+  component: MemberRechargeDetail
+}, {
+  path: '/site/member-consumption',
+  component: MemberConsumption
+}, {
+  path: '/site/member-consumption-detail',
+  component: MemberConsumptionDetail
 }]
 export default routes

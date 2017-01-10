@@ -180,11 +180,11 @@
 </template>
 <script>
 import { Swipe, SwipeItem } from 'mint-ui'
-import Loading from './Loading'
-import ajax from '../utils/ajax.js'
-import utils from '../utils/public'
-import SelectTime from './common/SelectTime'
-import SelectStore from './common/SelectStore'
+import Loading from '../common/Loading'
+import ajax from '../../utils/ajax.js'
+import utils from '../../utils/public'
+import SelectTime from '../common/SelectTime'
+import SelectStore from '../common/SelectStore'
 export default {
     name: 'OrderSubmit',
     components: {
@@ -538,5 +538,5 @@ export default {
         }
     },
 }
-require('../assets/scss/orderSubmit.scss')
+require('../../assets/scss/orderSubmit.scss')
 </script>

@@ -62,8 +62,8 @@
 </template>
 <script>
   import {Swipe, SwipeItem, MessageBox} from 'mint-ui'
-  import  Loading from './Loading'
-  import ajax from '../utils/ajax.js'
+  import  Loading from '../common/Loading'
+  import ajax from '../../utils/ajax.js'
   export default {
     name: 'UserCenter',
     components: {
@@ -122,5 +122,5 @@
       }
     }
   }
-  require('../assets/scss/userCenter.scss')
+  require('../../assets/scss/userCenter.scss')
 </script>

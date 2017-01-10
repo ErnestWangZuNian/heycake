@@ -42,8 +42,8 @@
 </template>
 <script>
   import {Swipe, SwipeItem,MessageBox } from 'mint-ui'
-  import  Loading from './Loading'
-  import ajax from '../utils/ajax.js'
+  import  Loading from '../common/Loading'
+  import ajax from '../../utils/ajax.js'
   export default {
     name: 'MyComment',
     components: {
@@ -96,5 +96,5 @@
       }
     },
   }
-  require('../assets/scss/myComment.scss')
+  require('../../assets/scss/myComment.scss')
 </script>

@@ -4,7 +4,7 @@
     li {
       padding: px2rem(26) px2rem(20);
       border-bottom: px2rem(1) solid #ddd;
-      cursor:pointer;
+      cursor: pointer;
       .img {
         float: left;
         width: px2rem(158);
@@ -47,48 +47,112 @@
     }
   }
 }
-.select-category{
-  height: px2rem(40);
-  padding: px2rem(35) 0;
+
+.select-category {
+  height: px2rem(50);
+  padding: px2rem(25) 0;
   background: #f5f5f5;
-  font-size:px2rem(24);
-  .select-category-content{
+  font-size: px2rem(24);
+  .select-category-content {
     width: px2rem(350);
     margin: 0 auto;
-    ul{
-      display: inline-block;
+    .title{
+      float: left;
+      padding: px2rem(10) 0;
+    }
+    .category {
+      float: left;
+      text-align: center;
+      width: px2rem(180);
+      font-size: px2rem(24);
+      position: relative;
+    }
+    .category-list-container{
+      position: absolute;
+      top: px2rem(48);
+      left: 0;
+      z-index:99999;
+    }
+    .category-list {
+      width: px2rem(180);
+      font-size: px2rem(24);
+      padding: 0 px2rem(10);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      padding: px2rem(10) 0;
+      background: #fff;
+      border: 1px solid #ddd;
+      cursor: poiner;
+    }
+    li:hover{
+      background: red;
+      color: #fff;
+    }
+    .category-list-active{
+      background: red;
+      color: #fff;
     }
   }
 }
+
 .products-list {
   margin: 0 px2rem(20);
   color: $colorBlock;
-  dl{
-    dt{font-size: px2rem(32); height: px2rem(70); line-height: px2rem(70); border-bottom: px2rem(1) solid #ddd;};
-    dd{
-      ul{
-        li{
+  dl {
+    dt {
+      font-size: px2rem(32);
+      height: px2rem(70);
+      line-height: px2rem(70);
+      border-bottom: px2rem(1) solid #ddd;
+    }
+    ;
+    dd {
+      ul {
+        li {
           border-bottom: px2rem(1) solid #ddd;
-          cursor:pointer;
+          cursor: pointer;
           padding: px2rem(20) 0;
-          img{width: px2rem(180);
+          img {
+            width: px2rem(180);
             height: px2rem(180);
             float: left;
             margin-right: px2rem(30);
             background-image: url(../img/no_goods.png);
             background-repeat: no-repeat;
-            background-position: 50%;};
-          div{
+            background-position: 50%;
+          }
+          ;
+          div {
             width: px2rem(390);
             float: left;
             color: #121212;
-            h2{font-size: px2rem(28);font-weight: normal;};
-            h3{font-size: px2rem(28);font-weight: normal;margin:px2rem(5) 0;};
-            p{font-size: px2rem(24);margin-top: px2rem(15); color: #888888;};
-            span{font-size: px2rem(32); color: #d4965b}
-          };
+            h2 {
+              font-size: px2rem(28);
+              font-weight: normal;
+            }
+            ;
+            h3 {
+              font-size: px2rem(28);
+              font-weight: normal;
+              margin: px2rem(5) 0;
+            }
+            ;
+            p {
+              font-size: px2rem(24);
+              margin-top: px2rem(15);
+              color: #888888;
+            }
+            ;
+            span {
+              font-size: px2rem(32);
+              color: #d4965b
+            }
+          }
+          ;
         }
-      };
+      }
+      ;
     }
   }
 }

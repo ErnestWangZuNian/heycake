@@ -40,8 +40,8 @@
 </template>
 <script>
   import {Swipe, SwipeItem,MessageBox } from 'mint-ui'
-  import  Loading from './Loading'
-  import ajax from '../utils/ajax.js'
+  import  Loading from '../common/Loading'
+  import ajax from '../../utils/ajax.js'
   export default {
     name: 'AddAddress',
     components: {
@@ -303,5 +303,5 @@
       },
     },
   }
-  require('../assets/scss/addAddress.scss')
+  require('../../assets/scss/addAddress.scss')
 </script>

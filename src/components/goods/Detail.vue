@@ -151,11 +151,11 @@
 </template>
 <script>
 import { Swipe, SwipeItem, Lazyload, MessageBox } from 'mint-ui'
-import Loading from './Loading'
-import utils from '../utils/public'    //公共方法（图片处理，数组去重，判断对象是否为空）
-import ajax from '../utils/ajax'
-import Modal from  './common/Modal'
-import SelectTime from './common/SelectTime'
+import Loading from '../common/Loading'
+import utils from '../../utils/public'    //公共方法（图片处理，数组去重，判断对象是否为空）
+import ajax from '../../utils/ajax'
+import Modal from  '../common/Modal'
+import SelectTime from '../common/SelectTime'
 export default {
     name: 'Detail',
     components: {
@@ -176,7 +176,7 @@ export default {
             errTip: {
                   isShow: false,
                   login: false,
-                  url: '../assets/img/modal_img.png',
+                  url: '../../assets/img/modal_img.png',
                   text: '请先登录!'
               },
             specStatus: {
@@ -466,5 +466,5 @@ export default {
     //
     
 }
-require('../assets/scss/detail.scss')
+require('../../assets/scss/detail.scss')
 </script>

@@ -67,9 +67,9 @@
 </template>
 <script>
   import {Swipe, SwipeItem, MessageBox } from 'mint-ui'
-  import  Loading from './Loading'
-  import ajax from '../utils/ajax.js'
-  import utils from '../utils/public'
+  import  Loading from '../common/Loading'
+  import ajax from '../../utils/ajax.js'
+  import utils from '../../utils/public'
   export default {
     name: 'MyOrder',
     components: {
@@ -178,5 +178,5 @@
       }
     },
   }
-  require('../assets/scss/myOrder.scss')
+  require('../../assets/scss/myOrder.scss')
 </script>

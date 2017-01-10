@@ -2,12 +2,12 @@
   <div>
     <loading v-if="loading"></loading>
     <div class="container" v-if="!loading">
-     <!--附近门店推荐-->
+      <!--附近门店推荐-->
       <div class="naberStore">
         <ul class="storeList">
           <li class="cf">
             <div class="img">
-              <img src="../assets/img/store.png" alt="">
+              <img src="../../assets/img/store.png" alt="">
             </div>
             <div class="content">
               <h2 class="name">金科十年城</h2>
@@ -55,19 +55,21 @@
       <!--分类筛选商品-->
       <div class="select-category">
         <div class="select-category-content">
-          <span>分类筛选：</span>
-          <span class="slec">全部</span>
-          <ul>
-            <li></li>
-          </ul>
+          <div class="title">分类筛选：</div>
+          <div class="category">
+            <p class="category-list" @click="changeCategory">{{category.seleted}}</p>
+            <ul class="category-list-container" v-if="category.status">
+              <li class="category-list" :class="item.selected ? 'category-list-active': ''" v-for="item in category.value" @click="selectedCategory(item)">{{item.val}}</li>
+            </ul>
+          </div>
         </div>
       </div>
       <!--产品列表-->
       <div class="products-list">
-        <dl v-for="item in goodInfo">
-          <dt>{{item.category}}</dt>
-          <dd>
-            <loadmore :bottom-method="loadTop" :auto-fill="false" :bottom-loading-text="text.loding" :bottom-drop-text="text.drop" :bottom-status-change="bottomStatusChange">
+        <loadmore :bottom-method="loadTop" :auto-fill="false" :bottom-loading-text="text.loding" :bottom-drop-text="text.drop" :bottom-status-change="bottomStatusChange">
+          <dl v-for="item in goodInfo">
+            <dt>{{item.category}}</dt>
+            <dd>
               <ul>
                 <li class="cf" v-for="el in item.goodList" @click="gotoDetail(el.id)">
                   <img :src="el.picture">
@@ -79,9 +81,9 @@
                   </div>
                 </li>
               </ul>
-            </loadmore>
-          </dd>
-        </dl>
+            </dd>
+          </dl>
+        </loadmore>
       </div>
     </div>
   </div>
@@ -92,9 +94,9 @@
     SwipeItem,
     Loadmore
   } from 'mint-ui'
-  import Loading from './Loading'
-  import ajax from '../utils/ajax.js'
-  import utils from '../utils/public'
+  import Loading from '../common/Loading'
+  import ajax from '../../utils/ajax.js'
+  import utils from '../../utils/public'
   export default {
     name: 'ProductsList',
     components: {
@@ -113,6 +115,11 @@
         topStatus: '',
         goodInfo: [],
         banner: [],
+        category: {
+          value: [],
+          seleted: '全部',
+          status: false
+        },
         text: {
           drop: '释放更新',
           loding: '小嘿正在努力加载中'
@@ -124,7 +131,7 @@
       }
     },
     methods: {
-      //  获取数据
+      //    获取数据
       fetchData() {
         this.loading = true
         ajax.getDataFromApi({
@@ -136,14 +143,14 @@
             this.text.loding = "上拉刷新"
             this.modifyData(data)
           })
-          //  获取轮播图
+          //      获取轮播图
         ajax.getDataFromApi({
           url: '/v1/banner',
         }, (response) => {
           this.banner = response.data.body.map(utils.imgDetail)
         })
       },
-      // 整理数据
+      //      整理数据
       modifyData(data) {
         let category = []
         data.forEach((val) => {
@@ -151,6 +158,17 @@
         })
         category = utils.unique(category)
         category.forEach((val, index) => {
+          if (index === 0) {
+            this.category.value.push({
+              val: '全部',
+              selected: true
+            })
+          } else {
+            this.category.value.push({
+              val: val,
+              selected: false
+            })
+          }
           this.goodInfo.push({
             category: val,
             goodList: []
@@ -162,7 +180,7 @@
           })
         })
       },
-      // 下拉刷洗数据
+      //    下拉刷洗数据
       loadTop() {
         if (this.page.currentPage < this.page.total) {
           this.page.currentPage++
@@ -171,12 +189,25 @@
           this.text.loding = "没有更多数据了！"
         }
       },
-      // 跳转到详情
+      //    切换分类      
+      changeCategory() {
+        this.category.status = true
+      },
+      //    选中的分类
+      selectedCategory(item) {
+        this.category.value.forEach(val => {
+          val.selected = false
+        })
+        this.category.seleted = item.val
+        this.category.status = false
+        item.selected = true
+      },
+      //    跳转到详情
       gotoDetail(id) {
         location.href = `/#/site/detail/${id}`
       }
     }
   }
-  require('../assets/scss/productsList.scss')
+  require('../../assets/scss/productsList.scss')
 
 </script>

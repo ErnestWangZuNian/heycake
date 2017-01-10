@@ -34,9 +34,9 @@
 </template>
 <script>
   import {Swipe, SwipeItem, MessageBox } from 'mint-ui'
-  import  Loading from './Loading'
-  import ajax from '../utils/ajax.js'
-  import utils from '../utils/public'
+  import  Loading from '../common/Loading'
+  import ajax from '../../utils/ajax.js'
+  import utils from '../../utils/public'
   export default {
     name: 'MyScore',
     components: {
@@ -91,5 +91,5 @@
       }
     },
   }
-  require('../assets/scss/myScore.scss')
+  require('../../assets/scss/myScore.scss')
 </script>
