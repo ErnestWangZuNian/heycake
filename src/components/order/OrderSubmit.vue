@@ -480,6 +480,8 @@ export default {
                     }
                 } else {
                     let postData = {
+                        store_code: 'CQ1001',
+                        card_number: 80000000,
                         collection: this.goodsInfo.cartGoodsId,
                         address_id: this.userInfo.defalutAddress.id,
                         date: this.appointTime.selectedDate,
@@ -488,7 +490,7 @@ export default {
                         user_comment: this.formData.addressMessage
                     }
                     // 购物车购买跳转页面
-                    this.postSubmitMethod('/v1/goods/default', postData, (response) => {
+                    this.postSubmitMethod('/v1/order/default', postData, (response) => {
                          location.href = `/#/site/order-pay/${response.data.body.id}`
                     })
                 }

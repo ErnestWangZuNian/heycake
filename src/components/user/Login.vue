@@ -58,9 +58,6 @@
               password: this.password,
             }
           }, (response) => {
-            console.log('wwwwwwww')
-            location.href = '/#/site/index'
-            let token = response.data.body.session_token
             userInfo.userId = response.data.body.user_id
               // 获取登录成功后的用户信息并存入vuex的user
             ajax.getDataFromApi({
@@ -73,11 +70,7 @@
               userInfo.isLogin = loginFlag
               localStorage.setItem('userInfo', JSON.stringify(userInfo))
               this.$store.dispatch('setUserInfo', userInfo)
-              ajax.getDataFromApi({
-              url: '/v1/authentication/detection'
-              }, (response) => {
               location.href = '/#/site/index'
-              })
             })
           }, (error) => {
             let err = error.data.code
