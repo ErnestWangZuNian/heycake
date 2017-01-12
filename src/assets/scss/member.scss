@@ -24,7 +24,7 @@
     }
   }
   .nav {
-    width: 100%;
+    width: px2rem(640);
     position: fixed;
     bottom: 0;
     left: 0;
@@ -35,9 +35,208 @@
       float: left;
       width: 33%;
       text-align: center;
+      a{
+        color: #fff;
+      }
     }
-    .nav-border{
-          border-right: px2rem(2) solid #888;
+    .nav-border {
+      border-right: px2rem(2) solid #888;
+    }
+  }
+}
+
+// 会员充值
+.recharge-member {
+  width: 100%;
+  background: #f5f5f5;
+  .recharge-member-header {
+    padding: px2rem(20) px2rem(30);
+    .current-balance {
+      padding: px2rem(38) 0 px2rem(22);
+      background: #fff;
+      font-size: px2rem(24);
+      color: #323232;
+      p {
+        text-align: center;
+      }
+      .content {
+        font-size: px2rem(28);
+      }
+      .title {
+        padding: px2rem(18) 0;
+        color: #cd0c0d
+      }
+    }
+  }
+  .recharge-member-content {
+    font-size: px2rem(24);
+    .title {
+      font-size: px2rem(26);
+      padding: px2rem(17) px2rem(20);
+      border-bottom: px2rem(2) solid #ddd;
+      .title-fl {
+        float: left;
+      }
+      .title-fr {
+        float: right;
+      }
+    }
+    .list {
+      padding: px2rem(24) px2rem(30);
+      border-bottom: px2rem(2) solid #ddd;
+      .list-fl {
+        float: left;
+        .list-fl-img {
+          float: left;
+          width: px2rem(60);
+          height: px2rem(60);
+        }
+        .img-zhifubao {
+          background: url(../img/icon_zhifubao.png) no-repeat;
+          background-size: px2rem(60) px2rem(60);
+        }
+        .img-weixin {
+          background: url(../img/icon_wechart.png) no-repeat;
+          background-size: px2rem(60) px2rem(60);
+        }
+        .list-fl-text {
+          float: left;
+          margin-left: px2rem(28);
+          p {
+            color: #878787;
+            font-size: px2rem(24);
+          }
+          .text-title {
+            font-size: px2rem(24);
+            color: #454545
+          }
+        }
+        .green {
+          color: #31c770;
+        }
+        .red {
+          color: #ce0c0c;
+        }
+      }
+      .list-fr {
+        float: right;
+      }
+      .selected {
+        margin: 0;
+      }
+      .selected1 {
+        margin: 0;
+      }
+    }
+    .amount-select {
+      background: #fff;
+      .same-select-list {
+        border-bottom: px2rem(2) solid #ddd;
+      }
+    }
+    .pay-select {
+      background: #fff;
+      margin-top: px2rem(20);
+    }
+    .go-to-pay {
+      padding: px2rem(88) 0;
+      text-align: center;
+      .btn {
+        display: inline-block;
+        @include btn(400, 72, #dd1f1f, #fff, 24, 8);
+      }
+    }
+  }
+}
+
+// 会员明细（包含会员消费明细和充值明细）
+.detail-member {
+  width: 100%;
+  background: #f5f5f5;
+  padding-bottom: px2rem(40);
+  font-size: px2rem(24);
+  .detail-member-header {
+    padding: px2rem(20);
+  }
+  .recharge-detail-header {
+    .same-select {
+      float: left;
+      width: px2rem(140);
+    }
+    .same-select-list {
+      height: px2rem(40);
+      line-height: px2rem(40);
+    }
+    .search {
+      @include btn(108, 60, #ce0c0c, #fff, 24, 8)
+    }
+  }
+  .consumption-detail-header{
+    .same-select {
+      float: left;
+      width: px2rem(220);
+    }
+    .same-select-list {
+      height: px2rem(40);
+      line-height: px2rem(40);
+    }
+    .search {
+      @include btn(108, 60, #ce0c0c, #fff, 24, 8)
+    }
+  }
+  .detail-member-content {
+    .list-container {
+      padding: 0 px2rem(20);
+      width: px2rem(200);
+      .list {
+        width: px2rem(600);
+        margin-bottom: px2rem(20);
+        .color-red{
+          color: #ce0c0c;
+        }
+        .list-header {
+          padding: px2rem(16) px2rem(20);
+          background: #000;
+          color: #8d8d8d;
+          border-radius: px2rem(8) px2rem(8) 0 0;
+          .list-header-fl {
+            float: left;
+          }
+          .list-header-fr {
+            float: right;
+          }
+        }
+        .list-content {
+          padding: px2rem(10) px2rem(20) px2rem(40);
+          background: #fff;
+          border: px2rem(2) solid #ddd;
+          border-top: none;
+          border-radius: 0 0 px2rem(8) px2rem(8);
+          .list-example{
+            margin-top:px2rem(30);
+            text-align: left;
+          }
+          .list-content-fl{
+            float: left;
+          }
+          .list-content-fr{
+            float: right;
+            .fr-info{
+              margin-top:px2rem(82);
+              width:px2rem(210);
+              padding: px2rem(20) 0;
+              border-left: px2rem(2) solid #ddd;
+              text-align: center;
+              .fr-info-decont{
+                margin-top: px2rem(20);
+              }
+            }
+             .consumption-fr-info{
+              margin-top: px2rem(45)
+            }
+          }
+        }
+      }
     }
   }
 }

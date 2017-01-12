@@ -13,7 +13,7 @@
           <div class="fl w285 goods-text">
             <h2>{{item.goods_name}}</h2>
             <p>规格：{{item.specifications | spec}}</p>
-            <div class="countBox cf ">
+            <div class="countBox cf">
               <button type="button" class="fl" @click="reduceCount(item)">-</button>
               <input type="text" class="fl" v-model="item.amount" @input="inputCount(item)">
               <button type="button" class="fl" @click="addCount(item)">+</button>

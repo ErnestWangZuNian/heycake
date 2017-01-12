@@ -56,10 +56,10 @@
       <div class="select-category">
         <div class="select-category-content">
           <div class="title">分类筛选：</div>
-          <div class="category">
-            <p class="category-list" @click="changeCategory">{{category.seleted}}</p>
-            <ul class="category-list-container" v-if="category.status">
-              <li class="category-list" :class="item.selected ? 'category-list-active': ''" v-for="item in category.value" @click="selectedCategory(item)">{{item.val}}</li>
+          <div class="same-select category">
+            <p class="same-select-list" @click="changeCategory">{{category.seleted}}</p>
+            <ul class="same-select-list-container" v-if="category.status">
+              <li class="same-select-list" :class="item.selected ? 'same-select-list-active': ''" v-for="item in category.value" @click="selectedCategory(item)">{{item.val}}</li>
             </ul>
           </div>
         </div>

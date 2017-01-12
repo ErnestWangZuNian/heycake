@@ -62,36 +62,6 @@
     }
     .category {
       float: left;
-      text-align: center;
-      width: px2rem(180);
-      font-size: px2rem(24);
-      position: relative;
-    }
-    .category-list-container{
-      position: absolute;
-      top: px2rem(48);
-      left: 0;
-      z-index:99999;
-    }
-    .category-list {
-      width: px2rem(180);
-      font-size: px2rem(24);
-      padding: 0 px2rem(10);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      padding: px2rem(10) 0;
-      background: #fff;
-      border: 1px solid #ddd;
-      cursor: poiner;
-    }
-    li:hover{
-      background: red;
-      color: #fff;
-    }
-    .category-list-active{
-      background: red;
-      color: #fff;
     }
   }
 }
