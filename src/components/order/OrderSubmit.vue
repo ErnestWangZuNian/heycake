@@ -458,6 +458,7 @@ export default {
             if (this.receiptway.expressDelivery) {
                 if (this.goodsInfo.buyWay !== "cart") {
                     let postData = {
+                        store_code: 'CQ1001',
                         profile_id: this.goodsInfo.selectedSpecGood.id,
                         address_id: this.userInfo.defalutAddress.id,
                         date: this.appointTime.selectedDate,
@@ -500,6 +501,7 @@ export default {
                 if (this.formData.name !== '' && this.formData.telphone !== '') {
                     if (this.goodsInfo.buyWay !== "cart") {
                         let postData = {
+                            store_code: 'CQ1001',
                             profile_id: this.goodsInfo.selectedSpecGood.id,
                             offline_store: this.store.selectedStore.id,
                             custom_name: this.formData.name,
@@ -522,8 +524,10 @@ export default {
                         }
                     } else {
                         let postData = {
+                            store_code: 'CQ1001',
                             collection: this.goodsInfo.cartGoodsId,
                             offline_store: this.store.selectedStore.id,
+                            store_code: 'CQ1001',
                             custom_name: this.formData.name,
                             contact_phone: this.formData.telphone,
                             date: this.appointTime.selectedDate,
@@ -531,7 +535,7 @@ export default {
                             pay_method: 'WAIT',
                             user_comment: this.formData.addressMessage
                         }
-                        this.postSubmitMethod('/v1/goods/default', postData, (response) => {
+                        this.postSubmitMethod('/v1/order/self-pick', postData, (response) => {
                             location.href = `/#/site/order-pay/${response.data.body.id}`
                         })
                     }
