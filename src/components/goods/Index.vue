@@ -55,13 +55,13 @@
       </div>
       <!--产品列表-->
       <div class="product-list">
-          <ul class="cf">
-            <li v-for="item in hotCakeList" @click="gotoDetail(item.id)">
-              <img :src="item.picture" alt="热卖商品">
-              <h3>{{item.english_name}}</h3>
-              <h4>{{item.name}}</h4>
-            </li>
-          </ul>
+        <ul class="cf">
+          <li v-for="item in hotCakeList" @click="gotoDetail(item.id)">
+            <img :src="item.picture" alt="热卖商品">
+            <h3>{{item.english_name}}</h3>
+            <h4>{{item.name}}</h4>
+          </li>
+        </ul>
       </div>
       <!--附近门店推荐-->
       <div class="naberStore">
@@ -92,13 +92,19 @@
         <div slot="body">
           <div class="input-address">
             <input type="" name="searchAddress" value="" id='searchAddress' placeholder="输入小区，学校，建筑物等" v-model="address.searchKeyword"
-              @change="searchAddress()">
+              @input="searchAddress()">
           </div>
           <div class="noSearchAddress" v-if="address.searchKeyword===''">
             <div class="address location-address">
               <p class="title">定位地址</p>
               <ul>
                 <li class="list" @click="changeArea(address.current)">{{address.current.name}}<span class="area">{{address.current.adname}}</span></li>
+              </ul>
+            </div>
+            <div class="address narbar-address" v-if="address.myAddressIsShow">
+              <p class="title">我的收货地址</p>
+              <ul>
+                <li class="list" @click="changeArea(item)" v-for="item in address.myAddress">{{item.detail_area}}<span class="area">{{item.county_name}}</span></li>
               </ul>
             </div>
             <div class="address narbar-address">
@@ -125,7 +131,9 @@
   import {
     Swipe,
     SwipeItem,
-    Loadmore
+    Loadmore,
+    Toast,
+    Indicator
   } from 'mint-ui'
   import Vue from 'vue'
   import Loading from '../common/Loading'
@@ -142,7 +150,9 @@
       SwipeItem,
       Loading,
       Loadmore,
-      Modal
+      Modal,
+      Indicator,
+      Toast
     },
     computed: {
       ...mapGetters({
@@ -154,14 +164,6 @@
         loading: true,
         banner: [],
         hotCakeList: [],
-        text: {
-          drop: '释放更新',
-          loding: '小嘿正在努力加载中'
-        },
-        page: {
-          total: 1,
-          currentPage: 1
-        },
         location: {
           lnglatXY: [],
         },
@@ -172,25 +174,37 @@
           current: [],
           searchKeyword: '',
           search: [],
-          around: []
+          around: [],
+          myAddress: [],
+          myAddressIsShow: false,
         }
       }
     },
     mounted() {
       this.fetchData()
       this.getCurrentPoistion()
+      this.getMyAddress()
+        // 全局设置组件加载
+      Vue.http.interceptors.push((request, next) => {
+        if (this.loading) {
+          this.loading = true
+        }
+        next((response) => {
+          this.loading = false
+        })
+      })
     },
     watch: {
       '$route': 'fetchData'
     },
     methods: {
-//     借助高德地图获取当前定位
+      //     借助高德地图获取当前定位
       getCurrentPoistion() {
         let map = null
         let geolocation = null
         let self = this
         map = new AMap.Map('container')
-//     地理定位插件
+          //     地理定位插件
         map.plugin('AMap.Geolocation', function () {
             geolocation = new AMap.Geolocation({
               enableHighAccuracy: true, //是否使用高精度定位，默认:true
@@ -204,23 +218,22 @@
             geolocation.getCurrentPosition()
             AMap.event.addListener(geolocation, 'complete', onComplete) //返回定位成功信息
             AMap.event.addListener(geolocation, 'error', onError) //返回定位出错信息
-          })  
-//      解析定位结果
+          })
+          //      解析定位结果
         function onComplete(data) {
           let lnglatX = data.position.getLng()
           let lnglatY = data.position.getLat()
           self.address.current = data.addressComponent
           self.location.lnglatXY = [lnglatX, lnglatY]
-          console.log(self.location.lnglatXY)
           self.getNaberAddres(self.location.lnglatXY)
           self.getNaberStore()
         }
-//      解析定位错误信息
+        //      解析定位错误信息
         function onError(data) {
           self.location.tip = "请您允许定位，这样我们才能更好为你服务"
         }
       },
-//    获取热卖蛋糕列表
+      //    获取热卖蛋糕列表
       getHotCakeList(data = 1) {
         ajax.getDataFromApi({
           url: '/v1/goods',
@@ -230,57 +243,59 @@
             page: data
           }
         }, (response) => {
-          if (this.loading) {
-            this.loading = false
-          }
-          this.page.total = response.data.body.pagination.total
           this.hotCakeList = this.hotCakeList.concat(response.data.body.list.map(utils.imgDetail))
-          this.text.loding = "上拉刷新"
         })
       },
-//    获取推荐商品数据
+      //    获取推荐商品数据
       fetchData() {
         this.loading = true
-//    获取轮播图
+          //    获取轮播图
         ajax.getDataFromApi({
-            url: '/v1/banner',
-          }, (response) => {
-            this.banner = response.data.body.map(utils.imgDetail)
-          })
+          url: '/v1/banner',
+        }, (response) => {
+          this.banner = response.data.body.map(utils.imgDetail)
+        })
         this.getHotCakeList()
       },
-//    点击列表去到详情
+      //    点击列表去到详情
       gotoDetail(id) {
         location.href = `/#/site/detail/${id}`
       },
-//    获取附近100米标注性建筑物请求地址
+      //    获取附近100米标注性建筑物请求地址
       getNaberAddres() {
         let location = (this.location.lnglatXY.join(','))
         let key = '6ec262982ede339365a6f9d9b5370f1b'
-        let currentReadius = 100
+        let currentReadius = 200
         let radius = 1000
         let offset = 6
-        let types = "银行|轻轨|公交站|餐饮|小区|酒店|学校|建筑物|风景名胜"
-        Vue.http.get(
+        let types = "银行|轻轨|公交站|政府机构|小区|酒店|学校|建筑物|风景名胜"
+        Indicator.open({
+          text: '正在获取您的位置',
+          spinnerType: 'fading-circle'
+        })
+        this.$http.get(
             `http://restapi.amap.com/v3/place/around?key=${key}&location=${location}&radius=${currentReadius}&offset=${offset}&types=${types}`
           )
           .then(response => {
-            this.address.current = response.data.pois[0]
-            this.address.checked = response.data.pois[0]
+            if (response.data.pois.length > 0) {
+              this.address.current = JSON.parse(JSON.stringify(response.data.pois[0]))
+              this.address.checked = JSON.parse(JSON.stringify(response.data.pois[0]))
+            }
+            Indicator.close()
           })
-        Vue.http.get(
+        this.$http.get(
             `http://restapi.amap.com/v3/place/around?key=${key}&location=${location}&radius=${radius}&offset=${offset}&types=${types}`
           )
           .then(response => {
             this.address.around = response.data.pois
           })
       },
-//    获取云图附件门店
+      //    获取云图附件门店
       getNaberStore() {
         let key = '6ec262982ede339365a6f9d9b5370f1b'
         let tableid = '586b5c10afdf520ea8f2368e'
         let center = this.location.lnglatXY.join(',')
-        let radius = 5000
+        let radius = 1000
         this.$jsonp('http://yuntuapi.amap.com/datasearch/around', {
             key: key,
             tableid: tableid,
@@ -288,53 +303,63 @@
             radius: radius
           })
           .then(response => {
-            this.naberStore = response.datas
+            if (response.datas.length === 0) {
+              // Toast({
+              //   message: '您目前的位置我们无法为你们配送',
+              //   position: 'middle',
+              //   duration: 2000,
+              //   iconClass: 'mintui-success'
+              // })
+            } else {
+              this.naberStore = response.datas
+            }
           }, err => {
             console.log(err)
           })
       },
-//      关闭地址弹窗
+      //      关闭地址弹窗
       addressClose() {
         this.address.show = false
       },
-//      开启地址弹窗
+      //      开启地址弹窗
       openAddress() {
         this.address.show = true
       },
-//       改变定位
+      //       改变定位
       changeArea(address) {
-        //  this.address.current.name = address.name
-        this.address.checked.name = JSON.parse(JSON.stringify(address.name))
+        if (address.hasOwnProperty('location')) {
+          this.address.checked.name = JSON.parse(JSON.stringify(address.name))
+        } else {
+          this.address.checked.name = JSON.parse(JSON.stringify(address.detail_area))
+        }
+
         this.addressClose()
       },
-//       搜索定位
+      // 获取我的收货地址
+      getMyAddress() {
+        ajax.getDataFromApi({
+          url: '/v1/my-address'
+        }, response => {
+          if (response.data.body.list.length > 0) {
+            this.address.myAddressIsShow = true
+            this.address.myAddress = response.data.body.list
+          }
+        }, err => {
+
+        })
+      },
+      //       搜索定位
       searchAddress() {
-        console.log('wanggg')
-        let map = new AMap.Map('container')
-        let autocomplete = null
-        map.plugin(['AMap.Autocomplete', 'AMap.PlaceSearch'], function () {
-            var autoOptions = {
-              city: "重庆", //城市，默认全国
-              input: "searchAddress" //使用联想输入的input的id
-            };
-            autocomplete = new AMap.Autocomplete(autoOptions);
-            var placeSearch = new AMap.PlaceSearch({
-              city: '重庆',
-              map: map
-            })
-            AMap.event.addListener(autocomplete, "select", function (e) {
-              //TODO 针对选中的poi实现自己的功能
-              placeSearch.search(e.poi.name)
-            })
+        let key = '6ec262982ede339365a6f9d9b5370f1b'
+        let keywords = this.address.searchKeyword
+        let types = '银行|学校|小区|建筑|公司'
+        let city = '重庆'
+        Vue.http.get(
+            `http://restapi.amap.com/v3/assistant/inputtips?key=${key}&keywords=${keywords}&types=${types}&city=${city}`
+          )
+          .then(response => {
+            this.address.search = response.data.tips
           })
-          // let key = '6ec262982ede339365a6f9d9b5370f1b'
-          // let keywords = this.address.search
-          // let types = '银行|学校|小区|建筑|公司'
-          // let city = '重庆'
-          // Vue.http.get(`http://restapi.amap.com/v3/place/text?key=${key}&keywords=${keywords}&types=${types}&city=${city}`)
-          // .then(response => {
-          //   this.address.search = response.data.pois
-          // })
       }
     }
   }

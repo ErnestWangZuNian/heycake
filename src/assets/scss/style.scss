@@ -739,7 +739,23 @@ body {
   -webkit-animation: rotate 0.75s linear infinite;
   animation: rotate 0.75s linear infinite;
 }
-
+// 进度提示组件样式修改
+.mint-indicator-wrapper{
+   background: #fff;
+   padding: px2rem(60)!important ;
+   .circle-color-17{
+     width:px2rem(40)!important;
+     height: px2rem(40)!important;
+   }
+   .mint-indicator-text{
+     font-size: px2rem(24);
+     color: #888;
+   }
+}
+.mint-indicator-mask{
+  background: #000;
+  opacity: 0.4;
+}
 @-webkit-keyframes rotate {
   from {
     -webkit-transform: rotate(0deg);
