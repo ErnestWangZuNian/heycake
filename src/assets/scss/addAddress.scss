@@ -1,31 +1,52 @@
 @import 'style.scss';
 .address-list {
   padding: px2rem(20);
-  .input-line{
+  .input-line {
     @include inputs();
-     margin: px2rem(10) 0;
-  };
-  .sele { margin: px2rem(10) 0}
+    border: none;
+    border-top: px2rem(2) solid #f5f5f5;
+    label {
+      width: px2rem(180);
+      display: inline-block;
+      font-size: px2rem(20);
+    }
+    span {
+      font-size: px2rem(20);
+    }
+  }
+  .sele {
+    margin: px2rem(10) 0
+  }
   .select-line {
     @include selects();
     width: 100%;
-    option{ font-size: px2rem(14);
+    option {
+      font-size: px2rem(14);
     }
-  };
-  .select-line:first-child { margin-bottom: px2rem(20)};
-  .default{
-    height:px2rem(88);
-    border-bottom: px2rem(1) solid #dddddd;
+  }
+  ;
+  .select-line:first-child {
+    margin-bottom: px2rem(20)
+  }
+  ;
+  .default {
+    height: px2rem(88);
+    border-bottom: px2rem(1) solid #f5f5f5;
     line-height: px2rem(88);
-    font-size:px2rem(28);
-    .selected { float: left;  margin-top:px2rem(30); margin-right: px2rem(20)}
-  };
+    font-size: px2rem(28);
+    .selected {
+      float: left;
+      margin-top: px2rem(30);
+      margin-right: px2rem(20)
+    }
+  }
+  ;
 }
 
-.submit-list{
-  margin-top: px2rem(130);
-  .btn-submit{
-    @include btn(460,66,#cd0c0c,#ffffff,32,6);
-    margin-left:px2rem(90) ;
+.submit-list {
+  margin-top: px2rem(60);
+  .btn-submit {
+    @include btn(460, 66, #cd0c0c, #ffffff, 32, 6);
+    margin-left: px2rem(90);
   }
 }

@@ -133,6 +133,7 @@
     SwipeItem,
     Loadmore,
     Toast,
+    MessageBox,
     Indicator
   } from 'mint-ui'
   import Vue from 'vue'
@@ -152,6 +153,7 @@
       Loadmore,
       Modal,
       Indicator,
+      MessageBox,
       Toast
     },
     computed: {
@@ -226,7 +228,7 @@
           self.address.current = data.addressComponent
           self.location.lnglatXY = [lnglatX, lnglatY]
           self.getNaberAddres(self.location.lnglatXY)
-          self.getNaberStore()
+          self.getNaberStore(self.location.lnglatXY.join(","))
         }
         //      解析定位错误信息
         function onError(data) {
@@ -266,7 +268,7 @@
         let location = (this.location.lnglatXY.join(','))
         let key = '6ec262982ede339365a6f9d9b5370f1b'
         let currentReadius = 200
-        let radius = 1000
+        let radius = 500
         let offset = 6
         let types = "银行|轻轨|公交站|政府机构|小区|酒店|学校|建筑物|风景名胜"
         Indicator.open({
@@ -291,10 +293,10 @@
           })
       },
       //    获取云图附件门店
-      getNaberStore() {
+      getNaberStore(location) {
         let key = '6ec262982ede339365a6f9d9b5370f1b'
         let tableid = '586b5c10afdf520ea8f2368e'
-        let center = this.location.lnglatXY.join(',')
+        let center = location
         let radius = 1000
         this.$jsonp('http://yuntuapi.amap.com/datasearch/around', {
             key: key,
@@ -311,7 +313,13 @@
               //   iconClass: 'mintui-success'
               // })
             } else {
-              this.naberStore = response.datas
+              if(response.datas.length > 0){
+                 this.naberStore = response.datas
+              }else{
+                MessageBox.confirm('确定执行此操作?').then(action => {
+                  console.log('wwww')
+                })
+              }
             }
           }, err => {
             console.log(err)
@@ -327,12 +335,11 @@
       },
       //       改变定位
       changeArea(address) {
-        if (address.hasOwnProperty('location')) {
-          this.address.checked.name = JSON.parse(JSON.stringify(address.name))
-        } else {
-          this.address.checked.name = JSON.parse(JSON.stringify(address.detail_area))
+        this.address.checked = JSON.parse(JSON.stringify(address))
+        if(address.hasOwnProperty('detail_area')){
+         this.address.checked.name = JSON.parse(JSON.stringify(address.detail_area))
         }
-
+        this.getNaberStore(address.location)
         this.addressClose()
       },
       // 获取我的收货地址

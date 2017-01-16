@@ -764,3 +764,51 @@ body {
     -webkit-transform: rotate(360deg);
   }
 }
+.address-modal {
+  .input-address {
+    padding: px2rem(20) px2rem(20) px2rem(10);
+    input {
+      width: 100%;
+      height: px2rem(50);
+      line-height: px2rem(50);
+      background: #fff;
+      text-indent: px2rem(10);
+      border: px2rem(2) solid #ddd;
+    }
+  }
+  .address {
+    .title {
+      width: 100%;
+      height: px2rem(40);
+      line-height: px2rem(40);
+      text-align: left;
+      margin-left: px2rem(20);
+      font-size: px2rem(28);
+    }
+    ul {
+      background: #fff;
+      text-align: left;
+      font-size: px2rem(24);
+      color: $colorLintBlock;
+      li {
+        padding: px2rem(10) px2rem(20);
+        position: relative;
+        .area {
+          position: absolute;
+          right: px2rem(20);
+        }
+      }
+    }
+  }
+  .modal-mask {
+    background: #fff;
+  }
+  .modal-content {
+    width: px2rem(640);
+    height: 100%;
+  }
+  .modal-body {
+    background: #f5f5f5;
+    margin-top: px2rem(20);
+  }
+}
