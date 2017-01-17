@@ -196,6 +196,19 @@
     display: inline-block;
   }
 }
+// 会员信息
+.member-info{
+  margin-top: px2rem(20);
+  font-size: px2rem(24);
+  label{
+    color:$subTitleColor
+  }
+  input{
+    @include inputs();
+    margin-left: px2rem(20);
+    width: px2rem(480);
+  }
+}
 
 //底部
 .order-null {

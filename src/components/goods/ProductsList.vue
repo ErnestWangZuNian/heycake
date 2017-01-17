@@ -10,9 +10,9 @@
               <img src="../../assets/img/store.png" alt="">
             </div>
             <div class="content">
-              <h2 class="name">金科十年城</h2>
-              <h3 class="tel">13368343973</h3>
-              <h3 class="place"><span class="palce-name">金科十年城</span> <span class="distance">800m</span></h3>
+              <h2 class="name">{{naberStore._name}}</h2>
+              <h3 class="tel">{{naberStore.telphone}}</h3>
+              <h3 class="place"><span class="palce-name">{{naberStore._address}}</span> <span class="distance">{{naberStore._distance}}m</span></h3>
             </div>
           </li>
         </ul>
@@ -20,12 +20,14 @@
       <!--导航-->
       <div class="index-nav index-nav5">
         <ul class="cf">
+          <keep-alive>
           <router-link to="index">
             <li class="nav-list">
               <i class="icon icon0"></i>
               <p>首页</p>
             </li>
           </router-link>
+          </keep-alive>
           <router-link to="products-list">
             <li class="nav-list">
               <i class="icon icon1"></i>
@@ -107,6 +109,7 @@
     },
     mounted() {
       this.fetchData()
+      this.naberStore = utils.sessionstorageGetData('naberStore')
     },
     data() {
       return {
@@ -120,6 +123,7 @@
           seleted: '全部',
           status: false
         },
+        naberStore: {},
         text: {
           drop: '释放更新',
           loding: '小嘿正在努力加载中'
@@ -135,7 +139,10 @@
       fetchData() {
         this.loading = true
         ajax.getDataFromApi({
-            url: '/v1/goods'
+            url: `/v1/goods/`,
+            data: {
+              store_code: utils.sessionstorageGetData('naberStore').store_id
+            }
           }, (response) => {
             let data = response.data.body.list.map(utils.imgDetail)
             this.loading = false

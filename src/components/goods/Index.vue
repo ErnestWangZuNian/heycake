@@ -27,12 +27,10 @@
       <!--导航-->
       <div class="index-nav">
         <ul class="cf">
-          <router-link to="/site/products-list">
-            <li class="nav-list">
-              <i class="icon icon1"></i>
-              <p>蛋糕目录</p>
-            </li>
-          </router-link>
+          <li class="nav-list" @click="gotoStore">
+            <i class="icon icon1"></i>
+            <p>蛋糕目录</p>
+          </li>
           <router-link to="/site/new-arrivals">
             <li class="nav-list">
               <i class="icon icon2"></i>
@@ -64,11 +62,11 @@
         </ul>
       </div>
       <!--附近门店推荐-->
-      <div class="naberStore">
+      <div class="naberStore" v-if="naberStore.length > 0">
         <div class="bg"></div>
         <p class="title">附近门店推荐</p>
         <ul class="storeList">
-          <li class="cf" v-for="item in naberStore">
+          <li class="cf" v-for="item in naberStore" @click="changeStore(item)">
             <div class="img">
               <img src="../../assets/img/store.png" alt="">
             </div>
@@ -168,6 +166,7 @@
         hotCakeList: [],
         location: {
           lnglatXY: [],
+          isLocatinSuccess: false
         },
         naberStore: [],
         address: {
@@ -184,9 +183,16 @@
     },
     mounted() {
       this.fetchData()
-      this.getCurrentPoistion()
-      this.getMyAddress()
-        // 全局设置组件加载
+      if (utils.sessionstorageGetData('isLocationSuccess')) {
+            this.address.checked = utils.sessionstorageGetData('checkedAddress')
+            this.naberStore = utils.sessionstorageGetData('allNavberStore')
+            this.address.around = utils.sessionstorageGetData('aroundAddress')
+            this.address.current = utils.sessionstorageGetData('currentAddress')
+      } else {
+        this.getCurrentPoistion()
+        this.getMyAddress()
+      }
+      // 全局设置组件加载
       Vue.http.interceptors.push((request, next) => {
         if (this.loading) {
           this.loading = true
@@ -206,27 +212,28 @@
         let geolocation = null
         let self = this
         map = new AMap.Map('container')
-          //     地理定位插件
+        //     地理定位插件
         map.plugin('AMap.Geolocation', function () {
-            geolocation = new AMap.Geolocation({
-              enableHighAccuracy: true, //是否使用高精度定位，默认:true
-              timeout: 10000, //超过10秒后停止定位，默认：无穷大
-              buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
-              zoomToAccuracy: true, //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
-              buttonPosition: 'RB',
-              extensions: 'all'
-            })
-            map.addControl(geolocation)
-            geolocation.getCurrentPosition()
-            AMap.event.addListener(geolocation, 'complete', onComplete) //返回定位成功信息
-            AMap.event.addListener(geolocation, 'error', onError) //返回定位出错信息
+          geolocation = new AMap.Geolocation({
+            enableHighAccuracy: true, //是否使用高精度定位，默认:true
+            timeout: 10000, //超过10秒后停止定位，默认：无穷大
+            buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+            zoomToAccuracy: true, //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+            buttonPosition: 'RB',
+            extensions: 'all'
           })
-          //      解析定位结果
+          map.addControl(geolocation)
+          geolocation.getCurrentPosition()
+          AMap.event.addListener(geolocation, 'complete', onComplete) //返回定位成功信息
+          AMap.event.addListener(geolocation, 'error', onError) //返回定位出错信息
+        })
+        //      解析定位结果
         function onComplete(data) {
           let lnglatX = data.position.getLng()
           let lnglatY = data.position.getLat()
           self.address.current = data.addressComponent
           self.location.lnglatXY = [lnglatX, lnglatY]
+          utils.sessionstorageData('isLocationSuccess',true)
           self.getNaberAddres(self.location.lnglatXY)
           self.getNaberStore(self.location.lnglatXY.join(","))
         }
@@ -250,8 +257,8 @@
       },
       //    获取推荐商品数据
       fetchData() {
-        this.loading = true
-          //    获取轮播图
+        this.loading = false
+        //    获取轮播图
         ajax.getDataFromApi({
           url: '/v1/banner',
         }, (response) => {
@@ -276,20 +283,23 @@
           spinnerType: 'fading-circle'
         })
         this.$http.get(
-            `http://restapi.amap.com/v3/place/around?key=${key}&location=${location}&radius=${currentReadius}&offset=${offset}&types=${types}`
-          )
+          `http://restapi.amap.com/v3/place/around?key=${key}&location=${location}&radius=${currentReadius}&offset=${offset}&types=${types}`
+        )
           .then(response => {
-            if (response.data.pois.length > 0) {
+            if (response.data.pois && response.data.pois.length > 0) {
               this.address.current = JSON.parse(JSON.stringify(response.data.pois[0]))
               this.address.checked = JSON.parse(JSON.stringify(response.data.pois[0]))
+              utils.sessionstorageData('checkedAddress',this.address.checked)
+              utils.sessionstorageData('currentAddress',this.address.current)
             }
             Indicator.close()
           })
         this.$http.get(
-            `http://restapi.amap.com/v3/place/around?key=${key}&location=${location}&radius=${radius}&offset=${offset}&types=${types}`
-          )
+          `http://restapi.amap.com/v3/place/around?key=${key}&location=${location}&radius=${radius}&offset=${offset}&types=${types}`
+        )
           .then(response => {
             this.address.around = response.data.pois
+            utils.sessionstorageData('aroundAddress',this.address.around)
           })
       },
       //    获取云图附件门店
@@ -299,26 +309,23 @@
         let center = location
         let radius = 1000
         this.$jsonp('http://yuntuapi.amap.com/datasearch/around', {
-            key: key,
-            tableid: tableid,
-            center: center,
-            radius: radius
-          })
+          key: key,
+          tableid: tableid,
+          center: center,
+          radius: radius
+        })
           .then(response => {
             if (response.datas.length === 0) {
-              // Toast({
-              //   message: '您目前的位置我们无法为你们配送',
-              //   position: 'middle',
-              //   duration: 2000,
-              //   iconClass: 'mintui-success'
-              // })
+              const self = this
+              this.naberStore = []
+               utils.sessionstorageData('allNavberStore',[])
+              MessageBox.confirm('您所定位的地址没有推荐门店信息，您可以通过更改定位地址来获取门店商品信息', '门店推荐提示', { confirmButtonText: '换个地址' }).then(action => {
+                self.openAddress()
+              })
             } else {
-              if(response.datas.length > 0){
-                 this.naberStore = response.datas
-              }else{
-                MessageBox.confirm('确定执行此操作?').then(action => {
-                  console.log('wwww')
-                })
+              if (response.datas && response.datas.length > 0) {
+                this.naberStore = response.datas
+                utils.sessionstorageData('allNavberStore',response.datas)
               }
             }
           }, err => {
@@ -336,9 +343,10 @@
       //       改变定位
       changeArea(address) {
         this.address.checked = JSON.parse(JSON.stringify(address))
-        if(address.hasOwnProperty('detail_area')){
-         this.address.checked.name = JSON.parse(JSON.stringify(address.detail_area))
+        if (address.hasOwnProperty('detail_area')) {
+          this.address.checked.name = JSON.parse(JSON.stringify(address.detail_area))
         }
+        utils.sessionstorageData('checkedAddress',this.address.checked)
         this.getNaberStore(address.location)
         this.addressClose()
       },
@@ -347,12 +355,12 @@
         ajax.getDataFromApi({
           url: '/v1/my-address'
         }, response => {
-          if (response.data.body.list.length > 0) {
+          if (response.data.body.list && response.data.body.list.length > 0) {
             this.address.myAddressIsShow = true
             this.address.myAddress = response.data.body.list
           }
         }, err => {
-
+          
         })
       },
       //       搜索定位
@@ -362,11 +370,28 @@
         let types = '银行|学校|小区|建筑|公司'
         let city = '重庆'
         Vue.http.get(
-            `http://restapi.amap.com/v3/assistant/inputtips?key=${key}&keywords=${keywords}&types=${types}&city=${city}`
-          )
+          `http://restapi.amap.com/v3/assistant/inputtips?key=${key}&keywords=${keywords}&types=${types}&city=${city}`
+        )
           .then(response => {
             this.address.search = response.data.tips
           })
+      },
+      //  去相应的门店购物
+      gotoStore () {
+        let self = this 
+        if (this.naberStore && this.naberStore.length > 0) {
+          utils.sessionstorageData("naberStore", this.naberStore[0])
+          location.href = '/#/site/products-list'
+        } else {
+            MessageBox.confirm('您所定位的地址没有推荐门店信息，您可以通过更改定位地址来获取门店商品信息', '门店推荐提示', { confirmButtonText: '换个地址' }).then(action => {
+                self.openAddress()
+              })
+        }
+      },
+      // 切换门店去到不同的门店
+      changeStore (item) {
+       utils.sessionstorageData("naberStore", item)
+        location.href = '/#/site/products-list'
       }
     }
   }

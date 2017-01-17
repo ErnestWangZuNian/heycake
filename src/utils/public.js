@@ -42,6 +42,19 @@ var utils = {
     }
     return true
   },
+  // localstorage 存储数据
+  sessionstorageData (key, value) {
+    if (typeof data === 'string') {
+      window.sessionStorage.setItem(key.toString(), value)
+    } else {
+      window.sessionStorage.setItem(key.toString(), JSON.stringify(value))
+    }
+  },
+  // 获取localstorage存储的数据
+  sessionstorageGetData (key) {
+    let val = JSON.parse(window.sessionStorage.getItem(key.toString()))
+    return val
+  },
   // 删除数组的某一项
   arrayDelete (arr, val) {
     let arrIndex = -1
