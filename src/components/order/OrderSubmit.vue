@@ -151,7 +151,9 @@
                 </div>
             </div>
             <div class="member-info" v-if="payWay==='member'">
-                <label for="member-password">余额￥200元</label><input type="text" placeholder="请输入您的登录密码" name="password">
+                <label for="member-password" v-if="goodsInfo.buyWay !== 'score'">余额{{memberInfo.balance | price}}</label>
+                <label for="member-password" v-if="goodsInfo.buyWay === 'score'">积分{{memberInfo.score}}</label>
+                <input type="text" placeholder="请输入您的登录密码" name="password">
             </div>
             <!--//空白-->
             <div class="order-null"></div>
@@ -225,6 +227,7 @@
                     collection: [],
                     selectedCartGoods: []
                 },
+                memberInfo: {},
                 formData: {
                     name: '',
                     telphone: '',
@@ -397,7 +400,8 @@
              ajax.getDataFromApi({
                  url: `/v1/user-center/${utils.localstorageGetData('userInfo').userId}` 
              },response => {
-              console.log(response)
+                this.memberInfo = response.data.body.list
+                console.log(this.memberInfo)
             },err => {
 
             })

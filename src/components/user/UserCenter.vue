@@ -8,7 +8,7 @@
           <div class="logined">
             <div class="logined-header cf">
               <div class="fl">
-                <p class="logined-header-text">会员账号 ：<span>{{userInfo.name}}</span></p>
+                <p class="logined-header-text">会员账号 ：<span>{{userInfo.member_account}}</span></p>
               </div>
               <div class="fr">
                 <router-link to="/site/member-recharge" class="btn">我要充值</router-link>
@@ -18,15 +18,15 @@
               <div class="logined-content">
               <div class="content-list">
                 <p>会员卡号</p>
-                <p>1223456789</p>
+                <p>{{userInfo.card_number === null ? '无会员卡' : userInfo.card_number}}</p>
               </div>
               <div class="content-list">
                 <p>余额</p>
-                <p>￥2000</p>
+                <p>{{userInfo.balance | price}}</p>
               </div>
               <div class="content-list tex">
                 <p>积分</p>
-                <p>2000</p>
+                <p>{{userInfo.score}}</p>
               </div>
             </div>
             </router-link>
@@ -98,6 +98,7 @@
   } from 'mint-ui'
   import Loading from '../common/Loading'
   import ajax from '../../utils/ajax.js'
+  import utils from '../../utils/public'
   export default {
     name: 'UserCenter',
     components: {
@@ -134,7 +135,7 @@
       //获取列表数据
       getListData() {
         ajax.getDataFromApi({
-          url: '/v1/user-center'
+          url: `/v1/user-center/${utils.localstorageGetData('userInfo').userId}`
         }, (response) => {
           this.userInfo = response.data.body.list
           this.loading = false
