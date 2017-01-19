@@ -118,22 +118,22 @@
                         </div>
                         <div class="tip fl">（剩余{{selectedSpec.stock}}个）</div>
                     </div>
-                    <button class="confirm-spec" type="submit" :disabled="selectedSpec.stock <= 0" v-if="specStatus.specWay==='cart'" @click="confirmJoinCart(goodInfo.id,selectedSpec.id,goodCount)"
-                        :class="{'disabled-spec': selectedSpec.stock <= 0}">
+                    <button class="confirm-spec" type="submit" :disabled="selectedSpec.stock <= 0  && goodInfo.product_type !== 3" v-if="specStatus.specWay==='cart'" @click="confirmJoinCart(goodInfo.id,selectedSpec.id,goodCount)"
+                        :class="{'disabled-spec': selectedSpec.stock <= 0 && goodInfo.product_type !== 3}">
                         加入购物车
                     </button>
-                    <button class="confirm-spec" type="submit" v-if="specStatus.specWay==='purchase'" :disabled="selectedSpec.stock <= 0" :class="{'disabled-spec': selectedSpec.stock <= 0}"
+                    <button class="confirm-spec" type="submit" v-if="specStatus.specWay==='purchase'" :disabled="selectedSpec.stock <= 0 && goodInfo.product_type !== 3" :class="{'disabled-spec': selectedSpec.stock <= 0 && goodInfo.product_type !== 3}"
                         @click="confirmPurchase">
                         去结算
                     </button>
-                    <button class="confirm-spec" type="submit" v-if="specStatus.specWay==='scoreChange'" :disabled="selectedSpec.stock <= 0"
-                        :class="{'disabled-spec': selectedSpec.stock <= 0}" @click="confirmScoreChange">
+                    <button class="confirm-spec" type="submit" v-if="specStatus.specWay==='scoreChange'" :disabled="selectedSpec.stock <= 0 && goodInfo.product_type !== 3"
+                        :class="{'disabled-spec': selectedSpec.stock <= 0  && goodInfo.product_type !== 3}" @click="confirmScoreChange">
                         立即兑换
                     </button>
                 </div>
             </transition>
         </div>
-        <!--未登录提示弹框-->
+        <!--错误提示弹框-->
         <modal :show='errTip.isShow' v-on:close='errTipClose'>
             <div slot='body'>
                 <div class="modal-error-tip" @click="errLoginTip" v-if="errTip.login">
@@ -142,7 +142,7 @@
                     </div>
                     <div class="modal-test">{{errTip.test}}</div>
                 </div>
-                <div class="modal-error-tip" @click="errLoginTip">
+                <div class="modal-error-tip">
                     <div class="modal-img">
                         <img :src="errTip.url" alt="">
                     </div>
@@ -208,7 +208,10 @@
                 this.loading = true
                 //  获取商品详情数据
                 ajax.getDataFromApi({
-                    url: `/v1/goods/${this.$route.params.id}`
+                    url: `/v1/goods/${this.$route.params.id}`,
+                    data: {
+                        store_code: utils.sessionstorageGetData('naberStore').store_id
+                    }
                 }, (response) => {
                     this.loading = false
                     let data = response.data.body
@@ -381,9 +384,9 @@
                         this.getcartCount(() => {
                             this.specStatus.isSelectSpec = false
                             Toast({
-                                message: '提示',
-                                position: 'bottom',
-                                duration: 5000
+                                message: '操作成功',
+                                position: 'middle',
+                                duration: 2000
                             })
                         })
                     })

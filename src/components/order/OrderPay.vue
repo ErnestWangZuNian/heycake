@@ -22,6 +22,22 @@
 
       <div class="tcenter mt50"><span class="order-pay-btn" @click="payMethod()">去支付</span></div>
     </div>
+     <!-- 支付宝提交-->
+     <form id="payForm"  action="https://mapi.alipay.com/gateway.do" method="get">
+        <input name="body" v-model="item.body" />
+        <input name="notify_url" v-model="item.notify_url" />
+        <input name="out_trade_no" v-model="item.out_trade_no" />
+        <input name="partner" v-model="item.partner" />
+        <input name="payment_type" v-model="item.payment_type" />
+        <input name="return_url" v-model="item.return_url" />
+        <input name="seller_id" v-model="item.seller_id" />
+        <input name="service" v-model="item.service" />
+        <input name="sign" v-model="item.sign" />
+        <input name="sign_type" v-model="item.sign_type" />
+        <input name="_input_charset" v-model="item._input_charset" />
+        <input name="subject" v-model="item.subject" />
+        <input name="total_fee" v-model="item.total_fee" />
+    </form>
   </div>
 </template>
 <script>
@@ -49,6 +65,7 @@
         userId:this.$store.state.user.userInfo.userId || '',      //当前用户ID
         thisId:this.$route.params.id || '',
         listData:{},
+        item: {},
         flag:{
           isWX:true,
           isZFB:false,
@@ -98,7 +115,8 @@
         ajax.postDataToApi({
           url:this.payUrl || `/wx/order/${this.listData.order_number}`,
         },(response)=>{
-          console.log(thisUrl)
+          this.item = response.data.body
+          document.getElementById('payForm').submit()
         })
       },
     },

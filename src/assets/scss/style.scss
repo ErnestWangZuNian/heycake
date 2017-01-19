@@ -688,6 +688,16 @@ body {
     background-size: px2rem(778) px2rem(683);
     cursor: pointer;
   }
+  .warn-red{
+    color: $subTitleColor
+  }
+  .modal-test{
+    width: 100%;
+    text-align: center;
+  }
+  .modal-body{
+    padding: px2rem(60) 0;
+  }
   .modal-test {
     font-size: px2rem(24);
     margin-top: px2rem(10);
@@ -696,7 +706,7 @@ body {
 
 //  错误提示
 .modal-error-tip {
-  width: px2rem(200);
+  width: px2rem(400);
   margin: 0 auto;
   .modal-img {
     width: 100%;

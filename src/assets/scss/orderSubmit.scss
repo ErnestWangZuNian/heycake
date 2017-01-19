@@ -237,6 +237,10 @@
     margin-left:px2rem(174);
     @include btn(220,100,#cd0c0c,#ffffff,28,0);
   }
+  .btn-gary{
+    background: #888;
+    border: px2rem(2) solid #888;
+  }
 }
 
 .title{

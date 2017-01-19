@@ -35,6 +35,7 @@
                 </div>
                 <router-link v-if="userInfo.address.length <= 0" to="/site/add-address">
                     <div class="none-address">
+
                         还没有地址，前去新增地址
                     </div>
                 </router-link>
@@ -160,9 +161,9 @@
 
             <!--提交订单-->
             <div class="order-submit ">
-                <p class="" v-if="goodsInfo.buyWay !== 'score'">合计：<span>{{ totalPrice|price }}</span></p>
+                <p class="" v-if="goodsInfo.buyWay !== 'score'">合计：<span>{{ totalPrice }}</span></p>
                 <p class="" v-if="goodsInfo.buyWay === 'score'">合计：<span>{{ totalPrice }}积分</span></p>
-                <button class="btn" @click="orderSubmit">提交订单</button>
+                <button class="btn" :class="[!canSubmitOrder ? 'btn-gary' : ''] " @click="orderSubmit">提交订单</button>
             </div>
         </div>
         <!--预约时间选择-->
@@ -172,6 +173,20 @@
         <!--门店选择-->
         <select-store :store-show="store.storeShow" :store-list="store.storeList" v-on:close="storeClose" v-on:selectStore="selectStore">
         </select-store>
+        <!--错误提示框-->
+        <modal :show='errTip.isShow' v-on:close='errTipClose'>
+            <div slot="header">
+                <p>温馨提示</p>
+            </div>
+            <div class="modal-img">
+                        <img :src="errTip.url" alt="">
+                    </div>
+            <div slot='body'>
+                <div class="modal-error-tip">
+                    <div class="modal-test" :class="errTip.isWarn ? 'warn-red' : ''">{{errTip.text}}</div>
+                </div>
+            </div>
+        </modal>
     </div>
 </template>
 <script>
@@ -181,6 +196,7 @@
     import utils from '../../utils/public'
     import SelectTime from '../common/SelectTime'
     import SelectStore from '../common/SelectStore'
+    import Modal from '../common/Modal'
     export default {
         name: 'OrderSubmit',
         components: {
@@ -188,7 +204,8 @@
             Swipe,
             SwipeItem,
             SelectTime,
-            SelectStore
+            SelectStore,
+            Modal
         },
         mounted() {
             this.fetchData()
@@ -196,6 +213,11 @@
         data() {
             return {
                 loading: false,
+                errTip: {
+                    isShow: false,
+                    isWarn: false,     
+                    text: '您的密码有误请重新登录'
+                },
                 appointTime: {
                     timeShow: false,
                     date: [],
@@ -263,9 +285,21 @@
                     cart.forEach((val) => {
                         total += val.price * 100 * val.amount
                     })
-                    total = total / 100
+                    total = (total / 100).toFixed(2)
                 }
                 return total
+            },
+            // 判断订单是否能提交
+            canSubmitOrder() {
+                let flag = true
+                if (utils.isEmptyObject(this.goodsInfo.singleGood) && this.goodsInfo.selectedCartGoods.length < 1) {
+                    flag = false
+                } else if(this.goodsInfo.selectedCartGoods.length === 0 && utils.isEmptyObject(this.goodsInfo.singleGood)) {
+                    flag = false
+                }else {
+                    flag = true
+                }
+                return flag
             }
         },
         methods: {
@@ -322,6 +356,10 @@
                 });
                 //   获取购物明细
                 this.getOrderInfo()
+            },
+             //  关闭错误提示框
+            errTipClose() {
+                this.errTip.isShow = false
             },
             // 根据localstorage中信息判断单子的来源
             getOrderInfo() {
@@ -391,21 +429,20 @@
                 this.storeClose()
             },
             // 在线支付
-            onlinePayWay(){
-             this.payWay = 'online'
+            onlinePayWay() {
+                this.payWay = 'online'
             },
             //  会员卡余额支付 
-            memberPayWay(){
-             this.payWay = 'member',
-             ajax.getDataFromApi({
-                 url: `/v1/user-center/${utils.localstorageGetData('userInfo').userId}` 
-             },response => {
-                this.memberInfo = response.data.body.list
-                console.log(this.memberInfo)
-            },err => {
+            memberPayWay() {
+                this.payWay = 'member',
+                    ajax.getDataFromApi({
+                        url: `/v1/user-center/${utils.localstorageGetData('userInfo').userId}`
+                    }, response => {
+                        this.memberInfo = response.data.body.list
+                    }, err => {
 
-            })
-            },  
+                    })
+            },
             //验证方法
             //验证focus
             focusMethod(currentObj) {
@@ -467,90 +504,101 @@
             },
             //提交订单
             orderSubmit() {
-                // 快递配送提交方式
-                if (this.receiptway.expressDelivery) {
-                    if (this.goodsInfo.buyWay !== "cart") {
-                        let postData = {
-                            store_code: 'CQ1001',
-                            profile_id: this.goodsInfo.selectedSpecGood.id,
-                            address_id: this.userInfo.defalutAddress.id,
-                            date: this.appointTime.selectedDate,
-                            time: this.appointTime.selectedTime,
-                            pay_method: 'WAIT',
-                            user_comment: this.formData.addressMessage,
-                            amount: this.goodsInfo.selectedSpecGood.count
-                        }
-                        // 直接购买商品跳转页面
-                        if (this.goodsInfo.buyWay === "purchase") {
-                            this.postSubmitMethod('/v1/goods/default', postData, (response) => {
-                                location.href = `/#/site/order-pay/${response.data.body.id}`
-                            })
-                        }
-                        // 积分商品跳转页面
-                        if (this.goodsInfo.buyWay === "score") {
-                            this.postSubmitMethod('/v1/score-goods/default', postData, (response) => {
-                                location.href = `/#/site/score-success`
-                            })
-                        }
-                    } else {
-                        let postData = {
-                            store_code: 'CQ1001',
-                            card_number: 80000000,
-                            collection: this.goodsInfo.cartGoodsId,
-                            address_id: this.userInfo.defalutAddress.id,
-                            date: this.appointTime.selectedDate,
-                            time: this.appointTime.selectedTime,
-                            pay_method: 'WAIT',
-                            user_comment: this.formData.addressMessage
-                        }
-                        // 购物车购买跳转页面
-                        this.postSubmitMethod('/v1/order/default', postData, (response) => {
-                            location.href = `/#/site/order-pay/${response.data.body.id}`
-                        })
-                    }
-                }
-                //  门店自提提交方式
-                if (this.receiptway.storeDeliver) {
-                    if (this.formData.name !== '' && this.formData.telphone !== '') {
+                if (this.canSubmitOrder) {
+                    // 快递配送提交方式
+                    if (this.receiptway.expressDelivery) {
                         if (this.goodsInfo.buyWay !== "cart") {
                             let postData = {
-                                store_code: 'CQ1001',
+                                store_code: utils.sessionstorageGetData('naberStore').store_id,
                                 profile_id: this.goodsInfo.selectedSpecGood.id,
-                                offline_store: this.store.selectedStore.id,
-                                custom_name: this.formData.name,
-                                contact_phone: this.formData.telphone,
+                                address_id: this.userInfo.defalutAddress.id,
                                 date: this.appointTime.selectedDate,
                                 time: this.appointTime.selectedTime,
                                 pay_method: 'WAIT',
                                 user_comment: this.formData.addressMessage,
                                 amount: this.goodsInfo.selectedSpecGood.count
                             }
+                            // 直接购买商品跳转页面
                             if (this.goodsInfo.buyWay === "purchase") {
-                                this.postSubmitMethod('/v1/goods/self-pick', postData, (response) => {
+                                this.postSubmitMethod('/v1/goods/default', postData, (response) => {
                                     location.href = `/#/site/order-pay/${response.data.body.id}`
                                 })
                             }
+                            // 积分商品跳转页面
                             if (this.goodsInfo.buyWay === "score") {
-                                this.postSubmitMethod('/v1/score-goods/self-pick', postData, (response) => {
+                                this.postSubmitMethod('/v1/score-goods/default', postData, (response) => {
                                     location.href = `/#/site/score-success`
                                 })
                             }
                         } else {
                             let postData = {
-                                store_code: 'CQ1001',
+                                store_code: utils.sessionstorageGetData('naberStore').store_id,
+                                card_number: 80000000,
                                 collection: this.goodsInfo.cartGoodsId,
-                                offline_store: this.store.selectedStore.id,
-                                store_code: 'CQ1001',
-                                custom_name: this.formData.name,
-                                contact_phone: this.formData.telphone,
+                                address_id: this.userInfo.defalutAddress.id,
                                 date: this.appointTime.selectedDate,
                                 time: this.appointTime.selectedTime,
                                 pay_method: 'WAIT',
                                 user_comment: this.formData.addressMessage
                             }
-                            this.postSubmitMethod('/v1/order/self-pick', postData, (response) => {
-                                location.href = `/#/site/order-pay/${response.data.body.id}`
+                            // 购物车购买跳转页面
+                            this.postSubmitMethod('/v1/order/default', postData, (response) => {
+                                if (response.data.body.length > 1) {
+                                    this.errTip.isShow = true
+                                    this.errTip.isWarn = true
+                                    this.errTip.text = '由于您购买的商品中含有预约类商品，我们将分拆成两个订单您需要单独支付，未支付的订单将不予支付，感谢您的配合~'
+                                    window.setTimeout(() => {
+                                      this.errTip.isShow = false
+                                      location.href = `/#/site/my-order`
+                                    },3000)
+                                } else {
+                                    location.href = `/#/site/order-pay/${response.data.body[0].id}`
+                                }
                             })
+                        }
+                    }
+                    //  门店自提提交方式
+                    if (this.receiptway.storeDeliver) {
+                        if (this.formData.name !== '' && this.formData.telphone !== '') {
+                            if (this.goodsInfo.buyWay !== "cart") {
+                                let postData = {
+                                    store_code: utils.sessionstorageGetData('naberStore').store_id,
+                                    profile_id: this.goodsInfo.selectedSpecGood.id,
+                                    offline_store: this.store.selectedStore.id,
+                                    custom_name: this.formData.name,
+                                    contact_phone: this.formData.telphone,
+                                    date: this.appointTime.selectedDate,
+                                    time: this.appointTime.selectedTime,
+                                    pay_method: 'WAIT',
+                                    user_comment: this.formData.addressMessage,
+                                    amount: this.goodsInfo.selectedSpecGood.count
+                                }
+                                if (this.goodsInfo.buyWay === "purchase") {
+                                    this.postSubmitMethod('/v1/goods/self-pick', postData, (response) => {
+                                        location.href = `/#/site/order-pay/${response.data.body.id}`
+                                    })
+                                }
+                                if (this.goodsInfo.buyWay === "score") {
+                                    this.postSubmitMethod('/v1/score-goods/self-pick', postData, (response) => {
+                                        location.href = `/#/site/score-success`
+                                    })
+                                }
+                            } else {
+                                let postData = {
+                                    store_code: utils.sessionstorageGetData('naberStore').store_id,
+                                    collection: this.goodsInfo.cartGoodsId,
+                                    offline_store: this.store.selectedStore.id,
+                                    custom_name: this.formData.name,
+                                    contact_phone: this.formData.telphone,
+                                    date: this.appointTime.selectedDate,
+                                    time: this.appointTime.selectedTime,
+                                    pay_method: 'WAIT',
+                                    user_comment: this.formData.addressMessage
+                                }
+                                this.postSubmitMethod('/v1/order/self-pick', postData, (response) => {
+                                    location.href = `/#/site/order-pay/${response.data.body.id}`
+                                })
+                            }
                         }
                     }
                 }
