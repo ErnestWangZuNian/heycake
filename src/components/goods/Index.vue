@@ -54,7 +54,7 @@
       <!--产品列表-->
       <div class="product-list">
         <ul class="cf">
-          <li v-for="item in hotCakeList" @click="gotoDetail(item.id)">
+          <li v-for="item in hotCakeList" @click="gotoDetail(item)">
             <img :src="item.picture" alt="热卖商品">
             <h3>{{item.english_name}}</h3>
             <h4>{{item.name}}</h4>
@@ -267,8 +267,13 @@
         this.getHotCakeList()
       },
       //    点击列表去到详情
-      gotoDetail(id) {
-        location.href = `/#/site/detail/${id}`
+      gotoDetail(item) {
+        if(item.product_type === 3) {
+          utils.localstorageData('isCake',true)
+        } else {
+          utils.localstorageData('isCake',false)
+        }
+        location.href = `/#/site/detail/${item.id}`
       },
       //    获取附近100米标注性建筑物请求地址
       getNaberAddres() {
@@ -378,15 +383,7 @@
       },
       //  去相应的门店购物
       gotoStore () {
-        let self = this 
-        if (this.naberStore && this.naberStore.length > 0) {
-          utils.sessionstorageData("naberStore", this.naberStore[0])
-          location.href = '/#/site/products-list'
-        } else {
-            MessageBox.confirm('您所定位的地址没有推荐门店信息，您可以通过更改定位地址来获取门店商品信息', '门店推荐提示', { confirmButtonText: '换个地址' }).then(action => {
-                self.openAddress()
-              })
-        }
+        location.href = '/#/site/cake-list'
       },
       // 切换门店去到不同的门店
       changeStore (item) {

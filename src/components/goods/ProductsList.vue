@@ -141,7 +141,7 @@
         ajax.getDataFromApi({
             url: `/v1/goods/`,
             data: {
-              store_code: utils.sessionstorageGetData('naberStore').store_id
+              store_code: utils.sessionstorageGetData('naberStore') && utils.sessionstorageGetData('naberStore').store_id
             }
           }, (response) => {
             let data = response.data.body.list.map(utils.imgDetail)

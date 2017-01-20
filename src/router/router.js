@@ -1,6 +1,7 @@
 // require.ensure 是 Webpack 的特殊语法，用来设置 code-split point
 const Index = resolve => require(['../components/goods/Index'], resolve)
 const ProductsList = resolve => require(['../components/goods/ProductsList'], resolve)
+const CakeList = resolve => require(['../components/goods/CakeList'], resolve)
 const NewArrivals = resolve => require(['../components/goods/NewArrivals'], resolve)
 const UserCenter = resolve => require(['../components/user/UserCenter'], resolve)
 const Cart = resolve => require(['../components/goods/Cart'], resolve)
@@ -34,6 +35,9 @@ const routes = [{
 }, {
   path: '/site/products-list',
   component: ProductsList
+}, {
+  path: '/site/cake-list',
+  component: CakeList
 }, {
   path: '/site/new-arrivals',
   component: NewArrivals

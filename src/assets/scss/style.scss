@@ -688,6 +688,12 @@ body {
     background-size: px2rem(778) px2rem(683);
     cursor: pointer;
   }
+  .btn{
+    @include btn(160,66,$subTitleColor,#fff,24,10)
+  }
+  .recharge-btn{
+    margin-top: px2rem(20);
+  }
   .warn-red{
     color: $subTitleColor
   }

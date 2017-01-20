@@ -93,7 +93,7 @@
             <div class="order-times">
                 <div class="title">预约时间</div>
                 <div class="times">
-                    <input class="inputs" type="text" placeholder="开始时间" v-model="appointTime.selectedDate" @click="openTimeShow">                    - <input class="inputs" type="text" placeholder="结束时间" v-model="appointTime.selectedTime" @click="openTimeShow">
+                    <span class="inputs"  @click="openTimeShow">  {{appointTime.selectedDate}}</span>  - <span class="inputs" @click="openTimeShow">{{appointTime.selectedTime}}</span>
                 </div>
             </div>
             <!--分隔-->
@@ -179,11 +179,12 @@
                 <p>温馨提示</p>
             </div>
             <div class="modal-img">
-                        <img :src="errTip.url" alt="">
-                    </div>
+                <img :src="errTip.url" alt="">
+            </div>
             <div slot='body'>
                 <div class="modal-error-tip">
                     <div class="modal-test" :class="errTip.isWarn ? 'warn-red' : ''">{{errTip.text}}</div>
+                    <div class="btn recharge-btn" @click="gotoRecharge" v-if="errTip.isRecharge">去充值</div>
                 </div>
             </div>
         </modal>
@@ -215,15 +216,17 @@
                 loading: false,
                 errTip: {
                     isShow: false,
-                    isWarn: false,     
+                    isRecharge: false,
+                    isWarn: false,
                     text: '您的密码有误请重新登录'
                 },
+                canSubmitOrderFlag: true,
                 appointTime: {
                     timeShow: false,
                     date: [],
                     time: [],
-                    selectedTime: '',
-                    selectedDate: ''
+                    selectedTime: '预约时间',
+                    selectedDate: '预约日期'
                 },
                 payWay: 'online',
                 receiptway: {
@@ -294,9 +297,14 @@
                 let flag = true
                 if (utils.isEmptyObject(this.goodsInfo.singleGood) && this.goodsInfo.selectedCartGoods.length < 1) {
                     flag = false
-                } else if(this.goodsInfo.selectedCartGoods.length === 0 && utils.isEmptyObject(this.goodsInfo.singleGood)) {
+                } else if (this.goodsInfo.selectedCartGoods.length === 0 && utils.isEmptyObject(this.goodsInfo.singleGood)) {
                     flag = false
-                }else {
+                } else {
+                    flag = true
+                }
+                if(!this.canSubmitOrderFlag) {
+                    flag = false
+                } else {
                     flag = true
                 }
                 return flag
@@ -357,16 +365,22 @@
                 //   获取购物明细
                 this.getOrderInfo()
             },
-             //  关闭错误提示框
+            //  关闭错误提示框
             errTipClose() {
                 this.errTip.isShow = false
+                if(!this.canSubmitOrderFlag) {
+                    this.canSubmitOrderFlag = true
+                }
+                if(this.errTip.isRecharge) {
+                   this.errTip.isRecharge = false
+                }
             },
             // 根据localstorage中信息判断单子的来源
             getOrderInfo() {
-                this.goodsInfo.buyWay = localStorage.getItem('buyWay')
+                this.goodsInfo.buyWay = utils.localstorageGetData('buyWay')
                 if (this.goodsInfo.buyWay !== 'cart') {
-                    this.goodsInfo.selectedSpecGood = JSON.parse(localStorage.getItem('purchaseGood'))
-                    this.goodsInfo.selectedSpecGood.count = localStorage.getItem('count')
+                    this.goodsInfo.selectedSpecGood = utils.localstorageGetData('purchaseGood')
+                    this.goodsInfo.selectedSpecGood.count = utils.localstorageGetData('count')
                     ajax.getDataFromApi({
                         url: `v1/goods/${this.$route.params.id}`
                     }, (response) => {
@@ -374,8 +388,8 @@
                         this.goodsInfo.singleGood.picture = utils.imgDetail(this.goodsInfo.singleGood.pictures[0])
                     })
                 } else {
-                    this.goodsInfo.cartGoodsId = JSON.parse(localStorage.getItem('cartGoodsId'))
-                    this.goodsInfo.collection = JSON.parse(localStorage.getItem('collection'))
+                    this.goodsInfo.cartGoodsId = utils.localstorageGetData('cartGoodsId')
+                    this.goodsInfo.collection = utils.localstorageGetData('collection')
                     ajax.postDataToApi({
                         url: `/v1/shopping-cart/settlements`,
                         body: { id: this.goodsInfo.cartGoodsId }
@@ -439,9 +453,21 @@
                         url: `/v1/user-center/${utils.localstorageGetData('userInfo').userId}`
                     }, response => {
                         this.memberInfo = response.data.body.list
+                        if(this.memberInfo.balance * 100 < this.totalPrice * 100) {
+                            this.errTip.isShow = true
+                            this.errTip.text = '您的余额不足'
+                            this.errTip.isRecharge = true
+                            if(this.canSubmitOrderFlag){
+                              this.canSubmitOrderFlag = false
+                            }
+                        }
                     }, err => {
 
                     })
+            },
+            //  余额不足去充值
+            gotoRecharge() {
+                  window.location.href = '/#/site/member-recharge'
             },
             //验证方法
             //验证focus
@@ -509,7 +535,7 @@
                     if (this.receiptway.expressDelivery) {
                         if (this.goodsInfo.buyWay !== "cart") {
                             let postData = {
-                                store_code: utils.sessionstorageGetData('naberStore').store_id,
+                                store_code: utils.sessionstorageGetData('naberStore') && utils.sessionstorageGetData('naberStore').store_id,
                                 profile_id: this.goodsInfo.selectedSpecGood.id,
                                 address_id: this.userInfo.defalutAddress.id,
                                 date: this.appointTime.selectedDate,
@@ -517,6 +543,9 @@
                                 pay_method: 'WAIT',
                                 user_comment: this.formData.addressMessage,
                                 amount: this.goodsInfo.selectedSpecGood.count
+                            }
+                            if (this.payWay === 'member') {
+                                postData.pay_method = 'balance'
                             }
                             // 直接购买商品跳转页面
                             if (this.goodsInfo.buyWay === "purchase") {
@@ -532,7 +561,7 @@
                             }
                         } else {
                             let postData = {
-                                store_code: utils.sessionstorageGetData('naberStore').store_id,
+                                store_code: utils.sessionstorageGetData('naberStore') && utils.sessionstorageGetData('naberStore').store_id,
                                 card_number: 80000000,
                                 collection: this.goodsInfo.cartGoodsId,
                                 address_id: this.userInfo.defalutAddress.id,
@@ -541,6 +570,9 @@
                                 pay_method: 'WAIT',
                                 user_comment: this.formData.addressMessage
                             }
+                            if (this.payWay === 'member') {
+                                postData.pay_method = 'balance'
+                            }
                             // 购物车购买跳转页面
                             this.postSubmitMethod('/v1/order/default', postData, (response) => {
                                 if (response.data.body.length > 1) {
@@ -548,9 +580,9 @@
                                     this.errTip.isWarn = true
                                     this.errTip.text = '由于您购买的商品中含有预约类商品，我们将分拆成两个订单您需要单独支付，未支付的订单将不予支付，感谢您的配合~'
                                     window.setTimeout(() => {
-                                      this.errTip.isShow = false
-                                      location.href = `/#/site/my-order`
-                                    },3000)
+                                        this.errTip.isShow = false
+                                        location.href = `/#/site/my-order`
+                                    }, 3000)
                                 } else {
                                     location.href = `/#/site/order-pay/${response.data.body[0].id}`
                                 }
@@ -562,7 +594,7 @@
                         if (this.formData.name !== '' && this.formData.telphone !== '') {
                             if (this.goodsInfo.buyWay !== "cart") {
                                 let postData = {
-                                    store_code: utils.sessionstorageGetData('naberStore').store_id,
+                                    store_code: utils.sessionstorageGetData('naberStore') && utils.sessionstorageGetData('naberStore').store_id,
                                     profile_id: this.goodsInfo.selectedSpecGood.id,
                                     offline_store: this.store.selectedStore.id,
                                     custom_name: this.formData.name,
@@ -572,6 +604,9 @@
                                     pay_method: 'WAIT',
                                     user_comment: this.formData.addressMessage,
                                     amount: this.goodsInfo.selectedSpecGood.count
+                                }
+                                if (this.payWay === 'member') {
+                                    postData.pay_method = 'balance'
                                 }
                                 if (this.goodsInfo.buyWay === "purchase") {
                                     this.postSubmitMethod('/v1/goods/self-pick', postData, (response) => {
@@ -585,7 +620,7 @@
                                 }
                             } else {
                                 let postData = {
-                                    store_code: utils.sessionstorageGetData('naberStore').store_id,
+                                    store_code: utils.sessionstorageGetData('naberStore') && utils.sessionstorageGetData('naberStore').store_id,
                                     collection: this.goodsInfo.cartGoodsId,
                                     offline_store: this.store.selectedStore.id,
                                     custom_name: this.formData.name,
@@ -594,6 +629,9 @@
                                     time: this.appointTime.selectedTime,
                                     pay_method: 'WAIT',
                                     user_comment: this.formData.addressMessage
+                                }
+                                if (this.payWay === 'member') {
+                                    postData.pay_method = 'balance'
                                 }
                                 this.postSubmitMethod('/v1/order/self-pick', postData, (response) => {
                                     location.href = `/#/site/order-pay/${response.data.body.id}`

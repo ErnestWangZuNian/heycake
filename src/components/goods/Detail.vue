@@ -118,12 +118,12 @@
                         </div>
                         <div class="tip fl">（剩余{{selectedSpec.stock}}个）</div>
                     </div>
-                    <button class="confirm-spec" type="submit" :disabled="selectedSpec.stock <= 0  && goodInfo.product_type !== 3" v-if="specStatus.specWay==='cart'" @click="confirmJoinCart(goodInfo.id,selectedSpec.id,goodCount)"
-                        :class="{'disabled-spec': selectedSpec.stock <= 0 && goodInfo.product_type !== 3}">
+                    <button class="confirm-spec" type="submit" :disabled="selectedSpec.stock <= 0  && goodInfo.product_type !== 3" v-if="specStatus.specWay==='cart'"
+                        @click="confirmJoinCart(goodInfo.id,selectedSpec.id,goodCount)" :class="{'disabled-spec': selectedSpec.stock <= 0 && goodInfo.product_type !== 3}">
                         加入购物车
                     </button>
-                    <button class="confirm-spec" type="submit" v-if="specStatus.specWay==='purchase'" :disabled="selectedSpec.stock <= 0 && goodInfo.product_type !== 3" :class="{'disabled-spec': selectedSpec.stock <= 0 && goodInfo.product_type !== 3}"
-                        @click="confirmPurchase">
+                    <button class="confirm-spec" type="submit" v-if="specStatus.specWay==='purchase'" :disabled="selectedSpec.stock <= 0 && goodInfo.product_type !== 3"
+                        :class="{'disabled-spec': selectedSpec.stock <= 0 && goodInfo.product_type !== 3}" @click="confirmPurchase">
                         去结算
                     </button>
                     <button class="confirm-spec" type="submit" v-if="specStatus.specWay==='scoreChange'" :disabled="selectedSpec.stock <= 0 && goodInfo.product_type !== 3"
@@ -210,7 +210,7 @@
                 ajax.getDataFromApi({
                     url: `/v1/goods/${this.$route.params.id}`,
                     data: {
-                        store_code: utils.sessionstorageGetData('naberStore').store_id
+                        store_code: utils.sessionstorageGetData('naberStore') && utils.sessionstorageGetData('naberStore').store_id
                     }
                 }, (response) => {
                     this.loading = false
@@ -369,10 +369,23 @@
             closeSpec() {
                 this.specStatus.isSelectSpec = false
             },
+            // 判断是不是蛋糕和是否附近有门店
+            judgeCakeAddress() {
+                let isCake = utils.localstorageGetData('isCake')
+                let storeCode = utils.sessionstorageGetData('naberStore') && utils.sessionstorageGetData('naberStore').store_id
+                let flag = false
+                if (!isCake && storeCode === '') {
+                    this.errTip.isShow = true
+                    this.errTip.test = '您选择的商品附件没有门店选择，请去首页更改您的定位地址'
+                    flag = true
+                }
+                return flag
+            },
             //确认加入购物车
             confirmJoinCart(goodId, specId, goodCount) {
                 let flag = this.judge()
-                if (flag) {
+                let isCake = this.judgeCakeAddress()
+                if (flag && !isCake) {
                     ajax.postDataToApi({
                         url: '/v1/shopping-cart',
                         body: {
@@ -395,16 +408,19 @@
             //  确认去结算
             confirmPurchase() {
                 let flag = this.judge()
-                if (flag) {
-                    localStorage.setItem('buyWay', 'purchase')
-                    localStorage.setItem('purchaseGood', JSON.stringify(this.selectedSpec))
-                    localStorage.setItem('count', this.goodCount)
+                let isCake = this.judgeCakeAddress()
+                if (!isCake && flag) {
+                    utils.localstorageData('buyWay', 'purchase')
+                    utils.localstorageData('purchaseGood', this.selectedSpec)
+                    utils.localstorageData('count', this.goodCount)
                     location.href = `/#/site/order-submit/${this.goodInfo.id}`
                 }
+
             },
             // 确认立即兑换
             confirmScoreChange() {
                 let flag = this.judge()
+                let isCake = this.judgeCakeAddress()
                 let scoreFlag = false
                 if (this.selectedSpec.score > this.scoreInfo.total) {
                     this.errTip.isShow = true
@@ -412,10 +428,10 @@
                 } else {
                     scoreFlag = true
                 }
-                if (flag && scoreFlag) {
-                    localStorage.setItem('buyWay', 'score')
-                    localStorage.setItem('purchaseGood', JSON.stringify(this.selectedSpec))
-                    localStorage.setItem('count', this.goodCount)
+                if (flag && scoreFlag && !isCake) {
+                    utils.localstorageData('buyWay', 'score')
+                    utils.localstorageData('purchaseGood', this.selectedSpec)
+                    utils.localstorageData('count', this.goodCount)
                     location.href = `/#/site/order-submit/${this.goodInfo.id}`
                 }
             },

@@ -12,7 +12,7 @@
         <div class="pay-title">支付选择：</div>
       </div>
       <div class="order-pay-grid">
-        <div class="grid-cell" :class="{'border-red':flag.isWX}" @click="wxClick()">
+        <div class="grid-cell" :class="{'border-red':flag.isWX}"  @click="wxClick()">
           <div class="pay-img"><img src="../../assets/img/icon_wechart.png">微信支付</div>
         </div>
         <div class="grid-cell" :class="{'border-red':flag.isZFB}" @click="zfbClick()">
@@ -24,19 +24,19 @@
     </div>
      <!-- 支付宝提交-->
      <form id="payForm"  action="https://mapi.alipay.com/gateway.do" method="get">
-        <input name="body" v-model="item.body" />
-        <input name="notify_url" v-model="item.notify_url" />
-        <input name="out_trade_no" v-model="item.out_trade_no" />
-        <input name="partner" v-model="item.partner" />
-        <input name="payment_type" v-model="item.payment_type" />
-        <input name="return_url" v-model="item.return_url" />
-        <input name="seller_id" v-model="item.seller_id" />
-        <input name="service" v-model="item.service" />
-        <input name="sign" v-model="item.sign" />
-        <input name="sign_type" v-model="item.sign_type" />
-        <input name="_input_charset" v-model="item._input_charset" />
-        <input name="subject" v-model="item.subject" />
-        <input name="total_fee" v-model="item.total_fee" />
+        <input name="body"  type="hidden"   :value="item.body"/>
+        <input name="notify_url" type="hidden" :value="item.notify_url" />
+        <input name="out_trade_no" type="hidden"  :value="item.out_trade_no"/>
+        <input name="partner" type="hidden" :value="item.partner"/>
+        <input name="payment_type" type="hidden" :value="item.payment_type"/>
+        <input name="return_url" type="hidden"  :value="item.return_url"/>
+        <input name="seller_id" type="hidden"  :value="item.seller_id"/>
+        <input name="service" type="hidden" :value="item.service"/>
+        <input name="sign" type="hidden" :value="item.sign"/>
+        <input name="sign_type" type="hidden" :value="item.sign_type"/>
+        <input name="_input_charset" type="hidden" :value="item._input_charset"/>
+        <input name="subject" type="hidden" :value="item.subject"/>
+        <input name="total_fee" type="hidden" :value="item.total_fee"/>
     </form>
   </div>
 </template>
@@ -55,7 +55,7 @@
       Modal
     },
     mounted () {
-      this.isLoginMethod()
+      this.isLoginMethod();
     },
     data () {
       return {
@@ -108,16 +108,16 @@
         this.flag.isZFB = true
         this.flag.isWX = false
         this.payUrl = `/v1/payment-gateway/front/alipay/${this.listData.order_number}`
+        ajax.postDataToApi({
+          url:this.payUrl
+        },(response)=>{
+          this.item = response.data.body
+        })
 //          /v1/payment-gateway/front/alipay/242000171
       },
 //      去支付
       payMethod(){
-        ajax.postDataToApi({
-          url:this.payUrl || `/wx/order/${this.listData.order_number}`,
-        },(response)=>{
-          this.item = response.data.body
-          document.getElementById('payForm').submit()
-        })
+        document.getElementById('payForm').submit()
       },
     },
   }

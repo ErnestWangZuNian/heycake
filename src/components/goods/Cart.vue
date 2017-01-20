@@ -159,7 +159,7 @@ export default {
           collection: collection
         }
       },(response) => {
-         utils.arrayDelete(this.cartList,item)
+         this.fetchData()
       })
     },
     //  结算
@@ -177,9 +177,9 @@ export default {
         url: `/v1/shopping-cart/settlements`,
         body: {id: id}
       },(response) => {
-        localStorage.setItem('cartGoodsId', JSON.stringify(id))
-        localStorage.setItem('collection', JSON.stringify(collection))
-        localStorage.setItem('buyWay','cart')
+        utils.localstorageData('cartGoodsId',id)
+        utils.localstorageData('collection',collection)
+        utils.localstorageData('buyWay','cart')
         location.href = `/#/site/order-submit/`
       })
     }
