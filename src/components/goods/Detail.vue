@@ -116,7 +116,7 @@
                             <input type="text" class="fl" v-model="goodCount" @input="inputCount">
                             <button type="button" class="fl" @click="addCount">+</button>
                         </div>
-                        <div class="tip fl">（剩余{{selectedSpec.stock}}个）</div>
+                        <div class="tip fl" v-if="goodInfo.erp_product_type !== 1">（剩余{{selectedSpec.stock | stock }}个）</div>
                     </div>
                     <button class="confirm-spec" type="submit" :disabled="selectedSpec.stock <= 0  && goodInfo.product_type !== 3" v-if="specStatus.specWay==='cart'"
                         @click="confirmJoinCart(goodInfo.id,selectedSpec.id,goodCount)" :class="{'disabled-spec': selectedSpec.stock <= 0 && goodInfo.product_type !== 3}">
@@ -142,7 +142,7 @@
                     </div>
                     <div class="modal-test">{{errTip.test}}</div>
                 </div>
-                <div class="modal-error-tip">
+                <div class="modal-error-tip" v-if="errTip.login === false">
                     <div class="modal-img">
                         <img :src="errTip.url" alt="">
                     </div>
@@ -360,7 +360,7 @@
                 this.specStatus.specWay = 'scoreChange'
                 //  获取用户积分信息
                 ajax.getDataFromApi({
-                    url: '/v1/user-center'
+                    url: `/v1/user-center/${utils.localstorageGetData('userInfo').userId && utils.localstorageGetData('userInfo').userId}`
                 }, (response) => {
                     this.scoreInfo = response.data.body.list
                 })
@@ -413,6 +413,7 @@
                     utils.localstorageData('buyWay', 'purchase')
                     utils.localstorageData('purchaseGood', this.selectedSpec)
                     utils.localstorageData('count', this.goodCount)
+                    utils.localstorageData('orderId', this.goodInfo.id)
                     location.href = `/#/site/order-submit/${this.goodInfo.id}`
                 }
 
@@ -422,9 +423,10 @@
                 let flag = this.judge()
                 let isCake = this.judgeCakeAddress()
                 let scoreFlag = false
-                if (this.selectedSpec.score > this.scoreInfo.total) {
+                if (this.selectedSpec.score > this.scoreInfo.score) {
                     this.errTip.isShow = true
                     this.errTip.test = "您的积分不足！"
+                    this.specStatus.isSelectSpec = false
                 } else {
                     scoreFlag = true
                 }
@@ -432,6 +434,7 @@
                     utils.localstorageData('buyWay', 'score')
                     utils.localstorageData('purchaseGood', this.selectedSpec)
                     utils.localstorageData('count', this.goodCount)
+                    utils.localstorageData('orderId', this.goodInfo.id)
                     location.href = `/#/site/order-submit/${this.goodInfo.id}`
                 }
             },
@@ -442,6 +445,7 @@
                     this.specStatus.isSelectSpec = false,
                         this.errTip.isShow = true
                     this.errTip.test = "请先登录！"
+                    this.errTip.login = true
                 } else if (utils.isEmptyObject(this.selectedSpec)) {
                     this.specStatus.isSelectSpec = false,
                         this.errTip.isShow = true
@@ -461,6 +465,9 @@
             },
             //  关闭错误提示框
             errTipClose() {
+                if (this.errTip.login) {
+                    this.errTip.login = false
+                }
                 this.errTip.isShow = false
             },
             // 增加数量

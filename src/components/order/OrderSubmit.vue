@@ -9,21 +9,20 @@
 
             <!--快递配送信息-->
             <div class="order-info" v-if="receiptway.expressDelivery">
-                <div class="label-list" v-if="userInfo.address.length > 0">
+                <div class="label-list" v-if="isMyAddress===false">
                     <div class="fl info">
                         <section>
                             <div class="icon icon-name"></div>
-                            <div class="text">{{userInfo.defalutAddress.name}}</div>
+                            <div class="text"><input type="text" placeholder="您的姓名"></div>
                         </section>
 
                         <section>
                             <div class="icon icon-tel"></div>
-                            <div class="text">{{userInfo.defalutAddress.tel_phone}}</div>
+                            <div class="text"><input type="text" placeholder="配送员联系您的方式"></div>
                         </section>
-
                         <section>
                             <div class="icon icon-addr"></div>
-                            <div class="text"><span>[默认]</span>{{userInfo.defalutAddress.detail_area}}</div>
+                            <div class="text"><span>[已选择地址]</span>{{userInfo.checkedAddress}}</div>
                         </section>
                     </div>
                     <router-link to="/site/my-address">
@@ -33,12 +32,27 @@
                     </router-link>
                     <div class="cf"></div>
                 </div>
-                <router-link v-if="userInfo.address.length <= 0" to="/site/add-address">
-                    <div class="none-address">
+                <div class="label-list" v-if="isMyAddress">
+                    <div class="fl info">
+                        <section>
+                            <div class="icon icon-name"></div>
+                            <div class="text">{{userInfo.name}}</div>
+                        </section>
 
-                        还没有地址，前去新增地址
+                        <section>
+                            <div class="icon icon-tel"></div>
+                            <div class="text">{{userInfo.telphone}}</div>
+                        </section>
+                        <section>
+                            <div class="icon icon-addr"></div>
+                            <div class="text"><span>[已选择地址]</span>{{userInfo.checkedAddress}}</div>
+                        </section>
                     </div>
-                </router-link>
+                    <div class="fl arrow" @click="editMethod(userInfo.myAddressId)">
+                        <div class="icon-right"></div>
+                    </div>
+                    <div class="cf"></div>
+                </div>
                 <div class="label-message">
                     留言 <input class="inputs" type="text" v-model="formData.addressMessage" placeholder="备注信息">
                 </div>
@@ -93,7 +107,8 @@
             <div class="order-times">
                 <div class="title">预约时间</div>
                 <div class="times">
-                    <span class="inputs"  @click="openTimeShow">  {{appointTime.selectedDate}}</span>  - <span class="inputs" @click="openTimeShow">{{appointTime.selectedTime}}</span>
+                    <span class="inputs" @click="openTimeShow">  {{appointTime.selectedDate}}</span> - <span class="inputs"
+                        @click="openTimeShow">{{appointTime.selectedTime}}</span>
                 </div>
             </div>
             <!--分隔-->
@@ -112,7 +127,7 @@
                             <p>{{this.goodsInfo.selectedSpecGood.value | spec}}</p>
                         </div>
                         <div class="price">
-                            <p v-if="goodsInfo.buyWay !== 'score'">{{this.goodsInfo.selectedSpecGood.price | price}}</p>
+                            <p v-if="goodsInfo.buyWay !== 'score'">{{this.goodsInfo.selectedSpecGood.price | detailPrice}}</p>
                             <p v-if="goodsInfo.buyWay === 'score'">{{this.goodsInfo.selectedSpecGood.score}}积分</p>
                             <p class="mrg"><span>x{{goodsInfo.selectedSpecGood.count}}</span></p>
                         </div>
@@ -144,17 +159,23 @@
             <!--支付方式-->
             <div class="order-pay">
                 <div class="title">支付方式</div>
-                <div>
+                <div v-if="goodsInfo.buyWay === 'score'">
+                    <div class="selected" :class="[payWay==='online' ? 'selected1' : 'selected']" @click="onlinePayWay"></div>
+                    <div class="text">积分兑换</div>
+                </div>
+                <div v-if="goodsInfo.buyWay !== 'score'">
                     <div class="selected" :class="[payWay==='online' ? 'selected1' : 'selected']" @click="onlinePayWay"></div>
                     <div class="text">在线支付</div>
                     <div class="selected" :class="[payWay==='member' ? 'selected1' : 'selected']" @click="memberPayWay"></div>
-                    <div class="text">会员卡余额支付支付</div>
+                    <div class="text">会员卡余额支付</div>
                 </div>
             </div>
             <div class="member-info" v-if="payWay==='member'">
-                <label for="member-password" v-if="goodsInfo.buyWay !== 'score'">余额{{memberInfo.balance | price}}</label>
+                <label for="member-password" v-if="goodsInfo.buyWay !== 'score'">余额{{memberInfo.balance | detailPrice}}</label>
                 <label for="member-password" v-if="goodsInfo.buyWay === 'score'">积分{{memberInfo.score}}</label>
-                <input type="text" placeholder="请输入您的登录密码" name="password">
+                <input type="password" placeholder="请输入您的登录密码" name="password" v-model="memberUser.password">
+                <button class="btn" @click="memberLogin" v-if="memberUser.status === false">登录</button>
+                <button class="btn" @click="memberLogin" :disabled="memberUser.status === true" v-if="memberUser.status === true">已登录</button>
             </div>
             <!--//空白-->
             <div class="order-null"></div>
@@ -210,6 +231,19 @@
         },
         mounted() {
             this.fetchData()
+            // 判断是自己的地址还是定位的地址
+            this.isMyAddress = utils.sessionstorageGetData('isMyAddress')
+            if (this.isMyAddress) {
+                this.userInfo.name = utils.sessionstorageGetData('checkedMyAddress').name
+                this.userInfo.telphone = utils.sessionstorageGetData('checkedMyAddress').tel_phone
+                this.userInfo.myAddressId = utils.sessionstorageGetData('checkedMyAddress').id
+                this.userInfo.checkedAddress = utils.sessionstorageGetData('checkedMyAddress').detail_area
+            } else {
+                this.userInfo.name = ""
+                this.userInfo.telphone = ""
+                this.userInfo.myAddressId = ""
+                this.userInfo.checkedAddress = utils.sessionstorageGetData('checkedAddress').name
+            }
         },
         data() {
             return {
@@ -229,6 +263,10 @@
                     selectedDate: '预约日期'
                 },
                 payWay: 'online',
+                memberUser: {
+                    password: '',
+                    status: false
+                },
                 receiptway: {
                     expressDelivery: true,
                     expressHiglight: true,
@@ -242,7 +280,11 @@
                 },
                 userInfo: {
                     defalutAddress: {},
-                    address: []
+                    address: [],
+                    checkedAddress: '',
+                    name: '',
+                    telphone: '',
+                    myAddressId: ''
                 },
                 goodsInfo: {
                     buyWay: 'purchase',
@@ -252,6 +294,7 @@
                     collection: [],
                     selectedCartGoods: []
                 },
+                isMyAddress: false,
                 memberInfo: {},
                 formData: {
                     name: '',
@@ -302,7 +345,7 @@
                 } else {
                     flag = true
                 }
-                if(!this.canSubmitOrderFlag) {
+                if (!this.canSubmitOrderFlag) {
                     flag = false
                 } else {
                     flag = true
@@ -368,11 +411,11 @@
             //  关闭错误提示框
             errTipClose() {
                 this.errTip.isShow = false
-                if(!this.canSubmitOrderFlag) {
+                if (!this.canSubmitOrderFlag) {
                     this.canSubmitOrderFlag = true
                 }
-                if(this.errTip.isRecharge) {
-                   this.errTip.isRecharge = false
+                if (this.errTip.isRecharge) {
+                    this.errTip.isRecharge = false
                 }
             },
             // 根据localstorage中信息判断单子的来源
@@ -453,21 +496,49 @@
                         url: `/v1/user-center/${utils.localstorageGetData('userInfo').userId}`
                     }, response => {
                         this.memberInfo = response.data.body.list
-                        if(this.memberInfo.balance * 100 < this.totalPrice * 100) {
+                        if (this.memberInfo.balance * 100 < this.totalPrice * 100) {
                             this.errTip.isShow = true
                             this.errTip.text = '您的余额不足'
                             this.errTip.isRecharge = true
-                            if(this.canSubmitOrderFlag){
-                              this.canSubmitOrderFlag = false
+                            if (this.canSubmitOrderFlag) {
+                                this.canSubmitOrderFlag = false
                             }
                         }
                     }, err => {
 
                     })
             },
+            //  会员登录
+            memberLogin() {
+                if (this.memberUser.password !== '') {
+                    ajax.postDataToApi({
+                        url: '/v1/authentication/password',
+                        body: {
+                            password: this.memberUser.password
+                        }
+                    }, response => {
+                        this.memberUser.status = response.data.body
+                    }, err => {
+                        if (err.data.code === '200010') {
+                            this.errTip.isShow = true
+                            this.errTip.text = '您的密码错误'
+                            this.errTip.isWarn = true
+                            this.memberUser.password = ''
+                        }
+                    })
+                } else {
+                    this.errTip.isShow = true
+                    this.errTip.text = '您还没有输入会员登录密码'
+                    this.errTip.isWarn = true
+                }
+            },
             //  余额不足去充值
             gotoRecharge() {
-                  window.location.href = '/#/site/member-recharge'
+                window.location.href = '/#/site/member-recharge'
+            },
+            //编辑地址方法
+            editMethod(id) {
+                location.href = `/#/site/edit-address/${id}`
             },
             //验证方法
             //验证focus
@@ -544,13 +615,36 @@
                                 user_comment: this.formData.addressMessage,
                                 amount: this.goodsInfo.selectedSpecGood.count
                             }
+                            if (this.isMyAddress) {
+                                postData.address_id = this.userInfo.myAddressId
+                            } else {
+                                postData.address_id = this.userInfo.defalutAddress.id
+                            }
                             if (this.payWay === 'member') {
                                 postData.pay_method = 'balance'
+                                postData.member_id = utils.localstorageGetData('userInfo').userId && utils.localstorageGetData('userInfo').userId
+                                if (!this.memberUser.status) {
+                                    this.errTip.isShow = true
+                                    this.errTip.text = '您还没有输入会员登录密码'
+                                    this.errTip.isWarn = true
+                                }
                             }
                             // 直接购买商品跳转页面
                             if (this.goodsInfo.buyWay === "purchase") {
                                 this.postSubmitMethod('/v1/goods/default', postData, (response) => {
-                                    location.href = `/#/site/order-pay/${response.data.body.id}`
+                                    if (this.payWay === 'member') {
+                                        ajax.postDataToApi({
+                                            url: '/v1/balance-pay',
+                                            body: {
+                                                order_number: response.data.body.order_number,
+                                                member_id: utils.localstorageGetData('userInfo').userId && utils.localstorageGetData('userInfo').userId
+                                            }
+                                        }, response => {
+                                            console.log('支付成功')
+                                        })
+                                    } else {
+                                        location.href = `/#/site/order-pay/${response.data.body.id}`
+                                    }
                                 })
                             }
                             // 积分商品跳转页面
@@ -562,7 +656,6 @@
                         } else {
                             let postData = {
                                 store_code: utils.sessionstorageGetData('naberStore') && utils.sessionstorageGetData('naberStore').store_id,
-                                card_number: 80000000,
                                 collection: this.goodsInfo.cartGoodsId,
                                 address_id: this.userInfo.defalutAddress.id,
                                 date: this.appointTime.selectedDate,
@@ -570,8 +663,19 @@
                                 pay_method: 'WAIT',
                                 user_comment: this.formData.addressMessage
                             }
+                            if (this.isMyAddress) {
+                                postData.address_id = this.userInfo.myAddressId
+                            } else {
+                                postData.address_id = this.userInfo.defalutAddress.id
+                            }
                             if (this.payWay === 'member') {
                                 postData.pay_method = 'balance'
+                                postData.member_id = utils.localstorageGetData('userInfo').userId && utils.localstorageGetData('userInfo').userId
+                                if (!this.memberUser.status) {
+                                    this.errTip.isShow = true
+                                    this.errTip.text = '您还没有输入会员登录密码'
+                                    this.errTip.isWarn = true
+                                }
                             }
                             // 购物车购买跳转页面
                             this.postSubmitMethod('/v1/order/default', postData, (response) => {
@@ -607,6 +711,12 @@
                                 }
                                 if (this.payWay === 'member') {
                                     postData.pay_method = 'balance'
+                                    postData.member_id = utils.localstorageGetData('userInfo').userId && utils.localstorageGetData('userInfo').userId
+                                    if (!this.memberUser.status) {
+                                        this.errTip.isShow = true
+                                        this.errTip.text = '您还没有输入会员登录密码'
+                                        this.errTip.isWarn = true
+                                    }
                                 }
                                 if (this.goodsInfo.buyWay === "purchase") {
                                     this.postSubmitMethod('/v1/goods/self-pick', postData, (response) => {
@@ -630,8 +740,19 @@
                                     pay_method: 'WAIT',
                                     user_comment: this.formData.addressMessage
                                 }
+                                if (this.isMyAddress) {
+                                    postData.address_id = this.userInfo.myAddressId
+                                } else {
+                                    postData.address_id = this.userInfo.defalutAddress.id
+                                }
                                 if (this.payWay === 'member') {
                                     postData.pay_method = 'balance'
+                                    postData.member_id = utils.localstorageGetData('userInfo').userId && utils.localstorageGetData('userInfo').userId
+                                    if (!this.memberUser.status) {
+                                        this.errTip.isShow = true
+                                        this.errTip.text = '您还没有输入会员登录密码'
+                                        this.errTip.isWarn = true
+                                    }
                                 }
                                 this.postSubmitMethod('/v1/order/self-pick', postData, (response) => {
                                     location.href = `/#/site/order-pay/${response.data.body.id}`

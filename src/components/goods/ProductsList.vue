@@ -21,12 +21,12 @@
       <div class="index-nav index-nav5">
         <ul class="cf">
           <keep-alive>
-          <router-link to="index">
-            <li class="nav-list">
-              <i class="icon icon0"></i>
-              <p>首页</p>
-            </li>
-          </router-link>
+            <router-link to="index">
+              <li class="nav-list">
+                <i class="icon icon0"></i>
+                <p>首页</p>
+              </li>
+            </router-link>
           </keep-alive>
           <router-link to="products-list">
             <li class="nav-list">
@@ -73,7 +73,7 @@
             <dt>{{item.category}}</dt>
             <dd>
               <ul>
-                <li class="cf" v-for="el in item.goodList" @click="gotoDetail(el.id)">
+                <li class="cf" v-for="el in item.goodList" @click="gotoDetail(el)">
                   <img :src="el.picture">
                   <div>
                     <h3>{{el.english_name}}</h3>
@@ -117,6 +117,7 @@
         list: [0],
         topStatus: '',
         goodInfo: [],
+        allGoodInfo: [],
         banner: [],
         category: {
           value: [],
@@ -139,18 +140,18 @@
       fetchData() {
         this.loading = true
         ajax.getDataFromApi({
-            url: `/v1/goods/`,
-            data: {
-              store_code: utils.sessionstorageGetData('naberStore') && utils.sessionstorageGetData('naberStore').store_id
-            }
-          }, (response) => {
-            let data = response.data.body.list.map(utils.imgDetail)
-            this.loading = false
-            this.page.total = response.data.body.pagination.total
-            this.text.loding = "上拉刷新"
-            this.modifyData(data)
-          })
-          //      获取轮播图
+          url: `/v1/goods/`,
+          data: {
+            store_code: utils.sessionstorageGetData('naberStore') && utils.sessionstorageGetData('naberStore').store_id
+          }
+        }, (response) => {
+          let data = response.data.body.list.map(utils.imgDetail)
+          this.loading = false
+          this.page.total = response.data.body.pagination.total
+          this.text.loding = "上拉刷新"
+          this.modifyData(data)
+        })
+        //      获取轮播图
         ajax.getDataFromApi({
           url: '/v1/banner',
         }, (response) => {
@@ -186,12 +187,13 @@
             }
           })
         })
+        this.allGoodInfo = this.allGoodInfo.concat(this.goodInfo)
       },
       //    下拉刷洗数据
       loadTop() {
         if (this.page.currentPage < this.page.total) {
           this.page.currentPage++
-            this.fetchData(this.page.currentPage)
+          this.fetchData(this.page.currentPage)
         } else {
           this.text.loding = "没有更多数据了！"
         }
@@ -208,10 +210,29 @@
         this.category.seleted = item.val
         this.category.status = false
         item.selected = true
+        if (item.val === '全部') {
+          this.goodInfo = []
+          this.goodInfo = this.goodInfo.concat(this.allGoodInfo)
+        } else {
+          this.allGoodInfo.forEach(val => {
+            if (val.category === item.val) {
+              this.goodInfo = []
+              this.goodInfo.push({
+                goodList: val.goodList,
+                category: val.category
+              })
+            }
+          })
+        }
       },
       //    跳转到详情
-      gotoDetail(id) {
-        location.href = `/#/site/detail/${id}`
+      gotoDetail(item) {
+        if (item.product_type === 3) {
+          utils.localstorageData('isCake', true)
+        } else {
+          utils.localstorageData('isCake', false)
+        }
+        location.href = `/#/site/detail/${item.id}`
       }
     }
   }

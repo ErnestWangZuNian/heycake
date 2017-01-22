@@ -8,7 +8,7 @@
             <label>收货地址：</label>
             <span @click="openAddress">{{address.isChecked  ? address.checked.name : address.checkedText}}</span>
           </div>
-           <div class='err-class' v-if="validator.detailArea.errIsShow">{{validator.detailArea.errText}}</div>
+          <div class='err-class' v-if="validator.detailArea.errIsShow">{{validator.detailArea.errText}}</div>
           <div class="input-line">
             <label for="name">联系人：</label>
             <input type="text" name="name" placeholder="您的姓名" v-model="formData.name" @focus="focusMethod('name')" @blur="blurMethod('name')">
@@ -145,10 +145,10 @@
             this.getListData(this.thisId)
           }
           this.loading = false
-            //判断数据是否加载完成
-            //          if(this.flag.isCity && this.flag.isCounty){
-            //            this.loading = false
-            //          }
+          //判断数据是否加载完成
+          //          if(this.flag.isCity && this.flag.isCounty){
+          //            this.loading = false
+          //          }
         } else {
           MessageBox.alert('未登录').then(action => {
             location.href = '/#/site/login'
@@ -204,8 +204,8 @@
         let types = '银行|学校|小区|建筑|公司'
         let city = '重庆'
         Vue.http.get(
-            `http://restapi.amap.com/v3/assistant/inputtips?key=${key}&keywords=${keywords}&types=${types}&city=${city}`
-          )
+          `http://restapi.amap.com/v3/assistant/inputtips?key=${key}&keywords=${keywords}&types=${types}&city=${city}`
+        )
           .then(response => {
             this.address.search = response.data.tips
           })
@@ -239,7 +239,17 @@
               url: `/v1/my-address/${this.formData.id}`,
               body: this.formData
             }, (response) => {
-              location.href = '/#/site/my-address'
+              ajax.getDataFromApi({
+                url: `/v1/my-address/${this.formData.id}`
+              }, response => {
+                let address = response.data.body
+                utils.sessionstorageData('checkedMyAddress', address)
+                if (utils.localstorageGetData('buyWay') !== 'cart') {
+                  location.href = `/#/site/order-submit/${utils.localstorageGetData('orderId')}`
+                } else {
+                  location.href = `/#/site/order-submit`
+                }
+              })
             })
           } else {
             //新增地址，保存
@@ -247,7 +257,11 @@
               url: '/v1/my-address',
               body: this.formData,
             }, (response) => {
-              location.href = '/#/site/my-address'
+              if (utils.localstorageGetData('buyWay') !== 'cart') {
+                location.href = `/#/site/order-submit/${utils.localstorageGetData('orderId')}`
+              } else {
+                location.href = `/#/site/order-submit`
+              }
             })
           }
         } else {

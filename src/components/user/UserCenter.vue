@@ -22,7 +22,7 @@
               </div>
               <div class="content-list">
                 <p>余额</p>
-                <p>{{userInfo.balance | price}}</p>
+                <p>{{userInfo.balance | detailPrice}}</p>
               </div>
               <div class="content-list tex">
                 <p>积分</p>

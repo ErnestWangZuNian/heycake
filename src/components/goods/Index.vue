@@ -102,7 +102,7 @@
             <div class="address narbar-address" v-if="address.myAddressIsShow">
               <p class="title">我的收货地址</p>
               <ul>
-                <li class="list" @click="changeArea(item)" v-for="item in address.myAddress">{{item.detail_area}}<span class="area">{{item.county_name}}</span></li>
+                <li class="list" @click="changeArea(item,true)" v-for="item in address.myAddress">{{item.detail_area}}<span class="area">{{item.county_name}}</span></li>
               </ul>
             </div>
             <div class="address narbar-address">
@@ -184,14 +184,14 @@
     mounted() {
       this.fetchData()
       if (utils.sessionstorageGetData('isLocationSuccess')) {
-            this.address.checked = utils.sessionstorageGetData('checkedAddress')
-            this.naberStore = utils.sessionstorageGetData('allNavberStore')
-            this.address.around = utils.sessionstorageGetData('aroundAddress')
-            this.address.current = utils.sessionstorageGetData('currentAddress')
+        this.address.checked = utils.sessionstorageGetData('checkedAddress')
+        this.naberStore = utils.sessionstorageGetData('allNavberStore')
+        this.address.around = utils.sessionstorageGetData('aroundAddress')
+        this.address.current = utils.sessionstorageGetData('currentAddress')
       } else {
         this.getCurrentPoistion()
-        this.getMyAddress()
       }
+      this.getMyAddress()
       // 全局设置组件加载
       Vue.http.interceptors.push((request, next) => {
         if (this.loading) {
@@ -233,7 +233,7 @@
           let lnglatY = data.position.getLat()
           self.address.current = data.addressComponent
           self.location.lnglatXY = [lnglatX, lnglatY]
-          utils.sessionstorageData('isLocationSuccess',true)
+          utils.sessionstorageData('isLocationSuccess', true)
           self.getNaberAddres(self.location.lnglatXY)
           self.getNaberStore(self.location.lnglatXY.join(","))
         }
@@ -268,10 +268,10 @@
       },
       //    点击列表去到详情
       gotoDetail(item) {
-        if(item.product_type === 3) {
-          utils.localstorageData('isCake',true)
+        if (item.product_type === 3) {
+          utils.localstorageData('isCake', true)
         } else {
-          utils.localstorageData('isCake',false)
+          utils.localstorageData('isCake', false)
         }
         location.href = `/#/site/detail/${item.id}`
       },
@@ -294,8 +294,8 @@
             if (response.data.pois && response.data.pois.length > 0) {
               this.address.current = JSON.parse(JSON.stringify(response.data.pois[0]))
               this.address.checked = JSON.parse(JSON.stringify(response.data.pois[0]))
-              utils.sessionstorageData('checkedAddress',this.address.checked)
-              utils.sessionstorageData('currentAddress',this.address.current)
+              utils.sessionstorageData('checkedAddress', this.address.checked)
+              utils.sessionstorageData('currentAddress', this.address.current)
             }
             Indicator.close()
           })
@@ -304,7 +304,7 @@
         )
           .then(response => {
             this.address.around = response.data.pois
-            utils.sessionstorageData('aroundAddress',this.address.around)
+            utils.sessionstorageData('aroundAddress', this.address.around)
           })
       },
       //    获取云图附件门店
@@ -323,14 +323,15 @@
             if (response.datas.length === 0) {
               const self = this
               this.naberStore = []
-               utils.sessionstorageData('allNavberStore',[])
+              utils.sessionstorageData('allNavberStore', [])
               MessageBox.confirm('您所定位的地址没有推荐门店信息，您可以通过更改定位地址来获取门店商品信息', '门店推荐提示', { confirmButtonText: '换个地址' }).then(action => {
                 self.openAddress()
               })
             } else {
               if (response.datas && response.datas.length > 0) {
                 this.naberStore = response.datas
-                utils.sessionstorageData('allNavberStore',response.datas)
+                utils.sessionstorageData('allNavberStore', response.datas)
+                utils.sessionstorageData('naberStore',response.datas[0])
               }
             }
           }, err => {
@@ -346,12 +347,18 @@
         this.address.show = true
       },
       //       改变定位
-      changeArea(address) {
+      changeArea(address, myAddress) {
         this.address.checked = JSON.parse(JSON.stringify(address))
+        if (myAddress === true) {
+          utils.sessionstorageData('isMyAddress', true)
+          utils.sessionstorageData('checkedMyAddress', this.address.checked)
+        } else {
+          utils.sessionstorageData('isMyAddress', false)
+        }
         if (address.hasOwnProperty('detail_area')) {
           this.address.checked.name = JSON.parse(JSON.stringify(address.detail_area))
         }
-        utils.sessionstorageData('checkedAddress',this.address.checked)
+        utils.sessionstorageData('checkedAddress', this.address.checked)
         this.getNaberStore(address.location)
         this.addressClose()
       },
@@ -365,7 +372,7 @@
             this.address.myAddress = response.data.body.list
           }
         }, err => {
-          
+
         })
       },
       //       搜索定位
@@ -382,12 +389,12 @@
           })
       },
       //  去相应的门店购物
-      gotoStore () {
+      gotoStore() {
         location.href = '/#/site/cake-list'
       },
       // 切换门店去到不同的门店
-      changeStore (item) {
-       utils.sessionstorageData("naberStore", item)
+      changeStore(item) {
+        utils.sessionstorageData("naberStore", item)
         location.href = '/#/site/products-list'
       }
     }

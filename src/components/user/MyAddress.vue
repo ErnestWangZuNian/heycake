@@ -43,13 +43,15 @@
         </ul>
       </div>
 
-      <div class="tcenter"><router-link to='add-address'><span class="btns">新增收货地址</span></router-link></div>
+      <div class="tcenter">
+        <router-link to='add-address'><span class="btns">新增收货地址</span></router-link>
+      </div>
     </div>
   </div>
 </template>
 <script>
-  import {Swipe, SwipeItem,MessageBox } from 'mint-ui'
-  import  Loading from '../common/Loading'
+  import { Swipe, SwipeItem, MessageBox } from 'mint-ui'
+  import Loading from '../common/Loading'
   import ajax from '../../utils/ajax.js'
   import Modal from '../common/Modal'
   export default {
@@ -61,67 +63,70 @@
       MessageBox,
       Modal
     },
-    mounted () {
+    mounted() {
       this.isLoginMethod()
     },
-    data () {
+    data() {
       return {
         loading: true,
         loadShow: false,
-        isLogin:this.$store.state.user.userInfo.isLogin  || '',   //是否登录
-        userId:this.$store.state.user.userInfo.userId || '',      //当前用户ID
-        listData:[],
-        isDeafult:false
+        isLogin: this.$store.state.user.userInfo.isLogin || '',   //是否登录
+        userId: this.$store.state.user.userInfo.userId || '',      //当前用户ID
+        listData: [],
+        isDeafult: false
       }
     },
     methods: {
       //判断是否登录
-      isLoginMethod(){
-        if(this.isLogin){
+      isLoginMethod() {
+        if (this.isLogin) {
           this.loadShow = true
           this.getListData();
-        }else{
+        } else {
           MessageBox.alert('未登录').then(action => {
             location.href = '/#/site/login'
           })
         }
       },
       //获取列表数据
-      getListData(){
+      getListData() {
         ajax.getDataFromApi({
-          url:'/v1/my-address',
-        },(response)=>{
-          this.listData = response.data.body.list;
-          this.isDeafult =false
-          //处理数组，找到is_default==1的排到第一个，并且改变isDefault的状态
-          this.listData.map((val,index) => {
-            if(val.is_default == 1){
-              this.listData.splice(index,1)
-              this.listData.unshift(val)
-              this.isDeafult = true;
+          url: '/v1/my-address',
+        }, (response) => {
+          this.listData = response.data.body.list
+          this.loading = false
+          if (this.listData.length > 0) {
+            this.isDeafult = false
+            //处理数组，找到is_default==1的排到第一个，并且改变isDefault的状态
+            this.listData.map((val, index) => {
+              if (val.is_default == 1) {
+                this.listData.splice(index, 1)
+                this.listData.unshift(val)
+                this.isDeafult = true;
+              }
+            })
+            //如果isDeafult为false,让数组第一个的is_default的值为1，成为默认地址
+            if (!this.isDeafult) {
+              this.listData[0].is_default = 1
             }
-          })
-          //如果isDeafult为false,让数组第一个的is_default的值为1，成为默认地址
-          if(!this.isDeafult){
-            this.listData[0].is_default = 1
           }
-          //数据请求完成,改变loading值,关闭load，显示渲染后的页面
-          this.loading = false;
+        }, err => {
+          console.log(err)
         })
       },
       //删除地址方法
-      delMethod(id){
+      delMethod(id) {
         MessageBox.confirm('确定要删除吗？').then(action => {
           ajax.deleteDataFromApi({
-            url:`/v1/my-address/${id}`
-          },(response)=>{
-              this.getListData()
+            url: `/v1/my-address/${id}`
+          }, (response) => {
+            this.getListData()
           })
         })
       },
       //编辑地址方法
-      editMethod(id){
-        location.href=`/#/site/edit-address/${id}`
+      editMethod(id) {
+        location.href = `/#/site/edit-address/${id}`
       },
     },
   }

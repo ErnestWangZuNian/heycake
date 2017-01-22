@@ -5,12 +5,12 @@
       <div class="index-nav index-nav5">
         <ul class="cf">
           <keep-alive>
-          <router-link to="index">
-            <li class="nav-list">
-              <i class="icon icon0"></i>
-              <p>首页</p>
-            </li>
-          </router-link>
+            <router-link to="index">
+              <li class="nav-list">
+                <i class="icon icon0"></i>
+                <p>首页</p>
+              </li>
+            </router-link>
           </keep-alive>
           <router-link to="cake-list">
             <li class="nav-list">
@@ -72,7 +72,7 @@
   import ajax from '../../utils/ajax.js'
   import utils from '../../utils/public'
   export default {
-    name: 'ProductsList',
+    name: 'cakeList',
     components: {
       Loading,
       Swipe,
@@ -88,7 +88,10 @@
         loading: true,
         list: [0],
         topStatus: '',
-        goodInfo: [],
+        goodInfo: [{
+          goodList: [],
+          category: '蛋糕制作'
+        }],
         banner: [],
         category: {
           value: [],
@@ -111,18 +114,18 @@
       fetchData() {
         this.loading = true
         ajax.getDataFromApi({
-            url: `/v1/goods/`,
-            data: {
-              store_code: utils.sessionstorageGetData('naberStore') && utils.sessionstorageGetData('naberStore').store_id
-            }
-          }, (response) => {
-            let data = response.data.body.list.map(utils.imgDetail)
-            this.loading = false
-            this.page.total = response.data.body.pagination.total
-            this.text.loding = "上拉刷新"
-            this.modifyData(data)
-          })
-          //      获取轮播图
+          url: `/v1/goods/`,
+          data: {
+            store_code: utils.sessionstorageGetData('naberStore') && utils.sessionstorageGetData('naberStore').store_id
+          }
+        }, (response) => {
+          let data = response.data.body.list.map(utils.imgDetail)
+          this.loading = false
+          this.page.total = response.data.body.pagination.total
+          this.text.loding = "上拉刷新"
+          this.modifyData(data)
+        })
+        //      获取轮播图
         ajax.getDataFromApi({
           url: '/v1/banner',
         }, (response) => {
@@ -133,27 +136,16 @@
       modifyData(data) {
         let category = []
         data.forEach((val) => {
-          category.push(val.parent_name)
-        })
-        category = utils.unique(category)
-        category.forEach((val, index) => {
-          if(val === '蛋糕') {}
-          this.goodInfo.push({
-            category: val,
-            goodList: []
-          })
-          data.forEach((val1) => {
-            if (val1.parent_name === val) {
-              this.goodInfo[index].goodList.push(val1)
-            }
-          })
+          if(val.category === '蛋糕制作') {
+             this.goodInfo[0].goodList.push(val)
+          }
         })
       },
       //    下拉刷洗数据
       loadTop() {
         if (this.page.currentPage < this.page.total) {
           this.page.currentPage++
-            this.fetchData(this.page.currentPage)
+          this.fetchData(this.page.currentPage)
         } else {
           this.text.loding = "没有更多数据了！"
         }

@@ -206,7 +206,12 @@
   input{
     @include inputs();
     margin-left: px2rem(20);
-    width: px2rem(440);
+    font-size: px2rem(20);
+    width: px2rem(240);
+  }
+  .btn{
+    @include btn(120,40,$subTitleColor,#fff,20,10);
+    margin-left:px2rem(20);
   }
 }
 

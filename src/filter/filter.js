@@ -7,6 +7,20 @@ Vue.filter('price', (value) => {
     return value
   }
 })
+// 价格除以100
+Vue.filter('detailPrice', (value) => {
+  if (value !== undefined) {
+    value = '￥' + (value / 100).toFixed(2)
+    return value
+  }
+})
+// 保留两位小数
+Vue.filter('stock', (value) => {
+  if (value !== undefined) {
+    value = Math.floor(value)
+    return value
+  }
+})
 // 针对价格区间的处理
 Vue.filter('priceRange', (value) => {
   // 返回处理后的价格区间

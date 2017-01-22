@@ -20,13 +20,13 @@
       <!--导航-->
       <div class="index-nav index-nav5">
         <ul class="cf">
-           <router-link to="index">
+          <router-link to="index">
             <li class="nav-list">
               <i class="icon icon0"></i>
               <p>首页</p>
             </li>
           </router-link>
-          <router-link to="products-list">
+          <router-link to="cake-list">
             <li class="nav-list">
               <i class="icon icon1"></i>
               <p>蛋糕目录</p>
@@ -38,7 +38,7 @@
               <p>新品推荐</p>
             </li>
           </router-link>
-          <router-link  to="user-center">
+          <router-link to="user-center">
             <li class="nav-list">
               <i class="icon icon3"></i>
               <p>我的主页</p>
@@ -56,15 +56,14 @@
       <!--产品列表-->
       <div class="list">
         <ul>
-                <li class="cf" v-for="item in newGoods" @click="gotoDetail(item)">
-              <div class="div-img">
-                <img :src="item.picture">
-              </div>
-
-              <div class='div-info'>
-                <p><span>{{item.english_name}}</span>{{item.name}}</p>
-              </div>
-            </li>
+          <li class="cf" v-for="item in newGoods" @click="gotoDetail(item)">
+            <div class="div-img">
+              <img :src="item.picture">
+            </div>
+            <div class='div-info'>
+              <p><span>{{item.english_name}}</span>{{item.name}}</p>
+            </div>
+          </li>
         </ul>
       </div>
 
@@ -72,8 +71,8 @@
   </div>
 </template>
 <script>
-  import {Swipe, SwipeItem } from 'mint-ui'
-  import  Loading from '../common/Loading'
+  import { Swipe, SwipeItem } from 'mint-ui'
+  import Loading from '../common/Loading'
   import ajax from '../../utils/ajax.js'
   //Swipe ， SwipeItem        幻灯片
   //InfiniteScroll           下拉刷新
@@ -84,10 +83,10 @@
       Swipe,
       SwipeItem,
     },
-    mounted () {
+    mounted() {
       this.fetchData()
     },
-    data () {
+    data() {
       return {
         loading: true,
         newGoods: []
@@ -95,23 +94,28 @@
     },
     methods: {
       //  获取数据
-      fetchData () {
+      fetchData() {
         this.loading = true
         ajax.getDataFromApi({
           url: '/v1/goods?recommend=true'
         }, (response) => {
-        this.loading = false
-        let data = response.data.body.list
-        data.map(val => {
-          val.picture = `/attachment/${val.picture}`
-          return val
+          this.loading = false
+          let data = response.data.body.list
+          data.map(val => {
+            val.picture = `/attachment/${val.picture}`
+            return val
+          })
+          this.newGoods = data
         })
-        this.newGoods = data
-      })
       },
       //跳转到详情页面
-      gotoDetail (item) {
-        location.href=`/#/site/detail/${item.id}`
+      gotoDetail(item) {
+        if (item.product_type === 3) {
+          utils.localstorageData('isCake', true)
+        } else {
+          utils.localstorageData('isCake', false)
+        }
+        location.href = `/#/site/detail/${item.id}`
       }
     },
   }
