@@ -116,7 +116,7 @@
             <div class="address search-address">
               <p class="title">搜索地址</p>
               <ul>
-                <li class="list" @click="changeArea(item)" v-for="item in address.search">{{item.name}}<span class="area">{{item.adname}}</span></li>
+                <li class="list" @click="changeArea(item,'search')" v-for="item in address.search">{{item.name}}<span class="area">{{item.adname}}</span></li>
               </ul>
             </div>
           </div>
@@ -233,6 +233,7 @@
           let lnglatY = data.position.getLat()
           self.address.current = data.addressComponent
           self.location.lnglatXY = [lnglatX, lnglatY]
+          utils.sessionstorageData('isMyAddress', false)
           utils.sessionstorageData('isLocationSuccess', true)
           self.getNaberAddres(self.location.lnglatXY)
           self.getNaberStore(self.location.lnglatXY.join(","))
@@ -294,6 +295,7 @@
             if (response.data.pois && response.data.pois.length > 0) {
               this.address.current = JSON.parse(JSON.stringify(response.data.pois[0]))
               this.address.checked = JSON.parse(JSON.stringify(response.data.pois[0]))
+              this.address.checked.district = this.address.checked.cityname + this.address.checked.adname
               utils.sessionstorageData('checkedAddress', this.address.checked)
               utils.sessionstorageData('currentAddress', this.address.current)
             }
@@ -324,6 +326,7 @@
               const self = this
               this.naberStore = []
               utils.sessionstorageData('allNavberStore', [])
+              utils.sessionstorageData('naberStore',[])
               MessageBox.confirm('您所定位的地址没有推荐门店信息，您可以通过更改定位地址来获取门店商品信息', '门店推荐提示', { confirmButtonText: '换个地址' }).then(action => {
                 self.openAddress()
               })
@@ -349,9 +352,15 @@
       //       改变定位
       changeArea(address, myAddress) {
         this.address.checked = JSON.parse(JSON.stringify(address))
+        //  搜索地址的数据处理
+        if(myAddress !== "search"){
+         this.address.checked.district = this.address.checked.cityname + this.address.checked.adname
+        }
+        // 我的地址的数据处理
         if (myAddress === true) {
           utils.sessionstorageData('isMyAddress', true)
           utils.sessionstorageData('checkedMyAddress', this.address.checked)
+          this.address.checked.district = this.address.checked.city_name + this.address.checked.county_name
         } else {
           utils.sessionstorageData('isMyAddress', false)
         }

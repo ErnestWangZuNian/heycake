@@ -232,7 +232,7 @@
                 }, (response) => {
                     let freight = response.data.body
                     freight === '' ? freight = "包邮" : ''
-                    this.freight = freight
+                    this.freight = '￥' + freight.money
                 });
                 //  获取购物车数量
                 this.getcartCount()

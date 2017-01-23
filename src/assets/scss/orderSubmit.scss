@@ -155,10 +155,11 @@
         }
       };
       .price{
-        width: px2rem(110);
+        width: px2rem(120);
         font-size: px2rem(22);
+        text-align:right;
         color: #cd0c0c;
-        .mrg { margin-top: px2rem(30); text-align: center;}
+        .mrg { margin-top: px2rem(30);  text-align:right;}
       }
     }
   };
@@ -167,8 +168,9 @@
     line-height: px2rem(85);
     font-size: px2rem(28);
     span{
-      font-size: px2rem(24);
+      font-size: px2rem(22);
       display: inline-block;
+      text-align:center;
       float: right;
     }
   }

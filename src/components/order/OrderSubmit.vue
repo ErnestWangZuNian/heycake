@@ -23,29 +23,27 @@
               <div class="text"><span>[已选择地址]</span>{{userInfo.checkedAddress}}</div>
             </section>
           </div>
-          <router-link to="/site/my-address">
-            <div class="fl arrow">
-              <div class="icon-right"></div>
-            </div>
-          </router-link>
+          <div class="fl arrow" @click="openAddress">
+            <div class="icon-right"></div>
+          </div>
           <div class="cf"></div>
         </div>
         <div class="label-list" v-if="userInfo.isMyAddress">
           <div class="fl info">
             <section>
               <div class="icon icon-name"></div>
-              <div class="text">{{userInfo.name}}</div>
+              <div class="text">{{userInfo.checkedMyAddress.name}}</div>
             </section>
             <section>
               <div class="icon icon-tel"></div>
-              <div class="text">{{userInfo.telphone}}</div>
+              <div class="text">{{userInfo.checkedMyAddress.tel_phone}}</div>
             </section>
             <section>
               <div class="icon icon-addr"></div>
               <div class="text"><span>[已选择地址]</span>{{userInfo.checkedAddress}}</div>
             </section>
           </div>
-          <div class="fl arrow" @click="editMethod(userInfo.myAddressId)">
+          <div class="fl arrow" @click="editMethod(userInfo.checkedMyAddress.id)">
             <div class="icon-right"></div>
           </div>
           <div class="cf"></div>
@@ -119,7 +117,7 @@
               <p>{{this.goodsInfo.selectedSpecGood.value | spec}}</p>
             </div>
             <div class="price">
-              <p v-if="goodsInfo.buyWay !== 'score'">{{this.goodsInfo.selectedSpecGood.price | detailPrice}}</p>
+              <p v-if="goodsInfo.buyWay !== 'score'">￥{{this.goodsInfo.selectedSpecGood.price}}</p>
               <p v-if="goodsInfo.buyWay === 'score'">{{this.goodsInfo.selectedSpecGood.score}}积分</p>
               <p class="mrg"><span>x{{goodsInfo.selectedSpecGood.count}}</span></p>
             </div>
@@ -140,8 +138,8 @@
             </div>
           </li>
         </ul>
-        <div class="freight">
-          <p>运费<span>免运费</span></p>
+        <div class="freight" v-if="goodsInfo.buyWay !== 'score'">
+          <p>运费<span>{{userInfo.freight}}</span></p>
         </div>
       </div>
       <!--分隔-->
@@ -171,7 +169,7 @@
       <div class="order-null"></div>
       <!--提交订单-->
       <div class="order-submit ">
-        <p class="" v-if="goodsInfo.buyWay !== 'score'">合计：<span>{{ totalPrice }}</span></p>
+        <p class="" v-if="goodsInfo.buyWay !== 'score'">合计：<span>￥{{ totalPrice }}</span></p>
         <p class="" v-if="goodsInfo.buyWay === 'score'">合计：<span>{{ totalPrice }}积分</span></p>
         <button class="btn" :class="[!canSubmitOrder ? 'btn-gary' : ''] " @click="orderSubmit">提交订单</button>
       </div>
@@ -198,12 +196,38 @@
         </div>
       </div>
     </modal>
+    <!--地址选择弹窗-->
+    <div class="address-modal">
+      <modal :show="address.show" v-on:close="addressClose">
+        <div slot="header">
+          <div class="store-header">
+            选取地址
+          </div>
+        </div>
+        <div slot="body">
+          <div class="input-address">
+            <input type="" name="searchAddress" value="" id='searchAddress' placeholder="输入小区，学校，建筑物等" v-model="address.searchKeyword"
+              @input="searchAddress()">
+          </div>
+          <div class="searchAddress">
+            <div class="address search-address">
+              <p class="title">搜索地址</p>
+              <ul>
+                <li class="list" @click="changeArea(item)" v-for="item in address.search">{{item.name}}<span class="area">{{item.adname}}</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </modal>
+    </div>
   </div>
 </template>
 <script>
+  import Vue from 'vue'
   import {
     Swipe,
-    SwipeItem
+    SwipeItem,
+    Toast
   } from 'mint-ui'
   import Loading from '../common/Loading'
   import ajax from '../../utils/ajax.js'
@@ -219,18 +243,24 @@
       SwipeItem,
       SelectTime,
       SelectStore,
-      Modal
+      Modal,
+      Toast
     },
     mounted() {
       this.fetchData()
-        // 判断是自己的地址还是定位的地址
+      // 判断是自己的地址还是定位的地址
       this.userInfo.isMyAddress = utils.sessionstorageGetData('isMyAddress')
       if (this.userInfo.isMyAddress) {
         this.userInfo.checkedMyAddress = utils.sessionstorageGetData('checkedMyAddress')
+         console.log(utils.sessionstorageGetData('checkedAddress'))
         this.userInfo.checkedAddress = utils.sessionstorageGetData('checkedMyAddress').detail_area
+        this.locationUserInfo.district = utils.sessionstorageGetData('checkedAddress').cityname + utils.sessionstorageGetData('checkedAddress').adname
       } else {
         this.userInfo.checkedMyAddress = {}
+        console.log(utils.sessionstorageGetData('checkedAddress'))
         this.userInfo.checkedAddress = utils.sessionstorageGetData('checkedAddress').name
+        this.locationUserInfo.location = utils.sessionstorageGetData('checkedAddress').location
+        this.locationUserInfo.district = utils.sessionstorageGetData('checkedAddress').district
       }
     },
     data() {
@@ -243,6 +273,15 @@
           text: '您的密码有误请重新登录'
         },
         canSubmitOrderFlag: true,
+        addressIsAddSuccess: false,
+        address: {
+          show: false,
+          checked: {},
+          isChecked: false,
+          checkedText: '请选择收货地址',
+          searchKeyword: '',
+          search: [],
+        },
         appointTime: {
           timeShow: false,
           date: [],
@@ -274,7 +313,8 @@
           checkedMyAddress: {},
           name: '',
           telphone: '',
-          myAddressId: ''
+          myAddressId: '',
+          freight: '免邮'
         },
         locationUserInfo: {
           name: '',
@@ -320,7 +360,12 @@
         let cart = this.goodsInfo.selectedCartGoods
         if (this.goodsInfo.buyWay !== 'cart') {
           if (this.goodsInfo.buyWay === 'purchase') {
-            total = good.price * good.count
+            if(this.userInfo.freight !== '包邮'){
+              total = good.price * good.count * 100 + this.userInfo.freight.slice('1')*100
+            }else{
+              total = good.price * good.count
+            }
+            total = (total / 100).toFixed(2)
           } else {
             total = good.score * good.count
           }
@@ -328,6 +373,9 @@
           cart.forEach((val) => {
             total += val.price * 100 * val.amount
           })
+          if(this.userInfo.freight !== '包邮'){
+            total = total + this.userInfo.freight.slice('1')*100
+          }
           total = (total / 100).toFixed(2)
         }
         return total
@@ -354,42 +402,42 @@
       //  获取页面数据
       fetchData() {
         this.loading = true
-          //获取预约时间
+        //获取预约时间
         ajax.getDataFromApi({
-            url: '/v1/appointment-time'
-          }, (response) => {
-            this.loading = false
-            this.appointTime.date = response.data.body.date
-            this.appointTime.time = response.data.body.time.map((val, index) => {
-              if (response.data.body.time[index + 1]) {
-                val = `${response.data.body.time[index]}-${response.data.body.time[index + 1]}`
-                return val
-              }
-            })
-            this.appointTime.selectedDate = this.appointTime.date[0]
-            this.appointTime.selectedTime = this.appointTime.time[0]
-          })
-          // 获取我的地址
-        ajax.getDataFromApi({
-            url: '/v1/my-address',
-          }, (response) => {
-            let addressList = response.data.body.list
-            let flag = false
-            this.loading = false
-            this.userInfo.address = addressList
-            if (addressList.length > 0) {
-              addressList.forEach((val) => {
-                if (val.is_default === 1) {
-                  flag = true
-                  this.userInfo.defalutAddress = val
-                }
-              })
-              if (!flag) {
-                this.userInfo.defaultAddress = addressList[0]
-              }
+          url: '/v1/appointment-time'
+        }, (response) => {
+          this.loading = false
+          this.appointTime.date = response.data.body.date
+          this.appointTime.time = response.data.body.time.map((val, index) => {
+            if (response.data.body.time[index + 1]) {
+              val = `${response.data.body.time[index]}-${response.data.body.time[index + 1]}`
+              return val
             }
           })
-          //获取门店列表
+          this.appointTime.selectedDate = this.appointTime.date[0]
+          this.appointTime.selectedTime = this.appointTime.time[0]
+        })
+        // 获取我的地址
+        ajax.getDataFromApi({
+          url: '/v1/my-address',
+        }, (response) => {
+          let addressList = response.data.body.list
+          let flag = false
+          this.loading = false
+          this.userInfo.address = addressList
+          if (addressList.length > 0) {
+            addressList.forEach((val) => {
+              if (val.is_default === 1) {
+                flag = true
+                this.userInfo.defalutAddress = val
+              }
+            })
+            if (!flag) {
+              this.userInfo.defaultAddress = addressList[0]
+            }
+          }
+        })
+        //获取门店列表
         ajax.getDataFromApi({
           url: '/v1/offlinestore'
         }, (response) => {
@@ -403,7 +451,15 @@
           this.store.selectedStore = data[0]
         });
         //   获取购物明细
-        this.getOrderInfo()
+        this.getOrderInfo();
+        //  获取商品运费
+        ajax.getDataFromApi({
+            url: `/v1/freight-details`
+        }, (response) => {
+            let freight = response.data.body
+            freight === '' ? freight = "包邮" : ''
+            this.userInfo.freight = '￥' + freight.money
+        })
       },
       //  关闭错误提示框
       errTipClose() {
@@ -470,6 +526,36 @@
         this.receiptway.expressDelivery = false
         this.receiptway.expressHiglight = false
         this.storeOpen()
+      },
+      //      关闭地址弹窗
+      addressClose() {
+        this.address.show = false
+      },
+      //      开启地址弹窗
+      openAddress() {
+        this.address.show = true
+      },
+      //       搜索定位
+      searchAddress() {
+        let key = '6ec262982ede339365a6f9d9b5370f1b'
+        let keywords = this.address.searchKeyword
+        let types = '银行|学校|小区|建筑|公司'
+        let city = '重庆'
+        Vue.http.get(
+          `http://restapi.amap.com/v3/assistant/inputtips?key=${key}&keywords=${keywords}&types=${types}&city=${city}`
+        )
+          .then(response => {
+            this.address.search = response.data.tips
+          })
+      },
+      //       改变定位
+      changeArea(address) {
+        this.address.isChecked = true
+        this.address.checked = JSON.parse(JSON.stringify(address))
+        this.userInfo.checkedAddress = this.address.checked.name
+        this.locationUserInfo.location = this.address.checked.location
+        this.locationUserInfo.district = this.address.checked.district
+        this.addressClose()
       },
       // 打开门店弹窗
       storeOpen() {
@@ -598,6 +684,107 @@
           callback && callback(response)
         })
       },
+      //  根据是选取我的地址还是定位地址判断address_id
+      juadgeAddressId(postData,callback) {
+        if (this.userInfo.isMyAddress) {
+          postData.address_id = this.userInfo.checkedMyAddress.id
+        } else {
+          this.locationUserInfo.detail_area = this.userInfo.checkedAddress
+          let telRe = /^1[3|4|5|8]\d{9}$/
+          // 如果是定位地址过来的判断
+          if(!this.userInfo.isMyAddress){
+          if(this.locationUserInfo.name === ''){
+            Toast({
+                    message: '请输入您的姓名',
+                    position: 'middle',
+                    duration: 2000
+                  })
+          } else if(this.locationUserInfo.tel_phone === ''){
+            Toast({
+                    message: '请输入您的手机号码',
+                    position: 'middle',
+                    duration: 2000
+                  })
+          }else if(!telRe.test(this.locationUserInfo.tel_phone)){
+            Toast({
+                    message: '请输入正确的手机号码',
+                    position: 'middle',
+                    duration: 2000
+                  })
+          }
+          else {
+           ajax.postDataToApi({
+            url: '/v1/my-address',
+            body: this.locationUserInfo
+          }, response => {
+            let addressId = response.data.body.id
+            postData.address_id = addressId
+            this.addressIsAddSuccess = true
+            callback && callback()
+          }, err => {
+            this.addressIsAddSuccess = false
+          })
+          }
+        }}
+      },
+      //  判断支付方式是否是会员卡余额支付
+      juadgePayWay(postData) {
+        if (this.payWay === 'member') {
+          postData.pay_method = 'balance'
+          postData.member_id = utils.localstorageGetData('userInfo').userId && utils.localstorageGetData(
+            'userInfo').userId
+          if (!this.memberUser.status) {
+            this.errTip.isShow = true
+            this.errTip.text = '您还没有输入会员登录密码'
+            this.errTip.isWarn = true
+          }
+        }
+      },
+      // 直接购买和积分兑换方式提交订单
+      falseCartOrderSubmit(url,postData){
+            // 直接购买商品跳转页面
+              if (this.goodsInfo.buyWay === "purchase") {
+                this.postSubmitMethod(url.orderUrl, postData, (response) => {
+                  if (this.payWay === 'member') {
+                    ajax.postDataToApi({
+                      url: '/v1/balance-pay',
+                      body: {
+                        order_number: response.data.body.order_number,
+                        member_id: utils.localstorageGetData('userInfo').userId && utils.localstorageGetData(
+                          'userInfo').userId
+                      }
+                    }, response => {
+                      location.href = `/#/site/my-order`
+                    })
+                  } else {
+                    location.href = `/#/site/order-pay/${response.data.body.id}`
+                  }
+                })
+              }
+          // 积分商品跳转页面
+              if (this.goodsInfo.buyWay === "score") {
+                this.postSubmitMethod(url.scoreUrl, postData, (response) => {
+                  location.href = `/#/site/score-success`
+                })
+              }
+      },
+      // 购物车提交的方式提交订单
+      cartOrderSubmit(url,postData){
+      // 购物车购买跳转页面
+      this.postSubmitMethod(url, postData, (response) => {
+        if (response.data.body.length > 1) {
+          this.errTip.isShow = true
+          this.errTip.isWarn = true
+          this.errTip.text = '由于您购买的商品中含有预约类商品，我们将分拆成两个订单您需要单独支付，未支付的订单将不予支付，感谢您的配合~'
+          window.setTimeout(() => {
+            this.errTip.isShow = false
+            location.href = `/#/site/my-order`
+          }, 3000)
+        } else {
+          location.href = `/#/site/order-pay/${response.data.body[0].id}`
+        }
+      })
+      },
       //提交订单
       orderSubmit() {
         if (this.canSubmitOrder) {
@@ -614,51 +801,23 @@
                 user_comment: this.formData.addressMessage,
                 amount: this.goodsInfo.selectedSpecGood.count
               }
-              if (this.userInfo.isMyAddress) {
-                postData.address_id = this.userInfo.myAddressId
-              } else {
-                this.locationUserInfo.detail_area = this.userInfo.checkedAddress
-                ajax.postDataFromApi({
-                    url: '/v1/my-address',
-                    body: this.locationUserInfo
-              },response => {
-                postData.address_id = this.userInfo.defalutAddress.id
-              })
-              }
-              if (this.payWay === 'member') {
-                postData.pay_method = 'balance'
-                postData.member_id = utils.localstorageGetData('userInfo').userId && utils.localstorageGetData(
-                  'userInfo').userId
-                if (!this.memberUser.status) {
-                  this.errTip.isShow = true
-                  this.errTip.text = '您还没有输入会员登录密码'
-                  this.errTip.isWarn = true
+              this.juadgePayWay(postData)
+              if(!this.userInfo.isMyAddress){
+                 this.juadgeAddressId(postData,() => {
+                 if(!this.userInfo.isMyAddress && !this.addressIsAddSuccess){
+                     console.log('位置错误')
+                }else{
+                   this.falseCartOrderSubmit({
+                  orderUrl: '/v1/goods/default',
+                  scoreUrl: '/v1/score-goods/default'
+                },postData)
                 }
-              }
-              // 直接购买商品跳转页面
-              if (this.goodsInfo.buyWay === "purchase") {
-                this.postSubmitMethod('/v1/goods/default', postData, (response) => {
-                  if (this.payWay === 'member') {
-                    ajax.postDataToApi({
-                      url: '/v1/balance-pay',
-                      body: {
-                        order_number: response.data.body.order_number,
-                        member_id: utils.localstorageGetData('userInfo').userId && utils.localstorageGetData(
-                          'userInfo').userId
-                      }
-                    }, response => {
-                      console.log('支付成功')
-                    })
-                  } else {
-                    location.href = `/#/site/order-pay/${response.data.body.id}`
-                  }
-                })
-              }
-              // 积分商品跳转页面
-              if (this.goodsInfo.buyWay === "score") {
-                this.postSubmitMethod('/v1/score-goods/default', postData, (response) => {
-                  location.href = `/#/site/score-success`
-                })
+              })
+              }else{
+                this.falseCartOrderSubmit({
+                  orderUrl: '/v1/goods/default',
+                  scoreUrl: '/v1/score-goods/default'
+                },postData)
               }
             } else {
               let postData = {
@@ -670,41 +829,43 @@
                 pay_method: 'WAIT',
                 user_comment: this.formData.addressMessage
               }
-              if (this.userInfo.isMyAddress) {
-                postData.address_id = this.userInfo.myAddressId
-              } else {
-                postData.address_id = this.userInfo.defalutAddress.id
-              }
-              if (this.payWay === 'member') {
-                postData.pay_method = 'balance'
-                postData.member_id = utils.localstorageGetData('userInfo').userId && utils.localstorageGetData(
-                  'userInfo').userId
-                if (!this.memberUser.status) {
-                  this.errTip.isShow = true
-                  this.errTip.text = '您还没有输入会员登录密码'
-                  this.errTip.isWarn = true
-                }
-              }
-              // 购物车购买跳转页面
-              this.postSubmitMethod('/v1/order/default', postData, (response) => {
-                if (response.data.body.length > 1) {
-                  this.errTip.isShow = true
-                  this.errTip.isWarn = true
-                  this.errTip.text = '由于您购买的商品中含有预约类商品，我们将分拆成两个订单您需要单独支付，未支付的订单将不予支付，感谢您的配合~'
-                  window.setTimeout(() => {
-                    this.errTip.isShow = false
-                    location.href = `/#/site/my-order`
-                  }, 3000)
+              this.juadgePayWay(postData)
+              if(!this.userInfo.isMyAddress){
+               this.juadgeAddressId(postData,() => {
+                if(!this.userInfo.isMyAddress && !this.addressIsAddSuccess){
+                     console.log('位置错误')
                 } else {
-                  location.href = `/#/site/order-pay/${response.data.body[0].id}`
+                  this.cartOrderSubmit('/v1/order/default',postData)
                 }
-              })
+               })
+              }else {
+                 this.cartOrderSubmit('/v1/order/default',postData)
+              }
             }
           }
           //  门店自提提交方式
           if (this.receiptway.storeDeliver) {
-            if (this.formData.name !== '' && this.formData.telphone !== '') {
-              if (this.goodsInfo.buyWay !== "cart") {
+            let telRe = /^1[3|4|5|8]\d{9}$/
+            if(this.formData.name === ''){
+              Toast({
+                    message: '请输入您的姓名',
+                    position: 'middle',
+                    duration: 2000
+                  })
+            }else if(this.formData.telphone === '') {
+              Toast({
+                    message: '请输入您的手机号码',
+                    position: 'middle',
+                    duration: 2000
+                  })
+            }else if(!telRe.test(this.formData.telphone)){
+              Toast({
+                    message: '请输入正确的手机号码',
+                    position: 'middle',
+                    duration: 2000
+                  })
+            }else {
+                 if (this.goodsInfo.buyWay !== "cart") {
                 let postData = {
                   store_code: utils.sessionstorageGetData('naberStore') && utils.sessionstorageGetData('naberStore').store_id,
                   profile_id: this.goodsInfo.selectedSpecGood.id,
@@ -717,16 +878,7 @@
                   user_comment: this.formData.addressMessage,
                   amount: this.goodsInfo.selectedSpecGood.count
                 }
-                if (this.payWay === 'member') {
-                  postData.pay_method = 'balance'
-                  postData.member_id = utils.localstorageGetData('userInfo').userId && utils.localstorageGetData(
-                    'userInfo').userId
-                  if (!this.memberUser.status) {
-                    this.errTip.isShow = true
-                    this.errTip.text = '您还没有输入会员登录密码'
-                    this.errTip.isWarn = true
-                  }
-                }
+                this.juadgePayWay(postData)
                 if (this.goodsInfo.buyWay === "purchase") {
                   this.postSubmitMethod('/v1/goods/self-pick', postData, (response) => {
                     location.href = `/#/site/order-pay/${response.data.body.id}`
@@ -749,21 +901,7 @@
                   pay_method: 'WAIT',
                   user_comment: this.formData.addressMessage
                 }
-                if (this.userInfo.isMyAddress) {
-                  postData.address_id = this.userInfo.myAddressId
-                } else {
-                  postData.address_id = this.userInfo.defalutAddress.id
-                }
-                if (this.payWay === 'member') {
-                  postData.pay_method = 'balance'
-                  postData.member_id = utils.localstorageGetData('userInfo').userId && utils.localstorageGetData(
-                    'userInfo').userId
-                  if (!this.memberUser.status) {
-                    this.errTip.isShow = true
-                    this.errTip.text = '您还没有输入会员登录密码'
-                    this.errTip.isWarn = true
-                  }
-                }
+                this.juadgePayWay(postData)
                 this.postSubmitMethod('/v1/order/self-pick', postData, (response) => {
                   location.href = `/#/site/order-pay/${response.data.body.id}`
                 })
