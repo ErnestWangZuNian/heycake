@@ -5,8 +5,8 @@
         <div class="info">
           <div class="card-number">卡号： {{memberInfo.member_account}}</div>
           <div class="card-info-list">
-            <span class="card-info-row">充值总额:500</span>
-            <span class="card-info-row">消费总额:300</span>
+            <span class="card-info-row">充值总额:{{memberInfo.recharge_total | detailPrice}}</span>
+            <span class="card-info-row">消费总额:{{memberInfo.consumption_total | detailPrice}}</span>
           </div>
           <div class="card-info-list">
             <span class="card-info-row">累积积分: {{memberInfo.score}}</span>

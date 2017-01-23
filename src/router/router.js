@@ -106,7 +106,7 @@ const routes = [{
   path: '/site/order-fail',
   component: OrderFail
 }, {
-  path: '/site/order-detail',
+  path: '/site/order-detail/:id',
   component: OrderDetail
 }, {
   path: '/site/score-success',

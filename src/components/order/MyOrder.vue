@@ -31,7 +31,7 @@
               <div class="grid-cell u-w100">
                 <img :src="child.cover">
               </div>
-              <div class="grid-cell">
+              <div class="grid-cell" @click="gotoOrderDetail(item.id)">
                 <div class="title">{{child.name}}</div>
                 <div class="c-666 f-20">
                   <template v-for='spec in child.specifications'>
@@ -139,6 +139,10 @@
       goEvaluate(id){
         location.href=`/#/site/order-evaluate/${id}`
       },
+      // 去到订单详情
+      gotoOrderDetail(id){
+         location.href=`/#/site/order-detail/${id}`
+      },
       //列表数据处理
       dataDispose(data){
         data.forEach((val,index) => {
@@ -169,6 +173,9 @@
               break;
             case 'rs00':
               val.status_code = '已退款'
+              break;
+               case 'wfp0':
+              val.status_code = '待生产'
               break;
           }
           val.items.forEach((valChild)=>{

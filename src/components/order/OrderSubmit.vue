@@ -252,7 +252,7 @@
       this.userInfo.isMyAddress = utils.sessionstorageGetData('isMyAddress')
       if (this.userInfo.isMyAddress) {
         this.userInfo.checkedMyAddress = utils.sessionstorageGetData('checkedMyAddress')
-         console.log(utils.sessionstorageGetData('checkedAddress'))
+        console.log(utils.sessionstorageGetData('checkedAddress'))
         this.userInfo.checkedAddress = utils.sessionstorageGetData('checkedMyAddress').detail_area
         this.locationUserInfo.district = utils.sessionstorageGetData('checkedAddress').cityname + utils.sessionstorageGetData('checkedAddress').adname
       } else {
@@ -262,6 +262,8 @@
         this.locationUserInfo.location = utils.sessionstorageGetData('checkedAddress').location
         this.locationUserInfo.district = utils.sessionstorageGetData('checkedAddress').district
       }
+      console.log(this.userInfo.freight === '包邮')
+
     },
     data() {
       return {
@@ -314,7 +316,7 @@
           name: '',
           telphone: '',
           myAddressId: '',
-          freight: '免邮'
+          freight: '包邮'
         },
         locationUserInfo: {
           name: '',
@@ -360,9 +362,9 @@
         let cart = this.goodsInfo.selectedCartGoods
         if (this.goodsInfo.buyWay !== 'cart') {
           if (this.goodsInfo.buyWay === 'purchase') {
-            if(this.userInfo.freight !== '包邮'){
-              total = good.price * good.count * 100 + this.userInfo.freight.slice('1')*100
-            }else{
+            if (this.userInfo.freight !== '包邮' || this.userInfo.freight !== '') {
+              total = good.price * good.count * 100
+            } else {
               total = good.price * good.count
             }
             total = (total / 100).toFixed(2)
@@ -373,8 +375,8 @@
           cart.forEach((val) => {
             total += val.price * 100 * val.amount
           })
-          if(this.userInfo.freight !== '包邮'){
-            total = total + this.userInfo.freight.slice('1')*100
+          if (this.userInfo.freight !== '包邮' || this.userInfo.freight !== '') {
+            total = total
           }
           total = (total / 100).toFixed(2)
         }
@@ -454,11 +456,14 @@
         this.getOrderInfo();
         //  获取商品运费
         ajax.getDataFromApi({
-            url: `/v1/freight-details`
+          url: `/v1/freight-details`
         }, (response) => {
-            let freight = response.data.body
-            freight === '' ? freight = "包邮" : ''
+          let freight = response.data.body
+          if (freight !== '') {
             this.userInfo.freight = '￥' + freight.money
+          } else {
+            this.userInfo.freight = '包邮'
+          }
         })
       },
       //  关闭错误提示框
@@ -685,47 +690,48 @@
         })
       },
       //  根据是选取我的地址还是定位地址判断address_id
-      juadgeAddressId(postData,callback) {
+      juadgeAddressId(postData, callback) {
         if (this.userInfo.isMyAddress) {
           postData.address_id = this.userInfo.checkedMyAddress.id
         } else {
           this.locationUserInfo.detail_area = this.userInfo.checkedAddress
           let telRe = /^1[3|4|5|8]\d{9}$/
           // 如果是定位地址过来的判断
-          if(!this.userInfo.isMyAddress){
-          if(this.locationUserInfo.name === ''){
-            Toast({
-                    message: '请输入您的姓名',
-                    position: 'middle',
-                    duration: 2000
-                  })
-          } else if(this.locationUserInfo.tel_phone === ''){
-            Toast({
-                    message: '请输入您的手机号码',
-                    position: 'middle',
-                    duration: 2000
-                  })
-          }else if(!telRe.test(this.locationUserInfo.tel_phone)){
-            Toast({
-                    message: '请输入正确的手机号码',
-                    position: 'middle',
-                    duration: 2000
-                  })
+          if (!this.userInfo.isMyAddress) {
+            if (this.locationUserInfo.name === '') {
+              Toast({
+                message: '请输入您的姓名',
+                position: 'middle',
+                duration: 2000
+              })
+            } else if (this.locationUserInfo.tel_phone === '') {
+              Toast({
+                message: '请输入您的手机号码',
+                position: 'middle',
+                duration: 2000
+              })
+            } else if (!telRe.test(this.locationUserInfo.tel_phone)) {
+              Toast({
+                message: '请输入正确的手机号码',
+                position: 'middle',
+                duration: 2000
+              })
+            }
+            else {
+              ajax.postDataToApi({
+                url: '/v1/my-address',
+                body: this.locationUserInfo
+              }, response => {
+                let addressId = response.data.body.id
+                postData.address_id = addressId
+                this.addressIsAddSuccess = true
+                callback && callback()
+              }, err => {
+                this.addressIsAddSuccess = false
+              })
+            }
           }
-          else {
-           ajax.postDataToApi({
-            url: '/v1/my-address',
-            body: this.locationUserInfo
-          }, response => {
-            let addressId = response.data.body.id
-            postData.address_id = addressId
-            this.addressIsAddSuccess = true
-            callback && callback()
-          }, err => {
-            this.addressIsAddSuccess = false
-          })
-          }
-        }}
+        }
       },
       //  判断支付方式是否是会员卡余额支付
       juadgePayWay(postData) {
@@ -741,49 +747,84 @@
         }
       },
       // 直接购买和积分兑换方式提交订单
-      falseCartOrderSubmit(url,postData){
-            // 直接购买商品跳转页面
-              if (this.goodsInfo.buyWay === "purchase") {
-                this.postSubmitMethod(url.orderUrl, postData, (response) => {
-                  if (this.payWay === 'member') {
-                    ajax.postDataToApi({
-                      url: '/v1/balance-pay',
-                      body: {
-                        order_number: response.data.body.order_number,
-                        member_id: utils.localstorageGetData('userInfo').userId && utils.localstorageGetData(
-                          'userInfo').userId
-                      }
-                    }, response => {
-                      location.href = `/#/site/my-order`
-                    })
-                  } else {
-                    location.href = `/#/site/order-pay/${response.data.body.id}`
-                  }
-                })
-              }
-          // 积分商品跳转页面
-              if (this.goodsInfo.buyWay === "score") {
-                this.postSubmitMethod(url.scoreUrl, postData, (response) => {
-                  location.href = `/#/site/score-success`
-                })
-              }
+      falseCartOrderSubmit(url, postData) {
+        // 直接购买商品跳转页面
+        if (this.goodsInfo.buyWay === "purchase") {
+          this.postSubmitMethod(url.orderUrl, postData, (response) => {
+            if (this.payWay === 'member') {
+              ajax.postDataToApi({
+                url: '/v1/balance-pay',
+                body: {
+                  order_number: response.data.body.order_number,
+                  member_id: utils.localstorageGetData('userInfo').userId && utils.localstorageGetData(
+                    'userInfo').userId
+                }
+              }, response => {
+                location.href = `/#/site/my-order`
+              })
+            } else {
+              location.href = `/#/site/order-pay/${response.data.body.id}`
+            }
+          })
+        }
+        // 积分商品跳转页面
+        if (this.goodsInfo.buyWay === "score") {
+          this.postSubmitMethod(url.scoreUrl, postData, (response) => {
+            location.href = `/#/site/score-success`
+          })
+        }
       },
       // 购物车提交的方式提交订单
-      cartOrderSubmit(url,postData){
-      // 购物车购买跳转页面
-      this.postSubmitMethod(url, postData, (response) => {
-        if (response.data.body.length > 1) {
-          this.errTip.isShow = true
-          this.errTip.isWarn = true
-          this.errTip.text = '由于您购买的商品中含有预约类商品，我们将分拆成两个订单您需要单独支付，未支付的订单将不予支付，感谢您的配合~'
-          window.setTimeout(() => {
-            this.errTip.isShow = false
-            location.href = `/#/site/my-order`
-          }, 3000)
-        } else {
-          location.href = `/#/site/order-pay/${response.data.body[0].id}`
-        }
-      })
+      cartOrderSubmit(url, postData) {
+        // 购物车购买跳转页面
+        this.postSubmitMethod(url, postData, (response) => {
+          if (response.data.body.length > 1) {
+            this.errTip.isShow = true
+            this.errTip.isWarn = true
+            this.errTip.text = '由于您购买的商品中含有预约类商品，我们将分拆成两个订单您需要单独支付，未支付的订单将不予支付，感谢您的配合~'
+            window.setTimeout(() => {
+              this.errTip.isShow = false
+              if (this.payWay === 'member') {
+                ajax.postDataToApi({
+                  url: '/v1/balance-pay',
+                  body: {
+                    order_number: response.data.body[0].order_number,
+                    member_id: utils.localstorageGetData('userInfo').userId && utils.localstorageGetData(
+                      'userInfo').userId
+                  }
+                }, response => {
+                  ajax.postDataToApi({
+                    url: '/v1/balance-pay',
+                    body: {
+                      order_number: response.data.body[1].order_number,
+                      member_id: utils.localstorageGetData('userInfo').userId && utils.localstorageGetData(
+                        'userInfo').userId
+                    }
+                  }, response => {
+                    location.href = `/#/site/my-order`
+                  })
+                })
+              } else {
+                location.href = `/#/site/my-order`
+              }
+            }, 2000)
+          } else {
+            if (this.payWay === 'member') {
+              ajax.postDataToApi({
+                url: '/v1/balance-pay',
+                body: {
+                  order_number: response.data.body.order_number,
+                  member_id: utils.localstorageGetData('userInfo').userId && utils.localstorageGetData(
+                    'userInfo').userId
+                }
+              }, response => {
+                location.href = `/#/site/my-order`
+              })
+            } else {
+              location.href = `/#/site/order-pay/${response.data.body[0].id}`
+            }
+          }
+        })
       },
       //提交订单
       orderSubmit() {
@@ -802,22 +843,22 @@
                 amount: this.goodsInfo.selectedSpecGood.count
               }
               this.juadgePayWay(postData)
-              if(!this.userInfo.isMyAddress){
-                 this.juadgeAddressId(postData,() => {
-                 if(!this.userInfo.isMyAddress && !this.addressIsAddSuccess){
-                     console.log('位置错误')
-                }else{
-                   this.falseCartOrderSubmit({
-                  orderUrl: '/v1/goods/default',
-                  scoreUrl: '/v1/score-goods/default'
-                },postData)
-                }
-              })
-              }else{
+              if (!this.userInfo.isMyAddress) {
+                this.juadgeAddressId(postData, () => {
+                  if (!this.userInfo.isMyAddress && !this.addressIsAddSuccess) {
+                    console.log('位置错误')
+                  } else {
+                    this.falseCartOrderSubmit({
+                      orderUrl: '/v1/goods/default',
+                      scoreUrl: '/v1/score-goods/default'
+                    }, postData)
+                  }
+                })
+              } else {
                 this.falseCartOrderSubmit({
                   orderUrl: '/v1/goods/default',
                   scoreUrl: '/v1/score-goods/default'
-                },postData)
+                }, postData)
               }
             } else {
               let postData = {
@@ -830,42 +871,42 @@
                 user_comment: this.formData.addressMessage
               }
               this.juadgePayWay(postData)
-              if(!this.userInfo.isMyAddress){
-               this.juadgeAddressId(postData,() => {
-                if(!this.userInfo.isMyAddress && !this.addressIsAddSuccess){
-                     console.log('位置错误')
-                } else {
-                  this.cartOrderSubmit('/v1/order/default',postData)
-                }
-               })
-              }else {
-                 this.cartOrderSubmit('/v1/order/default',postData)
+              if (!this.userInfo.isMyAddress) {
+                this.juadgeAddressId(postData, () => {
+                  if (!this.userInfo.isMyAddress && !this.addressIsAddSuccess) {
+                    console.log('位置错误')
+                  } else {
+                    this.cartOrderSubmit('/v1/order/default', postData)
+                  }
+                })
+              } else {
+                this.cartOrderSubmit('/v1/order/default', postData)
               }
             }
           }
           //  门店自提提交方式
           if (this.receiptway.storeDeliver) {
             let telRe = /^1[3|4|5|8]\d{9}$/
-            if(this.formData.name === ''){
+            if (this.formData.name === '') {
               Toast({
-                    message: '请输入您的姓名',
-                    position: 'middle',
-                    duration: 2000
-                  })
-            }else if(this.formData.telphone === '') {
+                message: '请输入您的姓名',
+                position: 'middle',
+                duration: 2000
+              })
+            } else if (this.formData.telphone === '') {
               Toast({
-                    message: '请输入您的手机号码',
-                    position: 'middle',
-                    duration: 2000
-                  })
-            }else if(!telRe.test(this.formData.telphone)){
+                message: '请输入您的手机号码',
+                position: 'middle',
+                duration: 2000
+              })
+            } else if (!telRe.test(this.formData.telphone)) {
               Toast({
-                    message: '请输入正确的手机号码',
-                    position: 'middle',
-                    duration: 2000
-                  })
-            }else {
-                 if (this.goodsInfo.buyWay !== "cart") {
+                message: '请输入正确的手机号码',
+                position: 'middle',
+                duration: 2000
+              })
+            } else {
+              if (this.goodsInfo.buyWay !== "cart") {
                 let postData = {
                   store_code: utils.sessionstorageGetData('naberStore') && utils.sessionstorageGetData('naberStore').store_id,
                   profile_id: this.goodsInfo.selectedSpecGood.id,
@@ -879,16 +920,33 @@
                   amount: this.goodsInfo.selectedSpecGood.count
                 }
                 this.juadgePayWay(postData)
-                if (this.goodsInfo.buyWay === "purchase") {
-                  this.postSubmitMethod('/v1/goods/self-pick', postData, (response) => {
-                    location.href = `/#/site/order-pay/${response.data.body.id}`
+                if (!this.userInfo.isMyAddress) {
+                  this.juadgeAddressId(postData, () => {
+                    if (!this.userInfo.isMyAddress && !this.addressIsAddSuccess) {
+                      console.log('位置错误')
+                    } else {
+                      this.falseCartOrderSubmit({
+                        orderUrl: '/v1/goods/self-pick',
+                        scoreUrl: '/v1/score-goods/self-pick'
+                      }, postData)
+                    }
                   })
+                } else {
+                  this.falseCartOrderSubmit({
+                    orderUrl: '/v1/goods/self-pick',
+                    scoreUrl: '/v1/score-goods/self-pick'
+                  }, postData)
                 }
-                if (this.goodsInfo.buyWay === "score") {
-                  this.postSubmitMethod('/v1/score-goods/self-pick', postData, (response) => {
-                    location.href = `/#/site/score-success`
-                  })
-                }
+                // if (this.goodsInfo.buyWay === "purchase") {
+                //   this.postSubmitMethod('/v1/goods/self-pick', postData, (response) => {
+                //     location.href = `/#/site/order-pay/${response.data.body.id}`
+                //   })
+                // }
+                // if (this.goodsInfo.buyWay === "score") {
+                //   this.postSubmitMethod('/v1/score-goods/self-pick', postData, (response) => {
+                //     location.href = `/#/site/score-success`
+                //   })
+                // }
               } else {
                 let postData = {
                   store_code: utils.sessionstorageGetData('naberStore') && utils.sessionstorageGetData('naberStore').store_id,
@@ -902,9 +960,20 @@
                   user_comment: this.formData.addressMessage
                 }
                 this.juadgePayWay(postData)
-                this.postSubmitMethod('/v1/order/self-pick', postData, (response) => {
-                  location.href = `/#/site/order-pay/${response.data.body.id}`
-                })
+                if (!this.userInfo.isMyAddress) {
+                  this.juadgeAddressId(postData, () => {
+                    if (!this.userInfo.isMyAddress && !this.addressIsAddSuccess) {
+                      console.log('位置错误')
+                    } else {
+                      this.cartOrderSubmit('/v1/order/self-pick', postData)
+                    }
+                  })
+                } else {
+                  this.cartOrderSubmit('/v1/order/self-pick', postData)
+                }
+                // this.postSubmitMethod('/v1/order/self-pick', postData, (response) => {
+                //   location.href = `/#/site/order-pay/${response.data.body.id}`
+                // })
               }
             }
           }

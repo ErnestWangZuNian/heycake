@@ -378,7 +378,11 @@
         }, response => {
           if (response.data.body.list && response.data.body.list.length > 0) {
             this.address.myAddressIsShow = true
-            this.address.myAddress = response.data.body.list
+            this.address.myAddress = []
+            response.data.body.list.forEach((val,index) => {
+               this.address.myAddress.forEach(val,index)
+              this.address.myAddress.push(val)
+            })
           }
         }, err => {
 

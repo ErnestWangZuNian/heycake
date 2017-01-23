@@ -75,4 +75,26 @@
 </template>
 <script>
   require('../../assets/scss/member.scss')
+  import ajax from '../../utils/ajax'
+  import utils from '../../utils/public'
+  export default {
+    name: 'ConsumptionDetail',
+    data() {
+      return {
+
+      }
+    },
+    mounted(){
+      this.fetchData()
+    },
+    methods: {
+      fetchData() {
+        ajax.getDataFromApi({
+          url: `/v1/member-order/${utils.localstorageGetData('userInfo').userId}`
+      },response => {
+        console.log(response)
+      })
+      }
+    }
+  }
 </script>
