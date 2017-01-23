@@ -1,0 +1,88 @@
+@import 'style.scss';
+ul.order-detail { margin: 0 px2rem(20)}
+ul.order-detail li { font-size: px2rem(24); color: #888; height: px2rem(45); line-height: px2rem(45)}
+ul.order-detail li span { color: #000000}
+
+.order-detail-grid {
+  @include grid();
+  img{ width: px2rem(100); height: px2rem(100); margin-right: px2rem(20)}
+  .u-w100{
+    flex: 0 0 px2rem(100);
+    .item-cart{background: url(../img/images.png) no-repeat px2rem(-740) px2rem(-245);background-size: px2rem(778) px2rem(683); width: px2rem(35); height: px2rem(35); margin: px2rem(10) 0 0 px2rem(20)}
+  };
+  .u-w50{
+    flex: 0 0 px2rem(50);
+    .line { width:px2rem(2) ;border-left: px2rem(1) solid #ddd; height:px2rem(80); position: relative; left: px2rem(22);
+      .yuan{ width: px2rem(13); height: px2rem(13); border-radius: 50%; border: 1px solid #0b97c4; position: absolute; top: px2rem(32); left: px2rem(-8)}
+    }
+  };
+  .selects{
+    @include selects();
+    width: px2rem(150);
+    height: px2rem(48);
+  };
+  .title { height: px2rem(60); font-size: px2rem(22); line-height: px2rem(30)};
+  .price{ height: px2rem(60); font-size: px2rem(30); color: #cd0c0c;};
+ }
+
+.border-bottom {
+  border-bottom: px2rem(1) solid #dddddd;
+}
+
+.text-right { text-align: right;}
+
+.btn-myorder {
+  @include btn(180,66,#cd0c0c,#ffffff,24,6)
+}
+.btn-orange {
+  @include btn(180,66,#e4b17f,#ffffff,24,6)
+}
+.operation-grid { height: px2rem(100)}
+
+.height-90 { height: px2rem(90)}
+.height-85 { height: px2rem(85)}
+.height-150 { height: px2rem(150)}
+
+//信息
+.order-address{
+  margin:0 px2rem(20);
+  .info{
+    section{
+      font-size: px2rem(24);
+      line-height: px2rem(48);
+      color: #333333;
+      display:-moz-box;
+      display:-webkit-box;
+      display:box;
+      .icon{
+        margin-top: px2rem(9);
+        width: px2rem(30);
+        height: px2rem(30);
+        margin-right: px2rem(20);
+        background: url(../img/images.png);
+        background-size: px2rem(778) px2rem(683);
+      };
+      .icon-name {
+        background-position: px2rem(-417) px2rem(-10) ;
+      };
+      .icon-tel {
+        background-position: px2rem(-457) px2rem(-10);
+      };
+      .icon-addr {
+        background-position: px2rem(-490) px2rem(-10) ;
+      };
+      .text{
+        -moz-box-flex:1;
+        -webkit-box-flex:1;
+        box-flex:1;
+        span{
+          margin-right: px2rem(10);
+          color: $subTitleColor;
+        }
+      }
+    };
+  };
+}
+.order-public {margin: 0 px2rem(20);font-size: px2rem(24); line-height:px2rem(45); color: #333333;}
+
+
