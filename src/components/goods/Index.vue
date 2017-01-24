@@ -269,6 +269,12 @@
       },
       //    点击列表去到详情
       gotoDetail(item) {
+        let allStore = utils.sessionstorageGetData('allNavberStore')
+        if(allStore.length > 0){
+          utils.sessionstorageData('naberStore',allStore[0])
+        }else {
+          utils.sessionstorageData('naberStore',[])
+        }
         if (item.product_type === 3) {
           utils.localstorageData('isCake', true)
         } else {
@@ -378,10 +384,12 @@
         }, response => {
           if (response.data.body.list && response.data.body.list.length > 0) {
             this.address.myAddressIsShow = true
-            this.address.myAddress = []
+            let hash ={}
             response.data.body.list.forEach((val,index) => {
-               this.address.myAddress.forEach(val,index)
-              this.address.myAddress.push(val)
+               if(!hash[val.detail_area]) {
+                 hash[val.detail_area] = false
+                 this.address.myAddress.push(val)
+               }
             })
           }
         }, err => {

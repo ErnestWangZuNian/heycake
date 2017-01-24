@@ -74,12 +74,6 @@
               </div>
               <div class="grid-cell">{{item.created_at}} {{item.content}}</div>
             </li>
-            <li class="order-detail-grid">
-              <div class="grid-cell u-w50">
-                <div class="line"><div class="yuan"></div></div>
-              </div>
-              <div class="grid-cell">2017-01-22 16:22:15 订单已提交</div>
-            </li>
           </ul>
         </div>
     </div>

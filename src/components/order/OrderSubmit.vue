@@ -785,18 +785,20 @@
             window.setTimeout(() => {
               this.errTip.isShow = false
               if (this.payWay === 'member') {
+                let  data = response.data.body
                 ajax.postDataToApi({
                   url: '/v1/balance-pay',
                   body: {
-                    order_number: response.data.body[0].order_number,
+                    order_number: data[0].order_number,
                     member_id: utils.localstorageGetData('userInfo').userId && utils.localstorageGetData(
                       'userInfo').userId
                   }
                 }, response => {
+                  console.log('111')
                   ajax.postDataToApi({
                     url: '/v1/balance-pay',
                     body: {
-                      order_number: response.data.body[1].order_number,
+                      order_number: data[1].order_number,
                       member_id: utils.localstorageGetData('userInfo').userId && utils.localstorageGetData(
                         'userInfo').userId
                     }
@@ -813,7 +815,7 @@
               ajax.postDataToApi({
                 url: '/v1/balance-pay',
                 body: {
-                  order_number: response.data.body.order_number,
+                  order_number: response.data.body[0].order_number,
                   member_id: utils.localstorageGetData('userInfo').userId && utils.localstorageGetData(
                     'userInfo').userId
                 }
@@ -843,6 +845,9 @@
                 amount: this.goodsInfo.selectedSpecGood.count
               }
               this.juadgePayWay(postData)
+              if (this.userInfo.isMyAddress) {
+                postData.address_id = this.userInfo.checkedMyAddress.id
+              }
               if (!this.userInfo.isMyAddress) {
                 this.juadgeAddressId(postData, () => {
                   if (!this.userInfo.isMyAddress && !this.addressIsAddSuccess) {
@@ -871,6 +876,9 @@
                 user_comment: this.formData.addressMessage
               }
               this.juadgePayWay(postData)
+              if (this.userInfo.isMyAddress) {
+                postData.address_id = this.userInfo.checkedMyAddress.id
+              }
               if (!this.userInfo.isMyAddress) {
                 this.juadgeAddressId(postData, () => {
                   if (!this.userInfo.isMyAddress && !this.addressIsAddSuccess) {
@@ -889,7 +897,7 @@
             let telRe = /^1[3|4|5|8]\d{9}$/
             if (this.formData.name === '') {
               Toast({
-                message: '请输入您的姓名',
+                message: '请输入自提人姓名',
                 position: 'middle',
                 duration: 2000
               })
@@ -920,23 +928,13 @@
                   amount: this.goodsInfo.selectedSpecGood.count
                 }
                 this.juadgePayWay(postData)
-                if (!this.userInfo.isMyAddress) {
-                  this.juadgeAddressId(postData, () => {
-                    if (!this.userInfo.isMyAddress && !this.addressIsAddSuccess) {
-                      console.log('位置错误')
-                    } else {
-                      this.falseCartOrderSubmit({
+                if (this.userInfo.isMyAddress) {
+                 postData.address_id = this.userInfo.checkedMyAddress.id
+                }
+                this.falseCartOrderSubmit({
                         orderUrl: '/v1/goods/self-pick',
                         scoreUrl: '/v1/score-goods/self-pick'
                       }, postData)
-                    }
-                  })
-                } else {
-                  this.falseCartOrderSubmit({
-                    orderUrl: '/v1/goods/self-pick',
-                    scoreUrl: '/v1/score-goods/self-pick'
-                  }, postData)
-                }
                 // if (this.goodsInfo.buyWay === "purchase") {
                 //   this.postSubmitMethod('/v1/goods/self-pick', postData, (response) => {
                 //     location.href = `/#/site/order-pay/${response.data.body.id}`
@@ -960,17 +958,10 @@
                   user_comment: this.formData.addressMessage
                 }
                 this.juadgePayWay(postData)
-                if (!this.userInfo.isMyAddress) {
-                  this.juadgeAddressId(postData, () => {
-                    if (!this.userInfo.isMyAddress && !this.addressIsAddSuccess) {
-                      console.log('位置错误')
-                    } else {
-                      this.cartOrderSubmit('/v1/order/self-pick', postData)
-                    }
-                  })
-                } else {
-                  this.cartOrderSubmit('/v1/order/self-pick', postData)
+                if (this.userInfo.isMyAddress) {
+                 postData.address_id = this.userInfo.checkedMyAddress.id
                 }
+                this.cartOrderSubmit('/v1/order/self-pick', postData)
                 // this.postSubmitMethod('/v1/order/self-pick', postData, (response) => {
                 //   location.href = `/#/site/order-pay/${response.data.body.id}`
                 // })

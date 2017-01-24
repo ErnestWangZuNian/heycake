@@ -10,7 +10,7 @@
           </div>
           <div class="card-info-list">
             <span class="card-info-row">累积积分: {{memberInfo.score}}</span>
-            <span class="card-info-row">卡内余额: {{memberInfo.balance | price}}</span>
+            <span class="card-info-row">卡内余额: {{memberInfo.balance | detailPrice}}</span>
           </div>
         </div>
         <div class="nav">

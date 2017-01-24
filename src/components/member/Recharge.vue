@@ -4,7 +4,7 @@
       <div class="recharge-member">
         <div class="recharge-member-header">
           <div class="current-balance">
-            <p class="content">{{memberInfo.balance | price}}</p>
+            <p class="content">{{memberInfo.balance | detailPrice}}</p>
             <p class="title">当前余额</p>
           </div>
         </div>
