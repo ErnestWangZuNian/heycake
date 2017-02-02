@@ -794,7 +794,6 @@
                       'userInfo').userId
                   }
                 }, response => {
-                  console.log('111')
                   ajax.postDataToApi({
                     url: '/v1/balance-pay',
                     body: {

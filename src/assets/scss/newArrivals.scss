@@ -1,7 +1,12 @@
 @import 'style.scss';
-
+.new-arrivals-top{
+  position: fixed;
+  z-index: 9999;
+  width:px2rem(640);
+}
 .list {
-  padding: px2rem(20) 0;
+  padding: px2rem(384) 0 px2rem(20); 
+  overflow-y: scroll;
   ul{
     a{ text-decoration: none};
     li{

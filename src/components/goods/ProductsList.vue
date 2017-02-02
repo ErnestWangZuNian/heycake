@@ -1,8 +1,9 @@
 <template>
   <div>
     <loading v-if="loading"></loading>
-    <div class="container" v-if="!loading">
-      <!--附近门店推荐-->
+    <div class="container naber-cakelist" v-if="!loading">
+      <div class="naber-cakelist-top">
+        <!--附近门店推荐-->
       <div class="naberStore">
         <ul class="storeList">
           <li class="cf">
@@ -66,6 +67,7 @@
           </div>
         </div>
       </div>
+      </div>
       <!--产品列表-->
       <div class="products-list">
         <loadmore :bottom-method="loadTop" :auto-fill="false" :bottom-loading-text="text.loding" :bottom-drop-text="text.drop" :bottom-status-change="bottomStatusChange">
@@ -117,6 +119,7 @@
         list: [0],
         topStatus: '',
         goodInfo: [],
+        requestData: [],
         allGoodInfo: [],
         banner: [],
         category: {
@@ -137,19 +140,21 @@
     },
     methods: {
       //    获取数据
-      fetchData() {
+      fetchData(page) {
         this.loading = true
         ajax.getDataFromApi({
           url: `/v1/goods/`,
           data: {
-            store_code: utils.sessionstorageGetData('naberStore') && utils.sessionstorageGetData('naberStore').store_id
+            store_code: utils.sessionstorageGetData('naberStore') && utils.sessionstorageGetData('naberStore').store_id,
+            per_page: 8,
+            page: page
           }
         }, (response) => {
-          let data = response.data.body.list.map(utils.imgDetail)
+          this.requestData = this.requestData.concat(response.data.body.list.map(utils.imgDetail))
           this.loading = false
           this.page.total = response.data.body.pagination.total
           this.text.loding = "上拉刷新"
-          this.modifyData(data)
+          this.modifyData(this.requestData)
         })
         //      获取轮播图
         ajax.getDataFromApi({
@@ -161,6 +166,7 @@
       //      整理数据
       modifyData(data) {
         let category = []
+        this.goodInfo = []
         data.forEach((val) => {
           category.push(val.parent_name)
         })

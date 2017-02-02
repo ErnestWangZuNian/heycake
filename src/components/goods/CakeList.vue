@@ -1,7 +1,7 @@
 <template>
   <div>
     <loading v-if="loading"></loading>
-    <div class="container" v-if="!loading">
+    <div class="container cakelist-container" v-if="!loading">
       <div class="index-nav index-nav5">
         <ul class="cf">
           <keep-alive>
@@ -93,10 +93,11 @@
           category: '蛋糕制作'
         }],
         banner: [],
+        requestData: [],
         category: {
           value: [],
           seleted: '全部',
-          status: false
+          status: false,
         },
         naberStore: {},
         text: {
@@ -111,19 +112,22 @@
     },
     methods: {
       //    获取数据
-      fetchData() {
+      fetchData(page) {
         this.loading = true
         ajax.getDataFromApi({
           url: `/v1/goods/`,
           data: {
-            store_code: utils.sessionstorageGetData('naberStore') && utils.sessionstorageGetData('naberStore').store_id
+            store_code: utils.sessionstorageGetData('naberStore') && utils.sessionstorageGetData('naberStore').store_id,
+            per_page: 8,
+            page: page
           }
         }, (response) => {
           let data = response.data.body.list.map(utils.imgDetail)
+          this.requestData = this.requestData.concat(data)
           this.loading = false
           this.page.total = response.data.body.pagination.total
           this.text.loding = "上拉刷新"
-          this.modifyData(data)
+          this.modifyData(this.requestData)
         })
         //      获取轮播图
         ajax.getDataFromApi({
