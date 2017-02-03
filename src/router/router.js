@@ -24,7 +24,7 @@ const Login = resolve => require(['../components/user/Login'], resolve)
 const MemberIndex = resolve => require(['../components/member/Home'], resolve)
 const MemberRecharge = resolve => require(['../components/member/Recharge'], resolve)
 const MemberRechargeDetail = resolve => require(['../components/member/RechargeDetail'], resolve)
-const MemberConsumption = resolve => require(['../components/member/Consumption'], resolve)
+const MemberPersonInfo = resolve => require(['../components/member/PersonInfo'], resolve)
 const MemberConsumptionDetail = resolve => require(['../components/member/ConsumptionDetail'], resolve)
 const OrderDetail = resolve => require(['../components/order/OrderDetail'], resolve)
 const routes = [{
@@ -124,8 +124,8 @@ const routes = [{
   path: '/site/member-recharge-detail',
   component: MemberRechargeDetail
 }, {
-  path: '/site/member-consumption',
-  component: MemberConsumption
+  path: '/site/member-person-info',
+  component: MemberPersonInfo
 }, {
   path: '/site/member-consumption-detail',
   component: MemberConsumptionDetail
