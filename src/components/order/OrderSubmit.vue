@@ -19,6 +19,10 @@
               <div class="text"><input type="text" placeholder="配送员联系您的方式" v-model="locationUserInfo.tel_phone"></div>
             </section>
             <section>
+              <div class="icon icon-tel"></div>
+              <div class="text"><input type="text" placeholder="楼层/门牌号等信息" v-model="locationUserInfo.doorplate"></div>
+            </section>
+            <section>
               <div class="icon icon-addr"></div>
               <div class="text"><span>[已选择地址]</span>{{userInfo.checkedAddress}}</div>
             </section>
@@ -40,7 +44,7 @@
             </section>
             <section>
               <div class="icon icon-addr"></div>
-              <div class="text"><span>[已选择地址]</span>{{userInfo.checkedAddress}}</div>
+              <div class="text"><span>[已选择地址]</span>{{userInfo.checkedAddress + userInfo.checkedMyAddress.doorplate}}</div>
             </section>
           </div>
           <div class="fl arrow" @click="editMethod(userInfo.checkedMyAddress.id)">
@@ -252,18 +256,14 @@
       this.userInfo.isMyAddress = utils.sessionstorageGetData('isMyAddress')
       if (this.userInfo.isMyAddress) {
         this.userInfo.checkedMyAddress = utils.sessionstorageGetData('checkedMyAddress')
-        console.log(utils.sessionstorageGetData('checkedAddress'))
         this.userInfo.checkedAddress = utils.sessionstorageGetData('checkedMyAddress').detail_area
         this.locationUserInfo.district = utils.sessionstorageGetData('checkedAddress').cityname + utils.sessionstorageGetData('checkedAddress').adname
       } else {
         this.userInfo.checkedMyAddress = {}
-        console.log(utils.sessionstorageGetData('checkedAddress'))
         this.userInfo.checkedAddress = utils.sessionstorageGetData('checkedAddress').name
         this.locationUserInfo.location = utils.sessionstorageGetData('checkedAddress').location
         this.locationUserInfo.district = utils.sessionstorageGetData('checkedAddress').district
       }
-      console.log(this.userInfo.freight === '包邮')
-
     },
     data() {
       return {
@@ -323,6 +323,7 @@
           tel_phone: '',
           detail_area: '',
           district: '',
+          doorplate: '',
           default: 1,
           location: ''
         },

@@ -118,16 +118,16 @@
                         </div>
                         <div class="tip fl" v-if="goodInfo.erp_product_type !== 1">（剩余{{selectedSpec.stock | stock }}个）</div>
                     </div>
-                    <button class="confirm-spec" type="submit" :disabled="selectedSpec.stock <= 0  && goodInfo.product_type !== 3" v-if="specStatus.specWay==='cart'"
-                        @click="confirmJoinCart(goodInfo.id,selectedSpec.id,goodCount)" :class="{'disabled-spec': selectedSpec.stock <= 0 && goodInfo.product_type !== 3}">
+                    <button class="confirm-spec" type="submit" :disabled="Math.floor(selectedSpec.stock) <= 0  && goodInfo.product_type !== 3" v-if="specStatus.specWay==='cart'"
+                        @click="confirmJoinCart(goodInfo.id,selectedSpec.id,goodCount)" :class="{'disabled-spec': Math.floor(selectedSpec.stock) <= 0 && goodInfo.product_type !== 3}">
                         加入购物车
                     </button>
-                    <button class="confirm-spec" type="submit" v-if="specStatus.specWay==='purchase'" :disabled="selectedSpec.stock <= 0 && goodInfo.product_type !== 3"
-                        :class="{'disabled-spec': selectedSpec.stock <= 0 && goodInfo.product_type !== 3}" @click="confirmPurchase">
+                    <button class="confirm-spec" type="submit" v-if="specStatus.specWay==='purchase'" :disabled="Math.floor(selectedSpec.stock) <= 0 && goodInfo.product_type !== 3"
+                        :class="{'disabled-spec':Math.floor(selectedSpec.stock) <= 0 && goodInfo.product_type !== 3}" @click="confirmPurchase">
                         去结算
                     </button>
-                    <button class="confirm-spec" type="submit" v-if="specStatus.specWay==='scoreChange'" :disabled="selectedSpec.stock <= 0 && goodInfo.product_type !== 3"
-                        :class="{'disabled-spec': selectedSpec.stock <= 0  && goodInfo.product_type !== 3}" @click="confirmScoreChange">
+                    <button class="confirm-spec" type="submit" v-if="specStatus.specWay==='scoreChange'" :disabled="Math.floor(selectedSpec.stock) <= 0 && goodInfo.product_type !== 3"
+                        :class="{'disabled-spec': Math.floor(selectedSpec.stock) <= 0  && goodInfo.product_type !== 3}" @click="confirmScoreChange">
                         立即兑换
                     </button>
                 </div>
@@ -389,9 +389,10 @@
                     ajax.postDataToApi({
                         url: '/v1/shopping-cart',
                         body: {
+                            store_code: utils.sessionstorageGetData('naberStore') && utils.sessionstorageGetData('naberStore').store_id,
                             goods_id: goodId,
                             specification_id: specId,
-                            amount: goodCount
+                            amount: goodCount,
                         }
                     }, (response) => {
                         this.getcartCount(() => {

@@ -10,6 +10,9 @@ ul.order-detail li span { color: #000000}
     flex: 0 0 px2rem(100);
     .item-cart{background: url(../img/images.png) no-repeat px2rem(-740) px2rem(-245);background-size: px2rem(778) px2rem(683); width: px2rem(35); height: px2rem(35); margin: px2rem(10) 0 0 px2rem(20)}
   };
+  .u-good-info{
+    margin-left: px2rem(20);
+  }
   .u-w50{
     flex: 0 0 px2rem(50);
     .line { width:px2rem(2) ;border-left: px2rem(1) solid #ddd; height:px2rem(80); position: relative; left: px2rem(22);
@@ -84,5 +87,30 @@ ul.order-detail li span { color: #000000}
   };
 }
 .order-public {margin: 0 px2rem(20);font-size: px2rem(24); line-height:px2rem(45); color: #333333;}
-
+.blance-splier{
+  height: px2rem(140);
+}
+// 底部订单状态信息展示
+.order-detail-bottom{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 9999;
+  background: #f5f5f5;
+  padding: px2rem(20);
+  width:px2rem(640);
+  font-size: px2rem(24);
+  .order-detail-status{
+    display: inline-block;
+  }
+  .order-detail-cancel{
+     display: inline-block;
+      margin-left: px2rem(160);
+  }
+  .order-detail-gotopay{
+     display: inline-block;
+     margin-left: px2rem(100);
+     @include btn(140,60,#cd0c0c,#fff,24,10)
+  }
+}
 

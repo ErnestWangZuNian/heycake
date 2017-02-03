@@ -10,6 +10,10 @@
           </div>
           <div class='err-class' v-if="validator.detailArea.errIsShow">{{validator.detailArea.errText}}</div>
           <div class="input-line">
+            <label for="name">门牌号：</label>
+            <input type="text" name="name" placeholder="门牌/楼道等信息" v-model="formData.doorplate">
+          </div>
+          <div class="input-line">
             <label for="name">联系人：</label>
             <input type="text" name="name" placeholder="您的姓名" v-model="formData.name" @focus="focusMethod('name')" @blur="blurMethod('name')">
           </div>
@@ -109,6 +113,7 @@
           tel_phone: '',
           detail_area: '',
           district: '',
+          doorplate: '',
           default: 1,
           location: '',
         },
@@ -164,10 +169,12 @@
           this.formData.id = response.data.body.id
           this.formData.name = response.data.body.name
           this.formData.tel_phone = response.data.body.tel_phone
+          this.formData.doorplate = response.data.body.doorplate
+          this.formData.detail_area =response.data.body.detail_area
+          this.formData.district = response.data.body.city_name + '市' + response.data.body.county_name
+          this.formData.location = response.data.body.location
           this.validator.name.isFlag = true
           this.validator.telPhone.isFlag = true
-          this.validator.cityId.isFlag = true
-          this.validator.countyId.isFlag = true
           this.validator.detailArea.isFlag = true
         })
       },
@@ -270,12 +277,6 @@
           }
           if (!this.validator.telPhone.isFlag) {
             this.validator.telPhone.errIsShow = true
-          }
-          if (!this.validator.cityId.isFlag) {
-            this.validator.cityId.errIsShow = true
-          }
-          if (!this.validator.countyId.isFlag) {
-            this.validator.countyId.errIsShow = true
           }
           if (!this.validator.detailArea.isFlag) {
             this.validator.detailArea.errIsShow = true

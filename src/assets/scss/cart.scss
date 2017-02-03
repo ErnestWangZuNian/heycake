@@ -52,3 +52,19 @@ ul.theCart{
       @include btn(160,64,#b00002,#ffffff,28,6)
   }
 }
+.null-cart{
+  .img-flag{
+    padding: px2rem(230) px2rem(170) 0 px2rem(114);
+    width:px2rem(356);
+    height: px2rem(114);
+    img{
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .null-cart-btn{
+    margin-top: px2rem(500);
+    margin-left: px2rem(90);
+    @include btn(456,62,red,#fff,24,10)
+  }
+}

@@ -6,7 +6,7 @@
         <ul>
           <template v-for="item in listData">
             <template v-if="item.is_default == 1">
-              <li class="border-red" :data-id="item.id">
+              <li class="address-list border-red" :data-id="item.id">
                 <div class="grid height-230">
                   <div class="grid-cell u-w70"></div>
                   <div class="grid-cell">
@@ -23,7 +23,7 @@
               </li>
             </template>
             <template v-else>
-              <li class="border-ddd" :data-id="item.id">
+              <li class="address-list border-ddd" :data-id="item.id">
                 <div class="grid height-230">
                   <div class="grid-cell u-w70"></div>
                   <div class="grid-cell">
