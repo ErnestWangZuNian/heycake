@@ -1,0 +1,27 @@
+@import 'style.scss';
+.person-info-grid {
+  @include grid();
+  input {
+    font-family: "microsoft yahei";
+  };
+  .bor { width:px2rem(570); height: px2rem(48); border-radius: px2rem(5); padding:0 px2rem(10); border:1px solid #ddd;}
+  .selects{
+    @include selects();
+    width: 95%;
+    height: px2rem(48);
+  };
+  .selects2 { border: none; direction:rtl}
+  .c-888{
+    overflow: hidden;
+    white-space:nowrap;
+    text-overflow: ellipsis;
+  }
+ }
+.loadmore-style{
+  padding-top: px2rem(90);
+  overflow-y: scroll;
+}
+.height-85 { height: px2rem(85)}
+.btns {@include btn(460,66,#b00002,#f7d2aa,28,6); margin-top: px2rem(100)}
+
+
