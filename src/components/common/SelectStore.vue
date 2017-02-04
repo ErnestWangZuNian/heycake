@@ -15,9 +15,9 @@
                     <img :src="item.logo" alt="">
                 </div>
                 <div class="grid-cell store-test">
-                    <div class="store-test-title">{{item.name}}</div>
-                    <div class="store-test-subtitle">{{item.address}}</div>
-                    <div class="store-test-thirdtitle">联系电话: {{item.contact_phone}}</div>
+                    <div class="store-test-title"><span class="store-name">{{item._name}}</span><span class="store-distance">距离{{item._distance}}m</span></div>
+                    <div class="store-test-subtitle">{{item._address}}</div>
+                    <div class="store-test-thirdtitle">联系电话: {{item.telphone}}</div>
                 </div>
             </li>
            </ul>

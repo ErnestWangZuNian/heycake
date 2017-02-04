@@ -40,15 +40,22 @@
                   </div>
                 </div>
                 <div class="grid-cell u-w130 tright">
-                  <div class="price">{{child.price | price}}</div>
+                  <div class="price" v-if="item.pay_method !== 2">{{child.price | price}}</div>
+                   <div class="price" v-if="item.pay_method === 2">{{child.score}}积分</div>
                   <div class="f-20 c-666">x{{child.amount}}</div>
                 </div>
               </li>
             </ul>
             <div class="my-order-grid height-85 border-bottom">
-              <div class="grid-cell c-888">
+              <div class="grid-cell c-888" v-if="item.pay_method !== 2">
                 支付金额：
                 <span class="c-red">{{item.total_sum | price}}</span>
+                <template v-if='item.logistics_mode == "pick-up"'>（自提）</template>
+                <template v-else>（含运费：{{item.logistics_price}}元）</template>
+              </div>
+              <div class="grid-cell c-888" v-if="item.pay_method === 2">
+                兑换积分：
+                <span class="c-red">{{item.total_sum | score}}积分</span>
                 <template v-if='item.logistics_mode == "pick-up"'>（自提）</template>
                 <template v-else>（含运费：{{item.logistics_price}}元）</template>
               </div>

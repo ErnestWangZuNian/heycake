@@ -7,6 +7,14 @@ Vue.filter('price', (value) => {
     return value
   }
 })
+// 单个积分处理
+Vue.filter('score', (value) => {
+  // 返回处理后的价格
+  if (value !== undefined) {
+    value = (value * 100 / 100)
+    return value
+  }
+})
 // 价格除以100
 Vue.filter('detailPrice', (value) => {
   if (value !== undefined) {
@@ -47,7 +55,7 @@ Vue.filter('spec', (value) => {
     return val
   }
 })
-// 处理支付方式处理
+// 处理支付方式
 Vue.filter('payway', (value) => {
   let val = '在线支付'
   if (value !== undefined) {
@@ -69,6 +77,38 @@ Vue.filter('payway', (value) => {
         break
       default:
         val = '在线支付'
+    }
+    return val
+  }
+})
+// 微商城和门店操作端口区别
+Vue.filter('terminalName', (value) => {
+  let val = '微商城'
+  if (value !== undefined) {
+    if (value === 'wsc') {
+      val = '微商城'
+    } else {
+      val = 'value'
+    }
+  }
+  return val
+})
+//  区别微信支付和支付宝支付
+Vue.filter('onlinePayway', (value) => {
+  let val = '支付宝'
+  if (value !== undefined) {
+    switch (value) {
+      case 'alipay':
+        val = '支付宝'
+        break
+      case 'weixin':
+        val = '微信'
+        break
+      case 'balance':
+        val = '余额支付'
+        break
+      default:
+        val = '支付宝'
     }
     return val
   }

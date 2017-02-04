@@ -44,7 +44,7 @@
             </section>
             <section>
               <div class="icon icon-addr"></div>
-              <div class="text"><span>[已选择地址]</span>{{userInfo.checkedAddress + userInfo.checkedMyAddress.doorplate}}</div>
+              <div class="text"><span>[已选择地址]</span>{{userInfo.checkedAddress }} {{userInfo.checkedMyAddress.doorplate}}</div>
             </section>
           </div>
           <div class="fl arrow" @click="editMethod(userInfo.checkedMyAddress.id)">
@@ -58,29 +58,29 @@
       </div>
       <!--门店自提信息-->
       <div class="order-info" v-if="receiptway.storeDeliver">
-        <div class="label-list">
+        <!--<div class="label-list">
           <div class="store-info">
             自提信息
           </div>
           <div class="fl info">
             <section>
               <div class="icon icon-name"></div>
-              <div class="text">{{store.selectedStore.name}}</div>
+              <div class="text">{{store.selectedStore._name}}</div>
             </section>
             <section>
               <div class="icon icon-tel"></div>
-              <div class="text">{{store.selectedStore.contact_phone}}</div>
+              <div class="text">{{store.selectedStore.telphone}}</div>
             </section>
             <section>
               <div class="icon icon-addr"></div>
-              <div class="text"><span>[默认]</span>{{store.selectedStore.address}}</div>
+              <div class="text"><span>[默认]</span>{{store.selectedStore._address}}</div>
             </section>
           </div>
           <div class="fl arrow" @click="storeOpen">
             <div class="icon-right"></div>
           </div>
           <div class="cf"></div>
-        </div>
+        </div>-->
         <div class="label-message">
           <div class="label-list">
             <label>自提人</label> <input class="inputs" type="text" v-model='formData.name' @focus="focusMethod('name')" @blur="blurMethod('name')"
@@ -440,19 +440,20 @@
             }
           }
         })
-        //获取门店列表
-        ajax.getDataFromApi({
-          url: '/v1/offlinestore'
-        }, (response) => {
-          let data = response.data.body.list
-          data.map((val, index) => {
-            index === 0 ? val.isSelected = true : val.isSelected = false
-            val.logo = `/attachment/${val.logo}`
-            return val
-          })
-          this.store.storeList = data
-          this.store.selectedStore = data[0]
-        });
+        this.getNaberStore(utils.sessionstorageGetData('checkedAddress').location)
+        // //获取门店列表
+        // ajax.getDataFromApi({
+        //   url: '/v1/offlinestore'
+        // }, (response) => {
+        //   let data = response.data.body.list
+        //   data.map((val, index) => {
+        //     index === 0 ? val.isSelected = true : val.isSelected = false
+        //     val.logo = `/attachment/${val.logo}`
+        //     return val
+        //   })
+        //   this.store.storeList = data
+        //   this.store.selectedStore = data[0]
+        // });
         //   获取购物明细
         this.getOrderInfo();
         //  获取商品运费
@@ -466,6 +467,30 @@
             this.userInfo.freight = '包邮'
           }
         })
+      },
+      //    获取云图附件门店
+      getNaberStore(location) {
+        let key = '6ec262982ede339365a6f9d9b5370f1b'
+        let tableid = '586b5c10afdf520ea8f2368e'
+        let center = location
+        let radius = 1000
+        this.$jsonp('http://yuntuapi.amap.com/datasearch/around', {
+          key: key,
+          tableid: tableid,
+          center: center,
+          radius: radius
+        })
+          .then(response => {
+            let data = response.datas
+            data.map((val, index) => {
+              index === 0 ? val.isSelected = true : val.isSelected = false
+              // val.logo = `/attachment/${val.logo}`
+              return val
+            })
+            this.store.storeList = data
+            this.store.selectedStore = data[0]
+          }, err => {
+          })
       },
       //  关闭错误提示框
       errTipClose() {
@@ -531,7 +556,7 @@
         this.receiptway.storeHiglight = true
         this.receiptway.expressDelivery = false
         this.receiptway.expressHiglight = false
-        this.storeOpen()
+        // this.storeOpen()
       },
       //      关闭地址弹窗
       addressClose() {
@@ -580,6 +605,18 @@
       onlinePayWay() {
         this.payWay = 'online'
       },
+      //  余额不足判断
+      juadgeBalance() {
+        if (this.memberInfo.balance * 100 < this.totalPrice * 100) {
+          this.errTip.isShow = true
+          this.errTip.text = '您的余额不足'
+          this.errTip.isRecharge = true
+          if (this.canSubmitOrderFlag) {
+            this.canSubmitOrderFlag = false
+          }
+          return false
+        }
+      },
       //  会员卡余额支付 
       memberPayWay() {
         this.payWay = 'member',
@@ -587,14 +624,7 @@
             url: `/v1/user-center/${utils.localstorageGetData('userInfo').userId}`
           }, response => {
             this.memberInfo = response.data.body.list
-            if (this.memberInfo.balance * 100 < this.totalPrice * 100) {
-              this.errTip.isShow = true
-              this.errTip.text = '您的余额不足'
-              this.errTip.isRecharge = true
-              if (this.canSubmitOrderFlag) {
-                this.canSubmitOrderFlag = false
-              }
-            }
+            this.juadgeBalance()
           }, err => {
 
           })
@@ -629,6 +659,7 @@
       },
       //编辑地址方法
       editMethod(id) {
+        utils.sessionstorageData('editAddress', false)
         location.href = `/#/site/edit-address/${id}`
       },
       //验证方法
@@ -725,6 +756,7 @@
               }, response => {
                 let addressId = response.data.body.id
                 postData.address_id = addressId
+                utils.sessionstorageData('isMyAddress', true)
                 this.addressIsAddSuccess = true
                 callback && callback()
               }, err => {
@@ -745,6 +777,7 @@
             this.errTip.text = '您还没有输入会员登录密码'
             this.errTip.isWarn = true
           }
+          this.juadgeBalance()
         }
       },
       // 直接购买和积分兑换方式提交订单
@@ -786,7 +819,7 @@
             window.setTimeout(() => {
               this.errTip.isShow = false
               if (this.payWay === 'member') {
-                let  data = response.data.body
+                let data = response.data.body
                 ajax.postDataToApi({
                   url: '/v1/balance-pay',
                   body: {
@@ -851,7 +884,6 @@
               if (!this.userInfo.isMyAddress) {
                 this.juadgeAddressId(postData, () => {
                   if (!this.userInfo.isMyAddress && !this.addressIsAddSuccess) {
-                    console.log('位置错误')
                   } else {
                     this.falseCartOrderSubmit({
                       orderUrl: '/v1/goods/default',
@@ -882,7 +914,6 @@
               if (!this.userInfo.isMyAddress) {
                 this.juadgeAddressId(postData, () => {
                   if (!this.userInfo.isMyAddress && !this.addressIsAddSuccess) {
-                    console.log('位置错误')
                   } else {
                     this.cartOrderSubmit('/v1/order/default', postData)
                   }
@@ -918,7 +949,7 @@
                 let postData = {
                   store_code: utils.sessionstorageGetData('naberStore') && utils.sessionstorageGetData('naberStore').store_id,
                   profile_id: this.goodsInfo.selectedSpecGood.id,
-                  offline_store: this.store.selectedStore.id,
+                  // offline_store: this.store.selectedStore._id,
                   custom_name: this.formData.name,
                   contact_phone: this.formData.telphone,
                   date: this.appointTime.selectedDate,
@@ -929,27 +960,17 @@
                 }
                 this.juadgePayWay(postData)
                 if (this.userInfo.isMyAddress) {
-                 postData.address_id = this.userInfo.checkedMyAddress.id
+                  postData.address_id = this.userInfo.checkedMyAddress.id
                 }
                 this.falseCartOrderSubmit({
-                        orderUrl: '/v1/goods/self-pick',
-                        scoreUrl: '/v1/score-goods/self-pick'
-                      }, postData)
-                // if (this.goodsInfo.buyWay === "purchase") {
-                //   this.postSubmitMethod('/v1/goods/self-pick', postData, (response) => {
-                //     location.href = `/#/site/order-pay/${response.data.body.id}`
-                //   })
-                // }
-                // if (this.goodsInfo.buyWay === "score") {
-                //   this.postSubmitMethod('/v1/score-goods/self-pick', postData, (response) => {
-                //     location.href = `/#/site/score-success`
-                //   })
-                // }
+                  orderUrl: '/v1/goods/self-pick',
+                  scoreUrl: '/v1/score-goods/self-pick'
+                }, postData)
               } else {
                 let postData = {
                   store_code: utils.sessionstorageGetData('naberStore') && utils.sessionstorageGetData('naberStore').store_id,
                   collection: this.goodsInfo.cartGoodsId,
-                  offline_store: this.store.selectedStore.id,
+                  // offline_store: this.store.selectedStore._id,
                   custom_name: this.formData.name,
                   contact_phone: this.formData.telphone,
                   date: this.appointTime.selectedDate,
@@ -959,12 +980,9 @@
                 }
                 this.juadgePayWay(postData)
                 if (this.userInfo.isMyAddress) {
-                 postData.address_id = this.userInfo.checkedMyAddress.id
+                  postData.address_id = this.userInfo.checkedMyAddress.id
                 }
                 this.cartOrderSubmit('/v1/order/self-pick', postData)
-                // this.postSubmitMethod('/v1/order/self-pick', postData, (response) => {
-                //   location.href = `/#/site/order-pay/${response.data.body.id}`
-                // })
               }
             }
           }

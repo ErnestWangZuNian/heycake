@@ -4,96 +4,133 @@
       <div class="detail-member">
         <div class="detail-member-header consumption-detail-header cf">
           <div class="same-select mr20">
-            <p class="same-select-list">支付宝</p>
-            <!--<ul class="same-select-list-container">
-              <li class="same-select-list same-select-list-active">支付宝</li>
-              <li class="same-select-list">微信</li>
-            </ul>-->
+            <p class="same-select-list" @click="changePayWay">{{payWay.selected}}</p>
+            <ul class="same-select-list-container" v-if="payWay.status">
+
+              <li class="same-select-list" :class="[item.selected ? 'same-select-list-active' : '']" v-for="item in payWay.list" @click="selectedPayway(item)">{{item.val}}</li>
+            </ul>
           </div>
           <div class="same-select mr20">
-            <p class="same-select-list">支付宝</p>
-            <!--<ul class="same-select-list-container">
-              <li class="same-select-list same-select-list-active">支付宝</li>
-              <li class="same-select-list">微信</li>
-            </ul>-->
+            <p class="same-select-list" @click="openPicker">选择时间</p>
           </div>
-          <div class="search">搜索</div>
+          <div class="search" @click="searchPay()">搜索</div>
         </div>
         <div class="detail-member-content">
           <ul class="list-container">
-            <li class="list">
-                <div class="list-header cf">
-                    <div class="list-header-fl">
-                      支付方式：支付宝
-                    </div>
-                    <div class="list-header-fr">
-                     2017-1-12 14:26:00
-                    </div>
+            <li class="list" v-for="item in consumptionList" @click="gotoOrder(item.order_id)">
+              <div class="list-header cf">
+                <div class="list-header-fl">
+                  支付方式：{{item.pay_method | onlinePayway}}
                 </div>
-                <div class="list-content cf">
-                    <div class="list-content-fl">
-                       <p class="list-example">订单号：￥1000</p>
-                       <p class="list-example">订单金额：￥100</p>
-                       <p class="list-example">实际支付金额： <span class="color-red">￥1000</span></p>
-                    </div>
-                    <div class="list-content-fr">
-                       <div class="fr-info consumption-fr-info">
-                           <p class="fr-info-store">微商城</p>
-                           <p class="fr-info-decont color-red">满100送10</p>
-                       </div>
-                    </div>
+                <div class="list-header-fr">
+                  {{item.order_time}}
                 </div>
-            </li>
-             <li class="list">
-                <div class="list-header cf">
-                    <div class="list-header-fl">
-                      支付方式：支付宝
-                    </div>
-                    <div class="list-header-fr">
-                     2017-1-12 14:26:00
-                    </div>
+              </div>
+              <div class="list-content cf">
+                <div class="list-content-fl">
+                  <p class="list-example">订单号：{{item.order_number}}</p>
+                  <p class="list-example">订单金额：{{item.order_money | detailPrice}}</p>
+                  <p class="list-example">实际支付金额： <span class="color-red">{{item.pay_money | detailPrice}}</span></p>
                 </div>
-                <div class="list-content cf">
-                    <div class="list-content-fl">
-                       <p class="list-example">订单号：￥1000</p>
-                       <p class="list-example">订单金额：￥100</p>
-                       <p class="list-example">实际支付金额： <span class="color-red">￥1000</span></p>
-                    </div>
-                    <div class="list-content-fr">
-                       <div class="fr-info consumption-fr-info">
-                           <p class="fr-info-store">微商城</p>
-                           <p class="fr-info-decont color-red">满100送10</p>
-                       </div>
-                    </div>
+                <div class="list-content-fr">
+                  <div class="fr-info consumption-fr-info">
+                    <p class="fr-info-store">{{item.terminal_name | terminalName}}</p>
+                    <p class="fr-info-decont color-red"></p>
+                  </div>
                 </div>
+              </div>
             </li>
           </ul>
         </div>
       </div>
     </div>
+     <!--时间选择我插件-->
+    <datetime-picker ref="picker" type="date" v-model="pickerValue">
+    </datetime-picker>
   </div>
 </template>
 <script>
   require('../../assets/scss/member.scss')
+  import { DatetimePicker } from 'mint-ui'
   import ajax from '../../utils/ajax'
   import utils from '../../utils/public'
   export default {
     name: 'ConsumptionDetail',
+    components: {
+      DatetimePicker
+    },
     data() {
       return {
-
+        consumptionList: [],
+        pickerValue: '',
+        payWay: {
+          status: false,
+          selected: '余额支付',
+          selectedData: 'alipay',
+          list: [
+            {
+              selected: true,
+              val: '余额支付',
+              key: 'balance',
+            },
+            {
+              selected: false,
+              val: '支付宝',
+              key: 'alipay',
+            },
+            {
+              selected: false,
+              val: '微信',
+              key: 'weixin',
+            },
+          ]
+        }
       }
     },
-    mounted(){
+    mounted() {
       this.fetchData()
     },
     methods: {
+      //  获取数据
       fetchData() {
         ajax.getDataFromApi({
           url: `/v1/member-order/${utils.localstorageGetData('userInfo').userId}`
-      },response => {
-        console.log(response)
-      })
+        }, response => {
+          this.consumptionList = response.data.body.list
+        })
+      },
+      //  去订单详情
+      gotoOrder(id) {
+        location.href = `/#/site/order-detail/${id}`
+      },
+      //  切换分类
+      changePayWay() {
+        this.payWay.status = true
+      },
+      // 打开时间选择器
+      openPicker() {
+        this.$refs.picker.open();
+      },
+      // 搜索
+      searchPay() {
+        ajax.getDataFromApi({
+          url: `/v1/member-order/${utils.localstorageGetData('userInfo').userId}`,
+          data: {
+            pay_method: this.payWay.selectedData
+          }
+        }, response => {
+          console.log(response)
+        })
+      },
+      //  选择分类
+      selectedPayway(item) {
+        this.payWay.list.forEach(val => {
+          val.selected = false
+        })
+        item.selected = true
+        this.payWay.selected = item.val
+        this.payWay.selectedData = item.key
+        this.payWay.status = false
       }
     }
   }

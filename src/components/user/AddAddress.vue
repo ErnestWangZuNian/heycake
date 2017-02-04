@@ -67,7 +67,8 @@
   import {
     Swipe,
     SwipeItem,
-    MessageBox
+    MessageBox,
+    Toast
   } from 'mint-ui'
   import Loading from '../common/Loading'
   import ajax from '../../utils/ajax.js'
@@ -80,7 +81,8 @@
       Swipe,
       SwipeItem,
       MessageBox,
-      Modal
+      Modal,
+      Toast
     },
     mounted() {
       this.isLoginMethod() //判断登录，并获取列表数据
@@ -170,7 +172,7 @@
           this.formData.name = response.data.body.name
           this.formData.tel_phone = response.data.body.tel_phone
           this.formData.doorplate = response.data.body.doorplate
-          this.formData.detail_area =response.data.body.detail_area
+          this.formData.detail_area = response.data.body.detail_area
           this.formData.district = response.data.body.city_name + '市' + response.data.body.county_name
           this.formData.location = response.data.body.location
           this.validator.name.isFlag = true
@@ -251,10 +253,14 @@
               }, response => {
                 let address = response.data.body
                 utils.sessionstorageData('checkedMyAddress', address)
-                if (utils.localstorageGetData('buyWay') !== 'cart') {
+                if(utils.sessionstorageGetData('editAddress')){
+                    location.href ='/#/site/my-address'
+                } else {
+                  if (utils.localstorageGetData('buyWay') !== 'cart') {
                   location.href = `/#/site/order-submit/${utils.localstorageGetData('orderId')}`
                 } else {
                   location.href = `/#/site/order-submit`
+                }
                 }
               })
             })
@@ -264,11 +270,12 @@
               url: '/v1/my-address',
               body: this.formData,
             }, (response) => {
-              if (utils.localstorageGetData('buyWay') !== 'cart') {
-                location.href = `/#/site/order-submit/${utils.localstorageGetData('orderId')}`
-              } else {
-                location.href = `/#/site/order-submit`
-              }
+               Toast({
+                  message: '地址添加成功',
+                  position: 'bottom',
+                  duration: 2000
+                });
+                location.href = '/#/site/my-address'
             })
           }
         } else {

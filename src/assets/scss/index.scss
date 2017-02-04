@@ -8,7 +8,7 @@
   position: relative;
   .logo {
     position: absolute;
-    left: 0;
+    left: px2rem(20);
     width: px2rem(120);
     height: 100%;
     img {
@@ -18,7 +18,7 @@
   }
   .current-position {
     position: absolute;
-    left: px2rem(130);
+    left: px2rem(150);
     text-align: center;
     width: px2rem(326);
     line-height: px2rem(80);

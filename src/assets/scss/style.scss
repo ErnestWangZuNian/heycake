@@ -559,7 +559,6 @@ body {
 .border-right {
   border-right: px2rem(1) solid #dddddd;
 }
-
 // 时间样式修改
 .time-modal {
   .modal-content {
@@ -594,7 +593,22 @@ body {
     }
   }
 }
-
+//  mui时间样式修改
+.picker-slot-wrapper{
+  height: px2rem(600)!important;
+}
+.picker-toolbar{
+  padding-top: px2rem(40)!important;
+  padding-bottom: px2rem(40)!important;
+}
+.mint-datetime-action{
+  font-size: px2rem(24)!important;
+}
+.picker-item{
+  font-size: px2rem(24);
+  height: px2rem(80)!important;
+  line-height: px2rem(80)!important;
+}
 // 门店选择样式修改
 .store-modal {
   .modal-content {
@@ -637,6 +651,16 @@ body {
         height: px2rem(120);
         .store-test-title {
           color: $subTitleColor;
+          .store-name{
+            display: inline-block;
+            width: px2rem(220);
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+          }
+          .store-distance{
+            margin-left:px2rem(20);
+          }
         }
         .store-test-subtitle {
           margin-top: px2rem(5);
@@ -733,6 +757,9 @@ body {
   .mint-loadmore-bottom{
     margin-bottom: -px2rem(100)!important; 
   }
+}
+.mint-loadmore-content{
+  transform: translate3d(0px, 0px, 0px)!important;
 }
 // 进度提示组件样式修改
 .mint-indicator-wrapper{

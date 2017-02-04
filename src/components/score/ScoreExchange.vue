@@ -322,9 +322,10 @@
                     scoreFlag = true
                 }
                 if (scoreFlag) {
-                    localStorage.setItem('buyWay', 'score')
-                    localStorage.setItem('purchaseGood', JSON.stringify(this.selectedSpec))
-                    localStorage.setItem('count', this.goodCount)
+                    utils.localstorageData('buyWay', 'score')
+                    utils.localstorageData('purchaseGood', this.selectedSpec)
+                    utils.localstorageData('count', this.goodCount)
+                    utils.localstorageData('orderId', this.goodInfo.id)
                     location.href = `/#/site/order-submit/${this.goodInfo.id}`
                 }
             },

@@ -8,7 +8,7 @@
           <div class="logined">
             <div class="logined-header cf">
               <div class="fl">
-                <p class="logined-header-text">会员账号 ：<span>{{userInfo.member_account}}</span></p>
+                <p class="logined-header-text" @click="editMember">会员账号 ：<span>{{userInfo.member_account}}</span></p>
               </div>
               <div class="fr">
                 <router-link to="/site/member-recharge" class="btn">我要充值</router-link>
@@ -150,6 +150,10 @@
         localStorage.clear('userInfo')
         this.$store.dispatch('setUserInfo', userInfo)
         location.href = '/#/site/index'
+      },
+      // 编辑会员资料里
+      editMember() {
+         location.href = '/#/site/member-person-info'
       },
       //待支付、代发货、待收货、待评价 点击跳转
       statusJump(status) {

@@ -5,7 +5,7 @@
       <div class="card">
         <div class="card-bg">
           <div class="text">
-            <p class="tcenter">当前积分</p>
+            <p class="tcenter font-30">当前积分</p>
             <p class="tcenter font-60">{{scoreData}}</p>
           </div>
         </div>
@@ -84,9 +84,9 @@
       //获取当前用户积分
       getScore(){
         ajax.getDataFromApi({
-          url:'/v1/user-center'
+          url:`/v1/user-center/${utils.localstorageGetData('userInfo').userId}`
         },(response)=>{
-          this.scoreData = response.data.body.list.total
+          this.scoreData = response.data.body.list.score
         })
       }
     },

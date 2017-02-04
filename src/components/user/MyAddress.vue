@@ -53,6 +53,7 @@
   import { Swipe, SwipeItem, MessageBox } from 'mint-ui'
   import Loading from '../common/Loading'
   import ajax from '../../utils/ajax.js'
+  import utils from '../../utils/public.js'
   import Modal from '../common/Modal'
   export default {
     name: 'myAddress',
@@ -126,6 +127,7 @@
       },
       //编辑地址方法
       editMethod(id) {
+        utils.sessionstorageData('editAddress',true)
         location.href = `/#/site/edit-address/${id}`
       },
     },

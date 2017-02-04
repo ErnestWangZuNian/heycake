@@ -79,6 +79,7 @@
     },
     mounted() {
       this.isLoginMethod()
+      this.getCityData()
     },
     data() {
       return {
@@ -106,6 +107,18 @@
             location.href = '/#/site/login'
         })
         }
+      },
+      // 获取城市列表
+      getCityData() {
+        ajax.getDataFromApi({
+           url: '/area/city'
+      },response => {
+        console.log(response)
+      })
+      },
+      // 获取街道列表
+      getCountryData() {
+
       },
       //获取列表数据
       getListData(page) {

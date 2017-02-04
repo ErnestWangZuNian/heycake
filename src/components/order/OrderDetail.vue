@@ -45,7 +45,8 @@
             </div>
           </div>
           <div class="grid-cell u-w130 tright">
-            <div class="price">￥{{item.price}}</div>
+            <div class="price" v-if="orderInfo.pay_method !== 2">￥{{item.price}}</div>
+            <div class="price" v-if="orderInfo.pay_method === 2">{{item.score}}积分</div>
             <div class="f-20 c-666">x{{item.amount}}</div>
           </div>
         </li>
@@ -60,7 +61,8 @@
         </li>
         <li class="order-detail-grid border-bottom">
           <div class="grid-cell">合计</div>
-          <div class="grid-cell text-right">{{orderInfo.pay_money}}元</div>
+          <div class="grid-cell text-right" v-if="orderInfo.pay_method !== 2">{{orderInfo.pay_money | price}}元</div>
+          <div class="grid-cell text-right" v-if="orderInfo.pay_method === 2">{{orderInfo.pay_money | score}}积分</div>
         </li>
         <li class="order-detail-grid border-bottom">
           <div class="grid-cell">支付方式</div>

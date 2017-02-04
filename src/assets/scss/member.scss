@@ -12,6 +12,7 @@
     background: url(../img/hyzx_bj.png) no-repeat;
     background-size: px2rem(550) px2rem(330);
     color: #fff;
+    font-size: px2rem(20);
     .card-number {
       padding: px2rem(30) px2rem(32);
     }
@@ -158,6 +159,9 @@
   font-size: px2rem(24);
   .detail-member-header {
     padding: px2rem(20);
+    position: fixed;
+    z-index: 9999;
+    background: #f5f5f5;
   }
   .recharge-detail-header {
     .same-select {
@@ -182,13 +186,16 @@
       line-height: px2rem(40);
     }
     .search {
+      float: left;
       @include btn(108, 60, #ce0c0c, #fff, 24, 8)
     }
   }
   .detail-member-content {
+    padding-top:px2rem(120);
+    overflow-y: scroll;
     .list-container {
       padding: 0 px2rem(20);
-      width: px2rem(200);
+      width: px2rem(600);
       .list {
         width: px2rem(600);
         margin-bottom: px2rem(20);
