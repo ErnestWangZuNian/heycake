@@ -61,7 +61,7 @@
               </div>
               <div class="grid-cell tright u-1of4">
                 <template v-if='item.status_code == "待支付" '><span class="btn-myorder" @click="goPay(item.id)">去支付</span></template>
-                <template v-if='item.status_code == "待收货" '><span class="btn-myorder" @click="confirmGoods(item.id)">确认收货</span></template>
+                <template v-if='item.status_code == "待收货" || item.status_code == "客服签收"'><span class="btn-myorder" @click="confirmGoods(item.id)">确认收货</span></template>
                 <template v-if='item.status_code == "待评价" '><span class="btn-myorder" @click="goEvaluate(item.id)">去评价</span></template>
               </div>
             </div>
@@ -228,6 +228,12 @@
             case 'wfp0':
               val.status_code = '待生产'
               break
+            case 'kd00':
+              val.status_code = '客服签收'
+              break
+            case 'ip00':
+              val.status_code = '生产中'
+              break   
           }
           val.items.forEach((valChild) => {
             valChild.cover = `/attachment/${valChild.cover}`

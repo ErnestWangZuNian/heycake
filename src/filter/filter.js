@@ -148,6 +148,12 @@ Vue.filter('orderStatus', (value) => {
       case 'wfp0':
         val = '待生产'
         break
+      case 'kd00':
+        val.status_code = '客服签收'
+        break
+      case 'ip00':
+        val.status_code = '生产中'
+        break
       default:
         val = '待支付'
     }
