@@ -1,7 +1,6 @@
 <template>
   <div>
-    <loading v-if="loading"></loading>
-    <div class="container" v-if="!loading">
+    <div class="container">
       <!--用户信息-->
       <div class="user-info">
         <div class="logo">
@@ -135,7 +134,6 @@
     Indicator
   } from 'mint-ui'
   import Vue from 'vue'
-  import Loading from '../common/Loading'
   import Modal from '../common/Modal'
   import ajax from '../../utils/ajax'
   import utils from '../../utils/public'
@@ -147,7 +145,6 @@
     components: {
       Swipe,
       SwipeItem,
-      Loading,
       Loadmore,
       Modal,
       Indicator,
@@ -161,7 +158,6 @@
     },
     data() {
       return {
-        loading: true,
         banner: [],
         hotCakeList: [],
         location: {
@@ -192,15 +188,6 @@
         this.getCurrentPoistion()
       }
       this.getMyAddress()
-      // 全局设置组件加载
-      Vue.http.interceptors.push((request, next) => {
-        if (this.loading) {
-          this.loading = true
-        }
-        next((response) => {
-          this.loading = false
-        })
-      })
     },
     watch: {
       '$route': 'fetchData'
@@ -258,7 +245,6 @@
       },
       //    获取推荐商品数据
       fetchData() {
-        this.loading = false
         //    获取轮播图
         ajax.getDataFromApi({
           url: '/v1/banner',
