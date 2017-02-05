@@ -5,7 +5,7 @@ import Vuex from 'vuex'
 import routes from './router/router'
 import store from './vuex/index'
 import filters from './filter/filter'
-import { Lazyload, InfiniteScroll } from 'mint-ui'
+import { Lazyload, InfiniteScroll, Indicator } from 'mint-ui'
 import VueJsonp from 'vue-jsonp'
 import 'mint-ui/lib/style.css'
 Vue.use(VueRouter)
@@ -20,10 +20,16 @@ Vue.http.options.emulateJSON = true
 Vue.http.options.xhr = { withCredentials: true }
 //  vue拦截器用于处理不同的错误
 Vue.http.interceptors.push((request, next) => {
+  Indicator.open({
+    text: '加载中...',
+    spinnerType: 'fading-circle'
+  })
   next((response) => {
     if (!response.ok) {
       console.log('404页面')
       return response
+    } else {
+      Indicator.close()
     }
   })
 })

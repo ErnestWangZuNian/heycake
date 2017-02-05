@@ -4,9 +4,10 @@
   z-index: 9999;
   width:px2rem(640);
 }
-.list {
+.new-goods-list {
   padding: px2rem(384) 0 px2rem(20); 
-  overflow-y: scroll;
+  height: px2rem(800);
+  overflow: scroll;
   ul{
     a{ text-decoration: none};
     li{

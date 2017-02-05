@@ -1,4 +1,12 @@
 import Vue from 'vue'
+//  图片处理
+Vue.filter('imgDetail', (value) => {
+  // 返回处理后的价格
+  if (value !== undefined) {
+    value = `/attachment/${value}`
+    return value
+  }
+})
 // 单个价格处理
 Vue.filter('price', (value) => {
   // 返回处理后的价格

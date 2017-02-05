@@ -81,7 +81,7 @@
     </div>
     <!--地址选择弹窗-->
     <div class="address-modal">
-      <modal :show="address.show" v-on:close="addressClose">
+      <modal :show="address.show" v-on:close="addressClose" class="address-modal-content">
         <div slot="header">
           <div class="store-header">
             选取地址

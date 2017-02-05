@@ -1,836 +1,841 @@
-@import 'px2rem.scss';
-@import 'reset.scss';
-$designWidth: 640;
-body {
-  position: relative;
-  width: px2rem(640);
-  margin: 0 auto;
-}
-
-.container {
-  width: px2rem(640);
-  padding-bottom: px2rem(30);
-  position: relative;
-  background-color: #fff;
-  background-size: cover;
-}
-
-.swiper {
-  width: 100%;
-  height: px2rem(320);
-  img {
+  @import 'px2rem.scss';
+  @import 'reset.scss';
+  $designWidth: 640;
+  body {
+    position: relative;
+    width: px2rem(640);
+    margin: 0 auto;
+  }
+  
+  .container {
+    width: px2rem(640);
+    padding-bottom: px2rem(30);
+    position: relative;
+    background-color: #fff;
+    background-size: cover;
+  }
+  
+  .swiper {
     width: 100%;
-    height: 100%;
-  }
-  .mint-swipe-indicator {
-    width: px2rem(14);
-    height: px2rem(14);
-    cursor: pointer;
-  }
-  .mint-swipe-indicators {
-    .is-active {
-      background-color: red;
+    height: px2rem(320);
+    img {
+      width: 100%;
+      height: 100%;
     }
-  }
-}
-
-.index-nav5 {
-  .nav-list {
-    width: 20%!important;
-  }
-}
-
-.index-nav {
-  width: 100%;
-  padding: px2rem(14) 0;
-  height: px2rem(64);
-  background-color: #000;
-  color: #fff;
-  a {
-    color: #fff;
-  }
-  ;
-  .nav-list {
-    float: left;
-    width: 25%;
-    text-align: center;
-    font-size: px2rem(20);
-    cursor: pointer;
-    .icon {
-      display: inline-block;
-      margin-bottom: px2rem(2);
-      width: px2rem(30);
-      height: px2rem(32);
-      background: url(../img/new_nav_sprite.png) no-repeat;
-      background-size: px2rem(240) px2rem(146)
-    }
-    .icon1 {
-      background-position: 0 0;
-    }
-    .icon2 {
-      background-position: px2rem(-49) 0;
-    }
-    .icon3 {
-      background-position: px2rem(-107) 0;
-    }
-    .icon4 {
-      background-position: px2rem(-161) 0;
-    }
-    .icon0 {
-      background-position: px2rem(-205) 0;
-    }
-  }
-  .router-link-active {
-    color: $colorBolder;
-    .icon1 {
-      background-position: 0 px2rem(-114);
-    }
-    .icon2 {
-      background-position: px2rem(-49) px2rem(-114);
-    }
-    .icon3 {
-      background-position: px2rem(-107) px2rem(-114);
-    }
-    .icon4 {
-      background-position: px2rem(-161) px2rem(-114);
-    }
-    .icon0 {
-      background-position: px2rem(-205) px2rem(-114);
-    }
-  }
-  .nav-list:hover {
-    color: $colorBolder;
-    .icon1 {
-      background-position: 0 px2rem(-114);
-    }
-    .icon2 {
-      background-position: px2rem(-49) px2rem(-114);
-    }
-    .icon3 {
-      background-position: px2rem(-107) px2rem(-114);
-    }
-    .icon4 {
-      background-position: px2rem(-161) px2rem(-114);
-    }
-    .icon0 {
-      background-position: px2rem(-205) px2rem(-114);
-    }
-  }
-}
-
-//图片显示单选效果
-.selected {
-  width: px2rem(37);
-  height: px2rem(37);
-  background: url(../img/images.png) no-repeat px2rem(-646) 0;
-  background-size: px2rem(778) px2rem(683);
-  margin-top: px2rem(46);
-  margin-left: px2rem(20);
-  cursor: pointer;
-}
-
-;
-//取消单选就加上下面这个类
-.selected1 {
-  background: url(../img/images.png) no-repeat px2rem(-697) 0;
-  background-size: px2rem(778) px2rem(683);
-}
-
-;
-// 模拟下拉选择框
-.same-select {
-  text-align: center;
-  width: px2rem(180);
-  font-size: px2rem(24);
-  position: relative;
-  .same-select-list {
-    width: 100%;
-    font-size: px2rem(24);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    padding: px2rem(10) 0;
-    background: #fff;
-    border: 1px solid #ddd;
-    cursor: poiner;
-  }
-  .same-select-list-container {
-    width: 100%;
-    position: absolute;
-    top: px2rem(48);
-    left: 0;
-    z-index: 99999;
-    li:hover {
-      background: red;
-      color: #fff;
-    }
-    .same-select-list-active {
-      background: red;
-      color: #fff;
-    }
-  }
-}
-
-// 支付方式选择
-.pay-select {
-  .list {
-    padding: px2rem(24) px2rem(30);
-    border-bottom: px2rem(2) solid #ddd;
-    .list-fl {
-      float: left;
-      .list-fl-img {
-        float: left;
-        width: px2rem(60);
-        height: px2rem(60);
-      }
-      .img-zhifubao {
-        background: url(../img/icon_zhifubao.png) no-repeat;
-        background-size: px2rem(60) px2rem(60);
-      }
-      .img-weixin {
-        background: url(../img/icon_wechart.png) no-repeat;
-        background-size: px2rem(60) px2rem(60);
-      }
-      .list-fl-text {
-        float: left;
-        margin-left: px2rem(28);
-        p {
-          color: #878787;
-          font-size: px2rem(24);
-        }
-        .text-title {
-          font-size: px2rem(24);
-          color: #454545
-        }
-      }
-      .green {
-        color: #31c770;
-      }
-      .red {
-        color: #ce0c0c;
-      }
-    }
-    .list-fr {
-      float: right;
-    }
-    .selected {
-      margin: 0;
-    }
-    .selected1 {
-      margin: 0;
-    }
-  }
-}
-
-// 间距
-.mt10 {
-  margin-top: px2rem(10);
-}
-
-.mt20 {
-  margin-top: px2rem(20);
-}
-
-.mt50 {
-  margin-top: px2rem(50);
-}
-
-.mb10 {
-  margin-bottom: px2rem(10);
-}
-
-.mb0 {
-  margin-bottom: px2rem(20);
-}
-
-.mb50 {
-  margin-bottom: px2rem(50);
-}
-
-.mr20 {
-  margin-right: px2rem(20);
-}
-
-//line-height
-.lh-48 {
-  line-height: px2rem(48)
-}
-
-;
-//字体大小
-.font-20 {
-  font-size: px2rem(20)
-}
-
-.font-24 {
-  font-size: px2rem(24)
-}
-
-.font-28 {
-  font-size: px2rem(28)
-}
-
-.font-30 {
-  font-size: px2rem(30)
-}
-
-.font-32 {
-  font-size: px2rem(32)
-}
-
-.font-36 {
-  font-size: px2rem(36)
-}
-
-.font-60 {
-  font-size: px2rem(60)
-}
-
-//字体颜色
-.c-000 {
-  color: #000000!important;
-}
-
-.c-333 {
-  color: #333333!important;
-}
-
-.c-666 {
-  color: #666666!important;
-}
-
-.c-888 {
-  color: #888888!important;
-}
-
-.c-red {
-  color: #dd1f1f!important;
-}
-
-.c-fff {
-  color: #ffffff!important;
-}
-
-.c-aaa {
-  color: #aaaaaa!important;
-}
-
-.c-396 {
-  color: #339966!important;
-}
-
-//背景颜色
-.bgc-f5f5f5 {
-  background-color: #f5f5f5
-}
-
-.bgc-fff {
-  background-color: #ffffff
-}
-
-//position
-.position-rel {
-  position: relative;
-}
-
-.position-abs {
-  position: absolute;
-}
-
-//对齐
-.tleft {
-  text-align: left;
-}
-
-;
-.tcenter {
-  text-align: center
-}
-
-;
-.tright {
-  text-align: right;
-}
-
-;
-//底部操作区
-.operation {
-  position: fixed;
-  bottom: 0px;
-  height: px2rem(100);
-  border-top: px2rem(1) solid #ddd;
-  width: px2rem(640);
-  background-color: #ffffff;
-}
-
-//  数量加减输入组件
-.countBox {
-  button {
-    @include btn(58, 58, #eeeeee, #000000, 24, 0);
-    border: px2rem(1) solid #aaa;
-  }
-  ;
-  input {
-    line-height: px2rem(58);
-    border: 0;
-    border-top: px2rem(1) solid #aaa;
-    border-bottom: px2rem(1) solid #aaa;
-    font-size: px2rem(24);
-    width: px2rem(100);
-    text-align: center;
-    height: px2rem(58);
-  }
-}
-
-;
-//  规格遮罩
-.spec-mask {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: #000;
-  opacity: 0.2;
-  z-index: 998;
-}
-
-//  规格选择弹框
-.select-spec {
-  position: fixed;
-  padding: px2rem(15);
-  width: px2rem(610);
-  z-index: 999;
-  bottom: 0;
-  background: #fff;
-  border-radius: px2rem(6) px2rem(6) 0 0;
-  .good {
-    @include grid();
-    height: px2rem(84);
-    padding-bottom: px2rem(28);
-    border-bottom: px2rem(1) solid $borderColor;
-    .good-img {
-      flex: 0 0 px2rem(110);
-      img {
-        width: px2rem(84);
-        height: 100%;
-      }
-    }
-    .good-info {
-      font-size: px2rem(28);
-      .name {
-        margin-top: px2rem(8);
-        color: $titleColor;
-      }
-      .attrlist {
-        margin-top: px2rem(20);
-        color: $subTitleColor;
-      }
-    }
-    .close-select {
-      flex: 0 0 px2rem(40);
-      margin-top: 0;
-      height: px2rem(40);
+    .mint-swipe-indicator {
+      width: px2rem(14);
+      height: px2rem(14);
       cursor: pointer;
-      background: url(../img/images.png) no-repeat px2rem(-683) px2rem(-121);
-      background-size: px2rem(778) px2rem(683);
+    }
+    .mint-swipe-indicators {
+      .is-active {
+        background-color: red;
+      }
     }
   }
-  .spec {
-    font-size: px2rem(24);
-    li {
-      padding: px2rem(20);
+  
+  .index-nav5 {
+    .nav-list {
+      width: 20%!important;
     }
-    p {
-      color: $colorLintBlock;
-      font-size: px2rem(28);
+  }
+  
+  .index-nav {
+    width: 100%;
+    padding: px2rem(14) 0;
+    height: px2rem(64);
+    background-color: #000;
+    color: #fff;
+    a {
+      color: #fff;
     }
-    .spec-list {
-      margin-top: px2rem(20);
-      button {
+    ;
+    .nav-list {
+      float: left;
+      width: 25%;
+      text-align: center;
+      font-size: px2rem(20);
+      cursor: pointer;
+      .icon {
         display: inline-block;
-        cursor: pointer;
-        margin-right: px2rem(10);
-        margin-top: px2rem(20);
-        @include btn(100, 48, #eee, $colordarkBlock, 24, 35)
+        margin-bottom: px2rem(2);
+        width: px2rem(30);
+        height: px2rem(32);
+        background: url(../img/new_nav_sprite.png) no-repeat;
+        background-size: px2rem(240) px2rem(146)
       }
-      button.active {
-        @include btn(100, 48, $subTitleColor, #fff, 24, 35)
+      .icon1 {
+        background-position: 0 0;
       }
-      button.disabled {
-        @include btn(100, 48, #eee, #fff, 24, 35);
-        cursor: not-allowed
+      .icon2 {
+        background-position: px2rem(-49) 0;
+      }
+      .icon3 {
+        background-position: px2rem(-107) 0;
+      }
+      .icon4 {
+        background-position: px2rem(-161) 0;
+      }
+      .icon0 {
+        background-position: px2rem(-205) 0;
+      }
+    }
+    .router-link-active {
+      color: $colorBolder;
+      .icon1 {
+        background-position: 0 px2rem(-114);
+      }
+      .icon2 {
+        background-position: px2rem(-49) px2rem(-114);
+      }
+      .icon3 {
+        background-position: px2rem(-107) px2rem(-114);
+      }
+      .icon4 {
+        background-position: px2rem(-161) px2rem(-114);
+      }
+      .icon0 {
+        background-position: px2rem(-205) px2rem(-114);
+      }
+    }
+    .nav-list:hover {
+      color: $colorBolder;
+      .icon1 {
+        background-position: 0 px2rem(-114);
+      }
+      .icon2 {
+        background-position: px2rem(-49) px2rem(-114);
+      }
+      .icon3 {
+        background-position: px2rem(-107) px2rem(-114);
+      }
+      .icon4 {
+        background-position: px2rem(-161) px2rem(-114);
+      }
+      .icon0 {
+        background-position: px2rem(-205) px2rem(-114);
       }
     }
   }
-  .spec-count {
-    .name {
-      margin-right: px2rem(20);
-      margin-top: px2rem(10);
-    }
-    .tip {
-      margin-left: px2rem(20);
-      margin-top: px2rem(10);
-    }
-    padding: px2rem(20);
-    color: $colorLintGray;
+  
+  //图片显示单选效果
+  .selected {
+    width: px2rem(37);
+    height: px2rem(37);
+    background: url(../img/images.png) no-repeat px2rem(-646) 0;
+    background-size: px2rem(778) px2rem(683);
+    margin-top: px2rem(46);
+    margin-left: px2rem(20);
+    cursor: pointer;
+  }
+  
+  ;
+  //取消单选就加上下面这个类
+  .selected1 {
+    background: url(../img/images.png) no-repeat px2rem(-697) 0;
+    background-size: px2rem(778) px2rem(683);
+  }
+  
+  ;
+  // 模拟下拉选择框
+  .same-select {
+    text-align: center;
+    width: px2rem(180);
     font-size: px2rem(24);
-  }
-  .confirm-spec {
-    @include btn(640, 96, $subTitleColor, #fff, 24, 0)
-  }
-  .disabled-spec {
-    @include btn(640, 96, $colorLintGray, #fff, 24, 0)
-  }
-}
-
-//分隔
-.splitter {
-  background-color: #f5f5f5;
-  height: px2rem(20);
-}
-
-
-/*错误样式*/
-
-.err-class {
-  height: px2rem(32);
-  line-height: px2rem(32);
-  color: red;
-  font-size: px2rem(24);
-}
-
-
-/*Toast提示样式*/
-
-.mint-toast {
-  width: 100%;
-}
-
-.mint-toast-text {
-  font-size: px2rem(24);
-  display: block;
-}
-
-
-/*弹窗样式*/
-
-
-.mint-msgbox-content {
-  padding: px2rem(30) px2rem(20);
-  padding-bottom: px2rem(50);
-}
-
-.mint-msgbox-title {
-  font-size: px2rem(26)
-}
-
-.mint-msgbox-message {
-  font-size: px2rem(24);
-  line-height: px2rem(50);
-}
-
-.mint-msgbox-btns {
-  height: px2rem(60);
-  line-height: px2rem(60);
-}
-
-.mint-msgbox-btn {
-  font-size: px2rem(24)
-}
-
-//border
-.border {
-  border: px2rem(1) solid #dddddd;
-}
-
-.border-top {
-  border-top: px2rem(1) solid #dddddd;
-}
-
-.border-bottom {
-  border-bottom: px2rem(1) solid #dddddd;
-}
-
-.border-left {
-  border-left: px2rem(1) solid #dddddd;
-}
-
-.border-right {
-  border-right: px2rem(1) solid #dddddd;
-}
-// 时间样式修改
-.time-modal {
-  .modal-content {
-    width: px2rem(600);
-  }
-  .time-header {
-    padding: 0 px2rem(20) px2rem(20);
-    border-bottom: px2rem(2) solid $borderColor;
-    text-align: left;
-  }
-  .time-body {
-    @include grid();
-    padding: px2rem(30) 0 px2rem(60);
-    .grid-cell {
-      .title {
-        color: $subTitleColor,
+    position: relative;
+    .same-select-list {
+      width: 100%;
+      font-size: px2rem(24);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      padding: px2rem(10) 0;
+      background: #fff;
+      border: 1px solid #ddd;
+      cursor: poiner;
+    }
+    .same-select-list-container {
+      width: 100%;
+      position: absolute;
+      top: px2rem(48);
+      left: 0;
+      z-index: 99999;
+      li:hover {
+        background: red;
+        color: #fff;
       }
-      .content {
-        height: px2rem(275);
-        overflow-y: scroll;
-        .list {
-          padding: px2rem(18) 0;
-        }
-        .active {
-          padding: px2rem(18) 0;
-          background: #eee;
-        }
-        li:hover {
-          background: #eee;
-        }
+      .same-select-list-active {
+        background: red;
+        color: #fff;
       }
     }
   }
-}
-//  mui时间样式修改
-.picker-slot-wrapper{
-  height: px2rem(600)!important;
-}
-.picker-toolbar{
-  padding-top: px2rem(40)!important;
-  padding-bottom: px2rem(40)!important;
-}
-.mint-datetime-action{
-  font-size: px2rem(24)!important;
-}
-.picker-item{
-  font-size: px2rem(24);
-  height: px2rem(80)!important;
-  line-height: px2rem(80)!important;
-}
-// 门店选择样式修改
-.store-modal {
-  .modal-content {
-    width: px2rem(560);
-    padding: px2rem(20);
-  }
-  .store-header {
-    padding: 0 px2rem(20) px2rem(20);
-    border-bottom: px2rem(2) solid $borderColor;
-    text-align: left;
-  }
-  .store-body {
-    height: px2rem(400);
-    overflow-y: scroll;
-    li {
-      margin-top: px2rem(20);
-      @include grid();
-      padding: px2rem(20) 0 px2rem(20) px2rem(10);
-      border: px2rem(2) solid $borderColor;
+  
+  // 支付方式选择
+  .pay-select {
+    .list {
+      padding: px2rem(24) px2rem(30);
+      border-bottom: px2rem(2) solid #ddd;
+      .list-fl {
+        float: left;
+        .list-fl-img {
+          float: left;
+          width: px2rem(60);
+          height: px2rem(60);
+        }
+        .img-zhifubao {
+          background: url(../img/icon_zhifubao.png) no-repeat;
+          background-size: px2rem(60) px2rem(60);
+        }
+        .img-weixin {
+          background: url(../img/icon_wechart.png) no-repeat;
+          background-size: px2rem(60) px2rem(60);
+        }
+        .list-fl-text {
+          float: left;
+          margin-left: px2rem(28);
+          p {
+            color: #878787;
+            font-size: px2rem(24);
+          }
+          .text-title {
+            font-size: px2rem(24);
+            color: #454545
+          }
+        }
+        .green {
+          color: #31c770;
+        }
+        .red {
+          color: #ce0c0c;
+        }
+      }
+      .list-fr {
+        float: right;
+      }
       .selected {
-        flex: 0 0 px2rem(44);
-        margin: 0 px2rem(20) 0 0;
+        margin: 0;
       }
       .selected1 {
-        flex: 0 0 px2rem(44);
-        margin: 0 px2rem(20) 0 0;
+        margin: 0;
       }
-      .store-img {
-        flex: 0 0 px2rem(120);
-        height: px2rem(120);
-        margin-right: px2rem(10);
+    }
+  }
+  
+  // 间距
+  .mt10 {
+    margin-top: px2rem(10);
+  }
+  
+  .mt20 {
+    margin-top: px2rem(20);
+  }
+  
+  .mt50 {
+    margin-top: px2rem(50);
+  }
+  
+  .mb10 {
+    margin-bottom: px2rem(10);
+  }
+  
+  .mb0 {
+    margin-bottom: px2rem(20);
+  }
+  
+  .mb50 {
+    margin-bottom: px2rem(50);
+  }
+  
+  .mr20 {
+    margin-right: px2rem(20);
+  }
+  
+  //line-height
+  .lh-48 {
+    line-height: px2rem(48)
+  }
+  
+  ;
+  //字体大小
+  .font-20 {
+    font-size: px2rem(20)
+  }
+  
+  .font-24 {
+    font-size: px2rem(24)
+  }
+  
+  .font-28 {
+    font-size: px2rem(28)
+  }
+  
+  .font-30 {
+    font-size: px2rem(30)
+  }
+  
+  .font-32 {
+    font-size: px2rem(32)
+  }
+  
+  .font-36 {
+    font-size: px2rem(36)
+  }
+  
+  .font-60 {
+    font-size: px2rem(60)
+  }
+  
+  //字体颜色
+  .c-000 {
+    color: #000000!important;
+  }
+  
+  .c-333 {
+    color: #333333!important;
+  }
+  
+  .c-666 {
+    color: #666666!important;
+  }
+  
+  .c-888 {
+    color: #888888!important;
+  }
+  
+  .c-red {
+    color: #dd1f1f!important;
+  }
+  
+  .c-fff {
+    color: #ffffff!important;
+  }
+  
+  .c-aaa {
+    color: #aaaaaa!important;
+  }
+  
+  .c-396 {
+    color: #339966!important;
+  }
+  
+  //背景颜色
+  .bgc-f5f5f5 {
+    background-color: #f5f5f5
+  }
+  
+  .bgc-fff {
+    background-color: #ffffff
+  }
+  
+  //position
+  .position-rel {
+    position: relative;
+  }
+  
+  .position-abs {
+    position: absolute;
+  }
+  
+  //对齐
+  .tleft {
+    text-align: left;
+  }
+  
+  ;
+  .tcenter {
+    text-align: center
+  }
+  
+  ;
+  .tright {
+    text-align: right;
+  }
+  
+  ;
+  //底部操作区
+  .operation {
+    position: fixed;
+    bottom: 0px;
+    height: px2rem(100);
+    border-top: px2rem(1) solid #ddd;
+    width: px2rem(640);
+    background-color: #ffffff;
+  }
+  
+  //  数量加减输入组件
+  .countBox {
+    button {
+      @include btn(58, 58, #eeeeee, #000000, 24, 0);
+      border: px2rem(1) solid #aaa;
+    }
+    ;
+    input {
+      line-height: px2rem(58);
+      border: 0;
+      border-top: px2rem(1) solid #aaa;
+      border-bottom: px2rem(1) solid #aaa;
+      font-size: px2rem(24);
+      width: px2rem(100);
+      text-align: center;
+      height: px2rem(58);
+    }
+  }
+  
+  ;
+  //  规格遮罩
+  .spec-mask {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #000;
+    opacity: 0.2;
+    z-index: 998;
+  }
+  
+  //  规格选择弹框
+  .select-spec {
+    position: fixed;
+    padding: px2rem(15);
+    width: px2rem(610);
+    z-index: 999;
+    bottom: 0;
+    background: #fff;
+    border-radius: px2rem(6) px2rem(6) 0 0;
+    .good {
+      @include grid();
+      height: px2rem(84);
+      padding-bottom: px2rem(28);
+      border-bottom: px2rem(1) solid $borderColor;
+      .good-img {
+        flex: 0 0 px2rem(110);
         img {
-          width: 100%;
+          width: px2rem(84);
           height: 100%;
         }
       }
-      .store-test {
-        text-align: left;
-        font-size: px2rem(22);
-        height: px2rem(120);
-        .store-test-title {
-          color: $subTitleColor;
-          .store-name{
-            display: inline-block;
-            width: px2rem(220);
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
-          }
-          .store-distance{
-            margin-left:px2rem(20);
-          }
+      .good-info {
+        font-size: px2rem(28);
+        .name {
+          margin-top: px2rem(8);
+          color: $titleColor;
         }
-        .store-test-subtitle {
-          margin-top: px2rem(5);
+        .attrlist {
+          margin-top: px2rem(20);
+          color: $subTitleColor;
+        }
+      }
+      .close-select {
+        flex: 0 0 px2rem(40);
+        margin-top: 0;
+        height: px2rem(40);
+        cursor: pointer;
+        background: url(../img/images.png) no-repeat px2rem(-683) px2rem(-121);
+        background-size: px2rem(778) px2rem(683);
+      }
+    }
+    .spec {
+      font-size: px2rem(24);
+      li {
+        padding: px2rem(20);
+      }
+      p {
+        color: $colorLintBlock;
+        font-size: px2rem(28);
+      }
+      .spec-list {
+        margin-top: px2rem(20);
+        button {
+          display: inline-block;
+          cursor: pointer;
+          margin-right: px2rem(10);
+          margin-top: px2rem(20);
+          @include btn(100, 48, #eee, $colordarkBlock, 24, 35)
+        }
+        button.active {
+          @include btn(100, 48, $subTitleColor, #fff, 24, 35)
+        }
+        button.disabled {
+          @include btn(100, 48, #eee, #fff, 24, 35);
+          cursor: not-allowed
+        }
+      }
+    }
+    .spec-count {
+      .name {
+        margin-right: px2rem(20);
+        margin-top: px2rem(10);
+      }
+      .tip {
+        margin-left: px2rem(20);
+        margin-top: px2rem(10);
+      }
+      padding: px2rem(20);
+      color: $colorLintGray;
+      font-size: px2rem(24);
+    }
+    .confirm-spec {
+      @include btn(640, 96, $subTitleColor, #fff, 24, 0)
+    }
+    .disabled-spec {
+      @include btn(640, 96, $colorLintGray, #fff, 24, 0)
+    }
+  }
+  
+  //分隔
+  .splitter {
+    background-color: #f5f5f5;
+    height: px2rem(20);
+  }
+  /*错误样式*/
+  
+  .err-class {
+    height: px2rem(32);
+    line-height: px2rem(32);
+    color: red;
+    font-size: px2rem(24);
+  }
+  /*Toast提示样式*/
+  
+  .mint-toast {
+    width: 100%;
+  }
+  
+  .mint-toast-text {
+    font-size: px2rem(24);
+    display: block;
+  }
+  /*弹窗样式*/
+  
+  .mint-msgbox-content {
+    padding: px2rem(30) px2rem(20);
+    padding-bottom: px2rem(50);
+  }
+  
+  .mint-msgbox-title {
+    font-size: px2rem(26)
+  }
+  
+  .mint-msgbox-message {
+    font-size: px2rem(24);
+    line-height: px2rem(50);
+  }
+  
+  .mint-msgbox-btns {
+    height: px2rem(60);
+    line-height: px2rem(60);
+  }
+  
+  .mint-msgbox-btn {
+    font-size: px2rem(24)
+  }
+  
+  //border
+  .border {
+    border: px2rem(1) solid #dddddd;
+  }
+  
+  .border-top {
+    border-top: px2rem(1) solid #dddddd;
+  }
+  
+  .border-bottom {
+    border-bottom: px2rem(1) solid #dddddd;
+  }
+  
+  .border-left {
+    border-left: px2rem(1) solid #dddddd;
+  }
+  
+  .border-right {
+    border-right: px2rem(1) solid #dddddd;
+  }
+  
+  // 时间样式修改
+  .time-modal {
+    .modal-content {
+      width: px2rem(600);
+    }
+    .time-header {
+      padding: 0 px2rem(20) px2rem(20);
+      border-bottom: px2rem(2) solid $borderColor;
+      text-align: left;
+    }
+    .time-body {
+      @include grid();
+      padding: px2rem(30) 0 px2rem(60);
+      .grid-cell {
+        .title {
+          color: $subTitleColor,
+        }
+        .content {
+          height: px2rem(275);
+          overflow-y: scroll;
+          .list {
+            padding: px2rem(18) 0;
+          }
+          .active {
+            padding: px2rem(18) 0;
+            background: #eee;
+          }
+          li:hover {
+            background: #eee;
+          }
         }
       }
     }
   }
-}
-
-// 弹框样式修改
-.modal-mask {
-  position: fixed;
-  display: table;
-  z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, .5);
-  cursor: pointer;
-}
-
-.modal-dialog {
-  display: table-cell;
-  vertical-align: middle;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.modal-content {
-  width: px2rem(400);
-  position: relative;
-  padding: px2rem(15) 0;
-  margin: 0 auto;
-  font-size: px2rem(24);
-  background-color: #fff;
-  border-radius: px2rem(10);
-  text-align: center;
-  cursor: pointer;
-  .modal-close {
-    position: absolute;
-    right: px2rem(10);
-    top: px2rem(10);
-    width: px2rem(40);
-    height: px2rem(40);
-    background: url(../img/images.png) no-repeat px2rem(-683) px2rem(-121);
-    background-size: px2rem(778) px2rem(683);
+  
+  //  mui时间样式修改
+  .picker-slot-wrapper {
+    height: px2rem(600)!important;
+  }
+  
+  .picker-toolbar {
+    padding-top: px2rem(40)!important;
+    padding-bottom: px2rem(40)!important;
+  }
+  
+  .mint-datetime-action {
+    font-size: px2rem(24)!important;
+  }
+  
+  .picker-item {
+    font-size: px2rem(24);
+    height: px2rem(80)!important;
+    line-height: px2rem(80)!important;
+  }
+  
+  // 门店选择样式修改
+  .store-modal {
+    .modal-content {
+      width: px2rem(560);
+      padding: px2rem(20);
+    }
+    .store-header {
+      padding: 0 px2rem(20) px2rem(20);
+      border-bottom: px2rem(2) solid $borderColor;
+      text-align: left;
+    }
+    .store-body {
+      height: px2rem(400);
+      overflow-y: scroll;
+      li {
+        margin-top: px2rem(20);
+        @include grid();
+        padding: px2rem(20) 0 px2rem(20) px2rem(10);
+        border: px2rem(2) solid $borderColor;
+        .selected {
+          flex: 0 0 px2rem(44);
+          margin: 0 px2rem(20) 0 0;
+        }
+        .selected1 {
+          flex: 0 0 px2rem(44);
+          margin: 0 px2rem(20) 0 0;
+        }
+        .store-img {
+          flex: 0 0 px2rem(120);
+          height: px2rem(120);
+          margin-right: px2rem(10);
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+        .store-test {
+          text-align: left;
+          font-size: px2rem(22);
+          height: px2rem(120);
+          .store-test-title {
+            color: $subTitleColor;
+            .store-name {
+              display: inline-block;
+              width: px2rem(220);
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
+            }
+            .store-distance {
+              margin-left: px2rem(20);
+            }
+          }
+          .store-test-subtitle {
+            margin-top: px2rem(5);
+          }
+        }
+      }
+    }
+  }
+  
+  // 弹框样式修改
+  .modal-mask {
+    position: fixed;
+    display: table;
+    z-index: 9998;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .5);
     cursor: pointer;
   }
-  .btn{
-    @include btn(160,66,$subTitleColor,#fff,24,10)
+  
+  .modal-dialog {
+    display: table-cell;
+    vertical-align: middle;
   }
-  .recharge-btn{
-    margin-top: px2rem(20);
-  }
-  .warn-red{
-    color: $subTitleColor
-  }
-  .modal-test{
-    width: 100%;
+  
+  .text-center {
     text-align: center;
   }
-  .modal-body{
-    padding: px2rem(60) 0;
-  }
-  .modal-test {
+  
+  .modal-content {
+    width: px2rem(400);
+    position: relative;
+    padding: px2rem(15) 0;
+    margin: 0 auto;
     font-size: px2rem(24);
-    margin-top: px2rem(10);
-  }
-}
-
-//  错误提示
-.modal-error-tip {
-  width: px2rem(400);
-  margin: 0 auto;
-  .modal-img {
-    width: 100%;
-    height: px2rem(120);
-    img {
-      width: px2rem(120);
-      height: px2rem(120);
-    }
-  }
-}
-
-// 下拉刷新组件
-.mint-loadmore-bottom{
-  height: px2rem(120);
-  line-height: px2rem(120);
-}
-.loadmore-style {
-  .mint-loadmore-bottom{
-    margin-bottom: -px2rem(100)!important; 
-  }
-}
-.mint-loadmore-content{
-  transform: translate3d(0px, 0px, 0px)!important;
-}
-// 进度提示组件样式修改
-.mint-indicator-wrapper{
-   background: #fff;
-   padding: px2rem(60)!important ;
-   .circle-color-17{
-     width:px2rem(40)!important;
-     height: px2rem(40)!important;
-   }
-   .mint-indicator-text{
-     font-size: px2rem(24);
-     color: #888;
-   }
-}
-.mint-indicator-mask{
-  background: #000;
-  opacity: 0.4;
-}
-@-webkit-keyframes rotate {
-  from {
-    -webkit-transform: rotate(0deg);
-  }
-  to {
-    -webkit-transform: rotate(360deg);
-  }
-}
-.address-modal {
-  .input-address {
-    padding: px2rem(20) px2rem(20) px2rem(10);
-    input {
-      width: 100%;
-      height: px2rem(50);
-      line-height: px2rem(50);
-      background: #fff;
-      text-indent: px2rem(10);
-      border: px2rem(2) solid #ddd;
-    }
-  }
-  .address {
-    .title {
-      width: 100%;
+    background-color: #fff;
+    border-radius: px2rem(10);
+    text-align: center;
+    cursor: pointer;
+    .modal-close {
+      position: absolute;
+      right: px2rem(10);
+      top: px2rem(10);
+      width: px2rem(40);
       height: px2rem(40);
-      line-height: px2rem(40);
-      text-align: left;
-      margin-left: px2rem(20);
-      font-size: px2rem(28);
+      background: url(../img/images.png) no-repeat px2rem(-683) px2rem(-121);
+      background-size: px2rem(778) px2rem(683);
+      cursor: pointer;
     }
-    ul {
-      background: #fff;
-      text-align: left;
+    .btn {
+      @include btn(160, 66, $subTitleColor, #fff, 24, 10)
+    }
+    .recharge-btn {
+      margin-top: px2rem(20);
+    }
+    .warn-red {
+      color: $subTitleColor
+    }
+    .modal-test {
+      width: 100%;
+      text-align: center;
+    }
+    .modal-body {
+      padding: px2rem(60) 0;
+    }
+    .modal-test {
       font-size: px2rem(24);
-      color: $colorLintBlock;
-      li {
-        padding: px2rem(10) px2rem(20);
-        position: relative;
-        .area {
-          position: absolute;
-          right: px2rem(20);
-        }
+      margin-top: px2rem(10);
+    }
+  }
+  
+  //  错误提示
+  .modal-error-tip {
+    width: px2rem(400);
+    margin: 0 auto;
+    .modal-img {
+      width: 100%;
+      height: px2rem(120);
+      img {
+        width: px2rem(120);
+        height: px2rem(120);
       }
     }
   }
-  .modal-mask {
-    background: #fff;
+  
+  // 下拉刷新组件
+  .mint-loadmore-bottom {
+    height: px2rem(120);
+    line-height: px2rem(120);
+    font-size: px2rem(28);
+    margin-bottom: 50px;
   }
-  .modal-content {
-    width: px2rem(640);
-    height: 100%;
+  
+  .mint-loadmore-spinner {
+    width: px2rem(40)!important;
+    height: px2rem(40)!important;
   }
-  .modal-body {
-    background: #f5f5f5;
-    margin-top: px2rem(20);
+  
+  .mint-loading-icon {
+    display: inline-block;
+    margin-right: px2rem(20);
   }
-}
+  
+  .mint-loadmore-content {
+    transform: translate3d(0px, 20px, 0px)!important;
+  }
+  
+  // 进度提示组件样式修改
+  .mint-indicator-wrapper {
+    padding: px2rem(40)!important;
+    border-radius: px2rem(10)!important;
+    .mint-spinner-fading-circle {
+      width: px2rem(40)!important;
+      height: px2rem(40)!important;
+    }
+    .mint-indicator-text {
+      font-size: px2rem(24);
+      color: #888;
+    }
+  }
+  
+  .mint-indicator-mask {
+    background: #000;
+    opacity: 0.4;
+  }
+  
+  .address-modal {
+    .address-modal-content{
+      height: 100vh;
+    }
+    .input-address {
+      padding: px2rem(20) px2rem(20) px2rem(10);
+      input {
+        width: 100%;
+        height: px2rem(50);
+        line-height: px2rem(50);
+        background: #fff;
+        text-indent: px2rem(10);
+        border: px2rem(2) solid #ddd;
+      }
+    }
+    .address {
+      .title {
+        width: 100%;
+        height: px2rem(40);
+        line-height: px2rem(40);
+        text-align: left;
+        margin-left: px2rem(20);
+        font-size: px2rem(28);
+      }
+      ul {
+        background: #fff;
+        text-align: left;
+        font-size: px2rem(24);
+        color: $colorLintBlock;
+        li {
+          padding: px2rem(10) px2rem(20);
+          position: relative;
+          .area {
+            position: absolute;
+            right: px2rem(20);
+          }
+        }
+      }
+    }
+    .modal-mask {
+      background: #fff;
+    }
+    .modal-content {
+      width: px2rem(640);
+      height: 100%;
+    }
+    .modal-body {
+      background: #f5f5f5;
+      margin-top: px2rem(20);
+    }
+  }

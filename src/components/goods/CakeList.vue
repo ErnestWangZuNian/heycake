@@ -1,7 +1,6 @@
 <template>
   <div>
-    <loading v-if="loading"></loading>
-    <div class="container cakelist-container" v-if="!loading">
+    <div class="container cakelist-container">
       <div class="index-nav index-nav5">
         <ul class="cf">
           <keep-alive>
@@ -40,13 +39,13 @@
       </div>
       <!--产品列表-->
       <div class="products-list">
-        <loadmore :bottom-method="loadTop" :auto-fill="false" :bottom-loading-text="text.loding" :bottom-drop-text="text.drop" :bottom-status-change="bottomStatusChange">
-          <dl v-for="item in goodInfo">
-            <dt>{{item.category}}</dt>
+        <loadmore :bottom-method="loadTop" :auto-fill="false"  @bottom-status-change="getLodingStatus" ref="loadmore" :bottom-all-loaded="loadStatus.isLoadAll">
+          <dl>
+            <dt>蛋糕制作</dt>
             <dd>
               <ul>
-                <li class="cf" v-for="el in item.goodList" @click="gotoDetail(el.id)">
-                  <img :src="el.picture">
+                <li class="cf" v-for="el in goodList" @click="gotoDetail(el.id)">
+                  <img :src="el.picture | imgDetail">
                   <div>
                     <h3>{{el.english_name}}</h3>
                     <h2>{{el.name}}</h2>
@@ -57,6 +56,12 @@
               </ul>
             </dd>
           </dl>
+          <div slot="bottom" class="mint-loadmore-bottom" v-show="goodList.length >= 8">
+            <span v-show="loadStatus.current === 'pull' ">{{text.pull}}</span>
+            <span v-show="loadStatus.current === 'drop' ">{{text.drop}}</span>
+            <span v-if="loadStatus.current === 'loading'"> <!--加载中图标-->
+                <spinner type="fading-circle" :size="40" color="#000" class='mint-loading-icon'></spinner>Loading...</span>
+          </div>
         </loadmore>
       </div>
     </div>
@@ -66,17 +71,17 @@
   import {
     Swipe,
     SwipeItem,
+    Spinner,
     Loadmore
   } from 'mint-ui'
-  import Loading from '../common/Loading'
   import ajax from '../../utils/ajax.js'
   import utils from '../../utils/public'
   export default {
     name: 'cakeList',
     components: {
-      Loading,
       Swipe,
       SwipeItem,
+      Spinner,      
       Loadmore
     },
     mounted() {
@@ -85,24 +90,15 @@
     },
     data() {
       return {
-        loading: true,
-        list: [0],
-        topStatus: '',
-        goodInfo: [{
-          goodList: [],
-          category: '蛋糕制作'
-        }],
-        banner: [],
-        requestData: [],
-        category: {
-          value: [],
-          seleted: '全部',
-          status: false,
-        },
+        goodList: [],
         naberStore: {},
+        loadStatus: {
+          current: 'pull',
+          isLoadAll: false
+        },
         text: {
-          drop: '释放更新',
-          loding: '小嘿正在努力加载中'
+          pull: '上拉刷新',
+          drop: '释放更新'
         },
         page: {
           total: 1,
@@ -111,50 +107,40 @@
       }
     },
     methods: {
-      //    获取数据
+      //  获取数据
       fetchData(page) {
         this.loading = true
         ajax.getDataFromApi({
           url: `/v1/goods/`,
           data: {
             store_code: utils.sessionstorageGetData('naberStore') && utils.sessionstorageGetData('naberStore').store_id,
+            category_id: 20,
             per_page: 8,
             page: page
           }
         }, (response) => {
-          let data = response.data.body.list.map(utils.imgDetail)
-          this.requestData = this.requestData.concat(data)
-          this.loading = false
+          let data = response.data.body.list
+          this.goodList = this.goodList.concat(data)
           this.page.total = response.data.body.pagination.total
-          this.text.loding = "上拉刷新"
-          this.modifyData(this.requestData)
-        })
-        //      获取轮播图
-        ajax.getDataFromApi({
-          url: '/v1/banner',
-        }, (response) => {
-          this.banner = response.data.body.map(utils.imgDetail)
+          this.text.pull = "上拉刷新"
+          this.$refs.loadmore.onBottomLoaded()
         })
       },
-      //      整理数据
-      modifyData(data) {
-        let category = []
-        data.forEach((val) => {
-          if(val.category === '蛋糕制作') {
-             this.goodInfo[0].goodList.push(val)
-          }
-        })
+      //  获取上拉刷新各种时候的状态
+      getLodingStatus(status) {
+        this.loadStatus.current = status
       },
-      //    下拉刷洗数据
+      //  下拉刷洗数据
       loadTop() {
         if (this.page.currentPage < this.page.total) {
           this.page.currentPage++
           this.fetchData(this.page.currentPage)
         } else {
-          this.text.loding = "没有更多数据了！"
+          this.text.pull = '没有更多数据了'
+          this.loadStatus.isLoadAll = true
         }
       },
-      //    跳转到详情
+      //  跳转到详情
       gotoDetail(id) {
         location.href = `/#/site/detail/${id}`
       }

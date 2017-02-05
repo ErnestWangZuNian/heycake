@@ -1,7 +1,6 @@
 <template>
   <div>
-    <loading v-if="loading && loadShow"></loading>
-    <div class="container" v-if="!loading">
+    <div class="container">
       <div class="address">
         <ul>
           <template v-for="item in listData">
@@ -51,14 +50,12 @@
 </template>
 <script>
   import { Swipe, SwipeItem, MessageBox } from 'mint-ui'
-  import Loading from '../common/Loading'
   import ajax from '../../utils/ajax.js'
   import utils from '../../utils/public.js'
   import Modal from '../common/Modal'
   export default {
     name: 'myAddress',
     components: {
-      Loading,
       Swipe,
       SwipeItem,
       MessageBox,
@@ -69,8 +66,6 @@
     },
     data() {
       return {
-        loading: true,
-        loadShow: false,
         isLogin: this.$store.state.user.userInfo.isLogin || '',   //是否登录
         userId: this.$store.state.user.userInfo.userId || '',      //当前用户ID
         listData: [],
@@ -78,7 +73,7 @@
       }
     },
     methods: {
-      //判断是否登录
+      //  判断是否登录
       isLoginMethod() {
         if (this.isLogin) {
           this.loadShow = true
@@ -89,13 +84,12 @@
           })
         }
       },
-      //获取列表数据
+      //  获取列表数据
       getListData() {
         ajax.getDataFromApi({
           url: '/v1/my-address',
         }, (response) => {
           this.listData = response.data.body.list
-          this.loading = false
           if (this.listData.length > 0) {
             this.isDeafult = false
             //处理数组，找到is_default==1的排到第一个，并且改变isDefault的状态
@@ -115,7 +109,7 @@
           console.log(err)
         })
       },
-      //删除地址方法
+      //  删除地址方法
       delMethod(id) {
         MessageBox.confirm('确定要删除吗？').then(action => {
           ajax.deleteDataFromApi({
@@ -125,7 +119,7 @@
           })
         })
       },
-      //编辑地址方法
+      //  编辑地址方法
       editMethod(id) {
         utils.sessionstorageData('editAddress',true)
         location.href = `/#/site/edit-address/${id}`

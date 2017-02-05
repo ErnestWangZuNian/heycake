@@ -1,7 +1,6 @@
 <template>
   <div>
-    <loading v-if="loading && loadShow"></loading>
-    <div class="container" v-if="!loading">
+    <div class="container">
       <div class="card">
         <div class="card-bg">
           <div class="text">
@@ -34,13 +33,11 @@
 </template>
 <script>
   import {Swipe, SwipeItem, MessageBox } from 'mint-ui'
-  import  Loading from '../common/Loading'
   import ajax from '../../utils/ajax.js'
   import utils from '../../utils/public'
   export default {
     name: 'MyScore',
     components: {
-      Loading,
       Swipe,
       SwipeItem,
       MessageBox
@@ -51,8 +48,6 @@
     },
     data () {
       return {
-        loading: true,
-        loadShow: false,
         isLogin:this.$store.state.user.userInfo.isLogin  || '',   //是否登录
         userId:this.$store.state.user.userInfo.userId || '',      //当前用户ID
         listData:[],
@@ -60,7 +55,7 @@
       }
     },
     methods: {
-//      判断是否登录
+      //  判断是否登录
       isLoginMethod(){
         if(this.isLogin){
           this.loadShow = true
@@ -71,17 +66,15 @@
           })
         }
       },
-      //获取列表数据
+      //  获取列表数据
       getListData(){
         ajax.getDataFromApi({
           url:'/v1/score-detail',
         },(response)=>{
-          this.listData = response.data.body.list;
-          //数据请求完成,改变loading值,关闭load，显示渲染后的页面
-          this.loading = false;
+          this.listData = response.data.body.list
         })
       },
-      //获取当前用户积分
+      //  获取当前用户积分
       getScore(){
         ajax.getDataFromApi({
           url:`/v1/user-center/${utils.localstorageGetData('userInfo').userId}`

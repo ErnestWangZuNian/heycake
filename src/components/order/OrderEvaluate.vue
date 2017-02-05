@@ -1,7 +1,6 @@
 <template>
   <div class="h100">
-    <loading v-if="loading && loadShow"></loading>
-    <div class="container container-bg"  v-if="!loading">
+    <div class="container container-bg" >
       <div class="order-evaluate">
         <ul>
           <li class="list" v-for="item in listData">
@@ -37,13 +36,11 @@
 </template>
 <script>
   import {Swipe, SwipeItem, MessageBox } from 'mint-ui'
-  import  Loading from '../common/Loading'
   import ajax from '../../utils/ajax.js'
   import utils from '../../utils/public'
   export default {
     name: 'MyOrder',
     components: {
-      Loading,
       Swipe,
       SwipeItem,
       MessageBox
@@ -53,8 +50,6 @@
     },
     data () {
       return {
-        loading: true,
-        loadShow: false,
         isLogin:this.$store.state.user.userInfo.isLogin  || '',   //是否登录
         userId:this.$store.state.user.userInfo.userId || '',      //当前用户ID
         thisId:this.$route.params.id,
@@ -99,8 +94,6 @@
                 }
               })
             }
-           //数据请求完成,改变loading值,关闭load，显示渲染后的页面
-            this.loading = false;
           })
       },
       //点击star

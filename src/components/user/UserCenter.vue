@@ -1,7 +1,6 @@
 <template>
   <div>
-    <loading v-if="loading && loadShow"></loading>
-    <div class="container" v-if="!loading">
+    <div class="container">
       <div class="member-center">
         <div class="theTop">
           <!--已登录-->
@@ -96,32 +95,28 @@
     SwipeItem,
     MessageBox
   } from 'mint-ui'
-  import Loading from '../common/Loading'
   import ajax from '../../utils/ajax.js'
   import utils from '../../utils/public'
   export default {
     name: 'UserCenter',
     components: {
-      Loading,
       Swipe,
       SwipeItem,
       MessageBox,
     },
     data() {
       return {
-        loading: true,
-        loadShow: false,
         isLogin: this.$store.state.user.userInfo.isLogin || '', //是否登录
         userId: this.$store.state.user.userInfo.userId || '', //当前用户ID
         userInfo: {}
       }
     },
     mounted() {
-      //判断是否登录
+      //  判断是否登录
       this.isLoginMethod()
     },
     methods: {
-      //判断是否登录
+      //  判断是否登录
       isLoginMethod() {
         if (this.isLogin) {
           this.loadShow = true
@@ -132,16 +127,15 @@
           })
         }
       },
-      //获取列表数据
+      //  获取列表数据
       getListData() {
         ajax.getDataFromApi({
           url: `/v1/user-center/${utils.localstorageGetData('userInfo').userId}`
         }, (response) => {
           this.userInfo = response.data.body.list
-          this.loading = false
         })
       },
-      //退出登录
+      //  退出登录
       loginOut() {
         let userInfo = {
           isLogin: false,
@@ -151,11 +145,11 @@
         this.$store.dispatch('setUserInfo', userInfo)
         location.href = '/#/site/index'
       },
-      // 编辑会员资料里
+      //  编辑会员资料里
       editMember() {
          location.href = '/#/site/member-person-info'
       },
-      //待支付、代发货、待收货、待评价 点击跳转
+      //  待支付、代发货、待收货、待评价 点击跳转
       statusJump(status) {
         location.href = `/#/site/my-order/${status}`
       }

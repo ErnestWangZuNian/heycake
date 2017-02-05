@@ -31,16 +31,12 @@
 .operation-grid { 
   height: px2rem(100)
   }
-
+.page-loadmore-wrapper{
+  height: px2rem(800);
+  overflow: scroll;
+}
 .height-90 { 
   height: px2rem(90);
-  position: fixed;
-  z-index: 9999;
-  width: px2rem(640);
-}
-.loadmore-style{
-  padding-top: px2rem(90);
-  overflow-y: scroll;
 }
 .height-85 { height: px2rem(85)}
 .height-150 { height: px2rem(150)}

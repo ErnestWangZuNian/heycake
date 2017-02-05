@@ -1,7 +1,6 @@
 <template>
     <div class="h100">
-        <loading v-if="loading && loadShow"></loading>
-        <div class="container container-bg" v-if="!loading">
+        <div class="container container-bg">
             <div v-if='specStatus.isSelectSpec' class="spec-mask"></div>
             <div class="exchange">
                 <ul>
@@ -85,14 +84,12 @@
 </template>
 <script>
     import { Swipe, SwipeItem, MessageBox } from 'mint-ui'
-    import Loading from '../common/Loading'
     import ajax from '../../utils/ajax.js'
     import utils from '../../utils/public'
     import Modal from '../common/Modal'
     export default {
         name: 'ScoreExchange',
         components: {
-            Loading,
             Swipe,
             SwipeItem,
             MessageBox,
@@ -103,8 +100,6 @@
         },
         data() {
             return {
-                loading: true,
-                loadShow: false,
                 isLogin: this.$store.state.user.userInfo.isLogin || '',   //是否登录
                 userId: this.$store.state.user.userInfo.userId || '',      //当前用户ID
                 listData: [],
@@ -129,7 +124,7 @@
             }
         },
         methods: {
-            //判断是否登录
+            //  判断是否登录
             isLoginMethod() {
                 if (this.isLogin) {
                     this.loadShow = true
@@ -140,7 +135,7 @@
                     })
                 }
             },
-            //获取列表数据
+            //  获取列表数据
             getListData() {
                 ajax.getDataFromApi({
                     url: '/v1/goods',
@@ -150,21 +145,19 @@
                 }, (response) => {
                     this.listData = response.data.body.list
                     this.dataDispose(this.listData)
-                    //数据请求完成,改变loading值,关闭load，显示渲染后的页面
-                    this.loading = false;
                 })
             },
-            //列表数据处理
+            //  列表数据处理
             dataDispose(data) {
                 data.forEach(val => {
                     val.picture = `/attachment/${val.picture}`
                 })
             },
-            //   关闭规格选择弹框
+            //  关闭规格选择弹框
             closeSpec() {
                 this.specStatus.isSelectSpec = false
             },
-            // 积分兑换
+            //  积分兑换
             scorePurchage(item) {
                 this.spec = []
                 this.originalSpecList = {}
@@ -188,7 +181,7 @@
                     this.scoreInfo = response.data.body.list
                 })
             },
-            // 处理页面数据 ==> 组织规格的数据结构
+            //  处理页面数据 ==> 组织规格的数据结构
             modifyData(data) {
                 let specifications = data.specifications
                 let specList = data.specification_objects

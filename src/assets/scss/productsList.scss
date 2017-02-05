@@ -84,10 +84,11 @@
 }
 .products-list {
   padding-top:px2rem(100);
+  height: px2rem(800);
   padding-left: px2rem(20);
   width:px2rem(620);
   color: $colorBlock;
-  overflow-y: scroll;
+  overflow: scroll;
   dl {
     dt {
       font-size: px2rem(32);

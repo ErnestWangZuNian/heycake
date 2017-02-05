@@ -8,7 +8,7 @@
   position: relative;
   .logo {
     position: absolute;
-    left: px2rem(20);
+    left: px2rem(10);
     width: px2rem(120);
     height: 100%;
     img {
@@ -18,9 +18,9 @@
   }
   .current-position {
     position: absolute;
-    left: px2rem(150);
+    left: px2rem(130);
     text-align: center;
-    width: px2rem(326);
+    width: px2rem(300);
     line-height: px2rem(80);
     overflow: hidden;
     white-space: nowrap;
@@ -29,7 +29,7 @@
   }
   .login-flag {
     position: absolute;
-    right: px2rem(0);
+    right: px2rem(10);
     top: 50%;
     cursor: pointer;
     transform: translateY(-50%);

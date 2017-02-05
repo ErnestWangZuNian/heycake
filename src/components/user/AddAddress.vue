@@ -1,7 +1,6 @@
 <template>
   <div>
-    <loading v-if="loading && loadShow"></loading>
-    <div class="container" v-if="!loading">
+    <div class="container">
       <form id="formValidator">
         <div class="address-list">
           <div class="input-line">
@@ -70,14 +69,12 @@
     MessageBox,
     Toast
   } from 'mint-ui'
-  import Loading from '../common/Loading'
   import ajax from '../../utils/ajax.js'
   import Modal from '../common/Modal'
   import utils from '../../utils/public'
   export default {
     name: 'AddAddress',
     components: {
-      Loading,
       Swipe,
       SwipeItem,
       MessageBox,
@@ -89,8 +86,6 @@
     },
     data() {
       return {
-        loading: true,
-        loadShow: false,
         isLogin: this.$store.state.user.userInfo.isLogin || '', //是否登录
         userId: this.$store.state.user.userInfo.userId || '', //当前用户ID
         thisId: this.$route.params.id || '',
@@ -142,7 +137,7 @@
       name: 'required'
     },
     methods: {
-      //判断是否登录
+      //  判断是否登录
       isLoginMethod() {
         if (this.isLogin) {
           this.loadShow = true;
@@ -151,18 +146,13 @@
           if (this.thisId) {
             this.getListData(this.thisId)
           }
-          this.loading = false
-          //判断数据是否加载完成
-          //          if(this.flag.isCity && this.flag.isCounty){
-          //            this.loading = false
-          //          }
         } else {
           MessageBox.alert('未登录').then(action => {
             location.href = '/#/site/login'
           })
         }
       },
-      //如果是点击编辑按钮进来的，获取数据
+      //  如果是点击编辑按钮进来的，获取数据
       getListData(id) {
         ajax.getDataFromApi({
           url: `/v1/my-address/${id}/edit`
@@ -180,7 +170,7 @@
           this.validator.detailArea.isFlag = true
         })
       },
-      //获取City数据
+      //  获取City数据
       getListCity() {
         ajax.getDataFromApi({
           url: '/area/city'
@@ -189,7 +179,7 @@
           this.flag.isCity = true
         })
       },
-      //获取County数据
+      //  获取County数据
       getListCounty() {
         ajax.getDataFromApi({
           url: '/area/county',
@@ -198,15 +188,15 @@
           this.flag.isCounty = true
         })
       },
-      //      关闭地址弹窗
+      //  关闭地址弹窗
       addressClose() {
         this.address.show = false
       },
-      //      开启地址弹窗
+      //  开启地址弹窗
       openAddress() {
         this.address.show = true
       },
-      //       搜索定位
+      //  搜索定位
       searchAddress() {
         let key = '6ec262982ede339365a6f9d9b5370f1b'
         let keywords = this.address.searchKeyword
@@ -219,7 +209,7 @@
             this.address.search = response.data.tips
           })
       },
-      //       改变定位
+      //  改变定位
       changeArea(address) {
         this.address.isChecked = true
         this.address.checked = JSON.parse(JSON.stringify(address))
@@ -230,7 +220,7 @@
         this.formData.location = this.address.checked.location
         this.addressClose()
       },
-      //设为默认
+      //  设为默认
       isDefault(event) {
         this.flag.isDefault = !this.flag.isDefault
         if (this.flag.isDefault) {
@@ -239,11 +229,11 @@
           this.formData.default = 0
         }
       },
-      //提交按钮
+      //  提交按钮
       saveMethod() {
         if (this.validator.name.isFlag && this.validator.telPhone.isFlag && this.validator.detailArea.isFlag) {
           if (this.thisId) {
-            //编辑地址，保存
+            //  编辑地址，保存
             ajax.putDataToApi({
               url: `/v1/my-address/${this.formData.id}`,
               body: this.formData
@@ -265,7 +255,7 @@
               })
             })
           } else {
-            //新增地址，保存
+            //  新增地址，保存
             ajax.postDataToApi({
               url: '/v1/my-address',
               body: this.formData,
@@ -290,8 +280,7 @@
           }
         }
       },
-      //验证方法
-      //验证focus
+      //  验证focus
       focusMethod(currentObj) {
         switch (currentObj) {
           case 'name':

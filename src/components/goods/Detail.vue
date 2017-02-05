@@ -1,7 +1,6 @@
 <template>
     <div>
-        <loading v-if="loading"></loading>
-        <div class="container" v-if="!loading">
+        <div class="container">
             <div v-if='specStatus.isSelectSpec' class="spec-mask"></div>
             <!--轮播图-->
             <div class="swiper">
@@ -154,7 +153,6 @@
 </template>
 <script>
     import { Swipe, SwipeItem, Lazyload, MessageBox, Toast } from 'mint-ui'
-    import Loading from '../common/Loading'
     import utils from '../../utils/public'    //公共方法（图片处理，数组去重，判断对象是否为空）
     import ajax from '../../utils/ajax'
     import Modal from '../common/Modal'
@@ -162,7 +160,6 @@
     export default {
         name: 'Detail',
         components: {
-            Loading,
             Swipe,
             SwipeItem,
             Lazyload,
@@ -175,7 +172,6 @@
         },
         data() {
             return {
-                loading: false,
                 errTip: {
                     isShow: false,
                     login: false,
@@ -205,8 +201,6 @@
         methods: {
             //  获取页面数据
             fetchData() {
-                this.loading = true
-                //  获取商品详情数据
                 ajax.getDataFromApi({
                     url: `/v1/goods/${this.$route.params.id}`,
                     data: {

@@ -1,7 +1,6 @@
 <template>
   <div>
-    <loading v-if="loading && loadShow"></loading>
-    <div class="container" v-if="!loading">
+    <div class="container">
       <div class="payment">
         <div class="order-info">
           <p>订单编号：<span class="c-red">{{listData.order_number}}</span></p>
@@ -42,13 +41,11 @@
 </template>
 <script>
   import {Swipe, SwipeItem,MessageBox } from 'mint-ui'
-  import  Loading from '../common/Loading'
   import ajax from '../../utils/ajax.js'
   import Modal from '../common/Modal'
   export default {
     name: 'myAddress',
     components: {
-      Loading,
       Swipe,
       SwipeItem,
       MessageBox,
@@ -59,8 +56,6 @@
     },
     data () {
       return {
-        loading: true,
-        loadShow: false,
         isLogin:this.$store.state.user.userInfo.isLogin  || '',   //是否登录
         userId:this.$store.state.user.userInfo.userId || '',      //当前用户ID
         thisId:this.$route.params.id || '',
@@ -92,8 +87,6 @@
         },(response)=>{
           this.listData = response.data.body
           this.orderNum = response.data.body
-          //数据请求完成,改变loading值,关闭load，显示渲染后的页面
-          this.loading = false;
         })
       },
       //微信-支付方式点击

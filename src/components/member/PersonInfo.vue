@@ -1,7 +1,6 @@
 <template>
   <div>
-    <loading v-if="loading && loadShow"></loading>
-    <div class="container" v-if="!loading">
+    <div class="container">
       <div class="person-info">
         <div class="person-info-grid height-85 border-bottom">
           <div class="grid-cell">姓名：</div>
@@ -65,13 +64,11 @@
     Loadmore,
     MessageBox
   } from 'mint-ui'
-  import Loading from '../common/Loading'
   import ajax from '../../utils/ajax.js'
   import utils from '../../utils/public'
   export default {
     name: 'MyOrder',
     components: {
-      Loading,
       Swipe,
       SwipeItem,
       Loadmore,
@@ -83,7 +80,6 @@
     },
     data() {
       return {
-        loading: false,
         loadShow: false,
         isLogin: this.$store.state.user.userInfo.isLogin || '', //是否登录
         userId: this.$store.state.user.userInfo.userId || '', //当前用户ID
@@ -132,8 +128,6 @@
         }, (response) => {
           this.listData = response.data.body.list
           this.page.total = response.data.body.pagination.total
-          //数据请求完成,改变loading值,关闭load，显示渲染后的页面
-          this.loading = false
       })
       },
     },

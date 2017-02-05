@@ -1,7 +1,6 @@
 <template>
   <div>
-    <loading v-if="loading"></loading>
-    <div class="container naber-cakelist" v-if="!loading">
+    <div class="container naber-cakelist">
       <div class="naber-cakelist-top">
         <!--附近门店推荐-->
       <div class="naberStore">
@@ -98,13 +97,11 @@
     SwipeItem,
     Loadmore
   } from 'mint-ui'
-  import Loading from '../common/Loading'
   import ajax from '../../utils/ajax.js'
   import utils from '../../utils/public'
   export default {
     name: 'ProductsList',
     components: {
-      Loading,
       Swipe,
       SwipeItem,
       Loadmore
@@ -115,13 +112,9 @@
     },
     data() {
       return {
-        loading: true,
-        list: [0],
-        topStatus: '',
         goodInfo: [],
         requestData: [],
         allGoodInfo: [],
-        banner: [],
         category: {
           value: [],
           seleted: '全部',
@@ -141,7 +134,6 @@
     methods: {
       //    获取数据
       fetchData(page) {
-        this.loading = true
         ajax.getDataFromApi({
           url: `/v1/goods/`,
           data: {
@@ -151,19 +143,12 @@
           }
         }, (response) => {
           this.requestData = this.requestData.concat(response.data.body.list.map(utils.imgDetail))
-          this.loading = false
           this.page.total = response.data.body.pagination.total
           this.text.loding = "上拉刷新"
           this.modifyData(this.requestData)
         })
-        //      获取轮播图
-        ajax.getDataFromApi({
-          url: '/v1/banner',
-        }, (response) => {
-          this.banner = response.data.body.map(utils.imgDetail)
-        })
       },
-      //      整理数据
+      //  整理数据
       modifyData(data) {
         let category = []
         this.goodInfo = []

@@ -1,7 +1,6 @@
 <template>
   <div>
-    <loading v-if="loading"></loading>
-    <div class="container" v-if="!loading">
+    <div class="container">
       <ul class="order-detail">
         <li>状态：<span>{{orderInfo.status_code | orderStatus}}</span></li>
         <li>订单编号：<span>{{orderInfo.order_number}}</span></li>
@@ -103,13 +102,11 @@
 </template>
 <script>
   import { MessageBox } from 'mint-ui'
-  import Loading from '../common/Loading'
   import ajax from '../../utils/ajax.js'
   import utils from '../../utils/public'
   export default {
     name: 'OrderDetail',
     components: {
-      Loading,
       MessageBox
     },
     mounted() {

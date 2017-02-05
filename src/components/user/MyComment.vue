@@ -1,13 +1,12 @@
 <template>
   <div>
-    <loading v-if="loading && loadShow"></loading>
-    <div class="container" v-if="!loading">
+    <div class="container">
       <div class="exchange">
         <ul>
           <li class="list" v-for="item in listData">
             <div class="grid height-160">
               <div class="grid-cell u-w120">
-                <img :src="item.goodsIcon">
+                <img :src="item.goodsIcon | imgDetail">
               </div>
               <div class="grid-cell">
                 <p class="title">{{item.goodsName}}</p>
@@ -42,12 +41,10 @@
 </template>
 <script>
   import {Swipe, SwipeItem,MessageBox } from 'mint-ui'
-  import  Loading from '../common/Loading'
   import ajax from '../../utils/ajax.js'
   export default {
     name: 'MyComment',
     components: {
-      Loading,
       Swipe,
       SwipeItem,
       MessageBox
@@ -57,7 +54,6 @@
     },
     data () {
       return {
-        loading: true,
         loadShow: false,
         classTest: true,
         isLogin:this.$store.state.user.userInfo.isLogin  || '',   //是否登录
@@ -66,7 +62,7 @@
       }
     },
     methods: {
-      //判断是否登录
+      //  判断是否登录
       isLoginMethod(){
         if(this.isLogin){
           this.loadShow = true
@@ -77,22 +73,13 @@
           })
         }
       },
-      //获取列表数据
+      //  获取列表数据
       getListData(){
         ajax.getDataFromApi({
           url:'/v1/my-comment-list',
         },(response)=>{
-          this.listData = response.data.body.list;
-          this.dataDispose(this.listData)
-          //数据请求完成,改变loading值,关闭load，显示渲染后的页面
-          this.loading = false;
+          this.listData = response.data.body.list
         })
-      },
-      //列表数据处理
-      dataDispose(data){
-        data.forEach(val =>{
-          val.goodsIcon = `/attachment/${val.goodsIcon}`
-      })
       }
     },
   }

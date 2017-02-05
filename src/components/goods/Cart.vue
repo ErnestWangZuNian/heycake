@@ -1,7 +1,6 @@
 <template>
   <div>
-    <loading v-if="loading"></loading>
-    <div class="container" v-if="!loading">
+    <div class="container">
       <div v-if="cartList.length > 0">
         <ul class="theCart">
           <li v-for="item in cartList">
@@ -52,20 +51,15 @@
   </div>
 </template>
 <script>
-  import Loading from '../common/Loading'
   import ajax from '../../utils/ajax.js'
   import utils from '../../utils/public'
   export default {
     name: 'Cart',
-    components: {
-      Loading
-    },
     mounted() {
       this.fetchData()
     },
     data() {
       return {
-        loading: true,
         cartList: [],
         selectedCartList: [],
         isSelectedAll: false
@@ -104,7 +98,6 @@
         ajax.getDataFromApi({
           url: `/v1/shopping-cart`
         }, (response) => {
-          this.loading = false
           let data = response.data.body.list
           data.map((val) => {
             val.isSelected = false

@@ -1,7 +1,6 @@
 <template>
   <div>
-    <loading v-if="loading"></loading>
-    <div class="container" v-if="!loading">
+    <div class="container">
       <div class="order-tab">
         <button :class="[receiptway.expressHiglight ? 'btn-red' : 'btn-gray']" @click="expressDelivery">快递配送</button>
         <button :class="[receiptway.storeHiglight ? 'btn-red' : 'btn-gray']" @click="storeDeliver">门店自提</button>
@@ -233,7 +232,6 @@
     SwipeItem,
     Toast
   } from 'mint-ui'
-  import Loading from '../common/Loading'
   import ajax from '../../utils/ajax.js'
   import utils from '../../utils/public'
   import SelectTime from '../common/SelectTime'
@@ -242,7 +240,6 @@
   export default {
     name: 'OrderSubmit',
     components: {
-      Loading,
       Swipe,
       SwipeItem,
       SelectTime,
@@ -267,7 +264,6 @@
     },
     data() {
       return {
-        loading: false,
         errTip: {
           isShow: false,
           isRecharge: false,
@@ -404,12 +400,10 @@
     methods: {
       //  获取页面数据
       fetchData() {
-        this.loading = true
         //获取预约时间
         ajax.getDataFromApi({
           url: '/v1/appointment-time'
         }, (response) => {
-          this.loading = false
           this.appointTime.date = response.data.body.date
           this.appointTime.time = response.data.body.time.map((val, index) => {
             if (response.data.body.time[index + 1]) {
@@ -426,7 +420,6 @@
         }, (response) => {
           let addressList = response.data.body.list
           let flag = false
-          this.loading = false
           this.userInfo.address = addressList
           if (addressList.length > 0) {
             addressList.forEach((val) => {
