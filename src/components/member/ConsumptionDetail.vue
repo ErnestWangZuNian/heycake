@@ -11,7 +11,7 @@
             </ul>
           </div>
           <div class="same-select mr20">
-            <p class="same-select-list" @click="openPicker">选择时间</p>
+            <p class="same-select-list" @click="openPicker">选择日期</p>
           </div>
           <div class="search" @click="searchPay()">搜索</div>
         </div>
@@ -44,20 +44,18 @@
         </div>
       </div>
     </div>
-     <!--时间选择我插件-->
-    <datetime-picker ref="picker" type="date" v-model="pickerValue">
-    </datetime-picker>
   </div>
 </template>
 <script>
   require('../../assets/scss/member.scss')
-  import { DatetimePicker } from 'mint-ui'
+  var DateTimePicker = require('date-time-picker')
+  // import { DatetimePicker } from 'mint-ui'
   import ajax from '../../utils/ajax'
   import utils from '../../utils/public'
   export default {
     name: 'ConsumptionDetail',
     components: {
-      DatetimePicker
+      // DatetimePicker
     },
     data() {
       return {
@@ -109,7 +107,26 @@
       },
       // 打开时间选择器
       openPicker() {
-        this.$refs.picker.open();
+        let options = {
+  lang: 'zh-CN', // 语言，默认 'EN' ，默认 'EN', 'zh-CN' 可选
+  format: 'yyyy-MM-dd', // 格式， 'yyyy-MM-dd'
+  default: new Date(), // 默认值 `new Date()`。 如果`default`有值且是字符串的话就会根据`format`参数来将其转化为一个`Date`实例。当然可以选择传入一个日期实例。
+}
+       let config ={
+  day: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+  shortDay: ['日', '一', '二', '三', '四', '五', '六'],
+  MDW: 'M月d日D', // 主面板标题部分 月日星期
+  YM: 'yyyy年M月', // 日期部分标题显示
+  OK: '确定', // 确定按钮
+  CANCEL: '取消' // 取消按钮
+}
+        var datePicker = new DateTimePicker.Date(options, config)
+  datePicker.on('selected', function (formatDate, now) {
+    alert(formatDate)
+    // formatData = 2016-10-19
+    // now = Date实例 -> Wed Oct 19 2016 20:28:12 GMT+0800 (CST)
+  })
+        console.log(new Date(this.pickerValue))
       },
       // 搜索
       searchPay() {

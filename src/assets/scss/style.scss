@@ -588,14 +588,59 @@
     }
   }
   
-  //  mui时间样式修改
+  //  时间插件样式修改
+  .picker-mask{
+    background: #fff;
+  }
+  .picker-container{
+     width: px2rem(640)!important;
+     .picker-head{
+       padding: px2rem(30) px2rem(20);
+       .picker-year{
+         font-size: px2rem(22);
+       }
+       .picker-date{
+        font-size: px2rem(22);
+       }
+     }
+     .date-picker-title{
+        font-size: px2rem(22);
+        padding: px2rem(20) 0;
+     }
+     .picker-content{
+       height: px2rem(380);
+     }
+     .picker-act{
+       font-size: px2rem(20);
+     }
+     .date-picker-days {
+       i{
+         height: px2rem(40);
+         line-height: px2rem(40);
+         font-size: px2rem(20);
+       }
+       .picker-active:before{
+         width:px2rem(40)!important;
+         height: px2rem(40)!important;
+         line-height: px2rem(40)!important;
+       }
+     }
+     .picker-row{
+       font-size: px2rem(22)!important;
+     }
+     .picker-actions-arrow{
+       i{
+         font-size: px2rem(20)!important;
+       }
+     }
+  }
   .picker-slot-wrapper {
-    height: px2rem(600)!important;
+    height: px2rem(660)!important;
   }
   
   .picker-toolbar {
-    padding-top: px2rem(40)!important;
-    padding-bottom: px2rem(40)!important;
+    padding-top: px2rem(20)!important;
+    padding-bottom: px2rem(20)!important;
   }
   
   .mint-datetime-action {
@@ -604,8 +649,9 @@
   
   .picker-item {
     font-size: px2rem(24);
-    height: px2rem(80)!important;
-    line-height: px2rem(80)!important;
+    padding: px2rem(12) 0!important;
+    height: px2rem(40)!important;
+    // line-height: px2rem(30)!important;
   }
   
   // 门店选择样式修改

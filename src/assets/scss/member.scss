@@ -159,6 +159,7 @@
   font-size: px2rem(24);
   .detail-member-header {
     padding: px2rem(20);
+    width: px2rem(600);
     position: fixed;
     z-index: 9999;
     background: #f5f5f5;
@@ -173,7 +174,8 @@
       line-height: px2rem(40);
     }
     .search {
-      @include btn(108, 60, #ce0c0c, #fff, 24, 8)
+      @include btn(108, 60, #ce0c0c, #fff, 24, 8);
+      float: left;
     }
   }
   .consumption-detail-header{
