@@ -26,7 +26,7 @@
 
             <div class="grid">
                 <div class="grid-cell">运费</div>
-                <div class="grid-cell tright c-888">{{freight}}</div>
+                <div class="grid-cell tright c-888">{{freight | freight}}</div>
             </div>
 
             <div class="splitter"></div>
@@ -224,10 +224,8 @@
                 ajax.getDataFromApi({
                     url: `/v1/freight-details`
                 }, (response) => {
-                    let freight = response.data.body
-                    freight === '' ? freight = "包邮" : ''
-                    this.freight = '￥' + freight.money
-                });
+                    this.freight = response.data.body
+                })
                 //  获取购物车数量
                 this.getcartCount()
             },

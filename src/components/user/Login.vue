@@ -6,7 +6,7 @@
     <div class="login-content">
       <div class="g-login-content tel-phone">
         <label for="telphone"></label>
-        <input type="number" id='telphone' name="telphone" placeholder="请输入手机号码" v-model="telphone" @focus="focusMethod('telphone')"
+        <input id='telphone' name="telphone" placeholder="请输入手机号码" @input="detailPhone" v-model="telphone" @focus="focusMethod('telphone')"
           @blur="blurMethod('telphone')">
       </div>
       <div class="g-login-content password">
@@ -72,8 +72,6 @@
               localStorage.setItem('userInfo', JSON.stringify(userInfo))
               this.$store.dispatch('setUserInfo', userInfo)
               location.href = '/#/site/index'
-              //  初始化编辑地址
-              utils.sessionstorageData('editAddressIsInvaild',true)
             })
           }, (error) => {
             let err = error.data.code
@@ -98,6 +96,13 @@
               position: 'top',
             })
           }
+        }
+      },
+      detailPhone() {
+        if(this.telphone.length === 3) {
+          this.telphone = this.telphone + ' ' 
+        }else if(this.telphone.length === 8){
+          this.telphone = this.telphone + ' '
         }
       },
       //验证方法

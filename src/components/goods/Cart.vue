@@ -104,6 +104,7 @@
             val.itemTotalPrice = (val.price * 100 * val.amount) / 100
           })
           this.cartList = response.data.body.list
+          this.selectedCartAll()
         }, (error) => {
         })
       },

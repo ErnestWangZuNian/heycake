@@ -7,6 +7,23 @@ Vue.filter('imgDetail', (value) => {
     return value
   }
 })
+//  运费处理
+Vue.filter('freight', (value) => {
+  let val = '包邮'
+  // 返回处理后的价格
+  if (value !== undefined) {
+    if (value === '') {
+      val = '包邮'
+    }
+    if (value.target_money) {
+      val = `满${value.target_money}包邮`
+    }
+    if (value.money) {
+      val = `￥${(value.money * 100 / 100).toFixed(2)}`
+    }
+    return val
+  }
+})
 // 单个价格处理
 Vue.filter('price', (value) => {
   // 返回处理后的价格
@@ -129,9 +146,6 @@ Vue.filter('orderStatus', (value) => {
       case 'at00':
         val = '待支付'
         break
-      case 'wfd0':
-        val = '待分配'
-        break
       case 'wfs0':
         val = '待发货'
         break
@@ -157,13 +171,16 @@ Vue.filter('orderStatus', (value) => {
         val = '待生产'
         break
       case 'kd00':
-        val = '客服签收'
+        val = '待收货'
         break
       case 'ip00':
         val = '生产中'
         break
+      case '':
+        val = '全部'
+        break
       default:
-        val = '待支付'
+        val = '全部'
     }
     return val
   }

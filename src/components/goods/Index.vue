@@ -184,6 +184,8 @@
         this.naberStore = utils.sessionstorageGetData('allNavberStore')
         this.address.around = utils.sessionstorageGetData('aroundAddress')
         this.address.current = utils.sessionstorageGetData('currentAddress')
+        //  初始化编辑地址
+        utils.sessionstorageData('editAddressIsInvaild',true)
       } else {
         this.getCurrentPoistion()
       }

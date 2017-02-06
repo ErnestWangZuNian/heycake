@@ -120,7 +120,7 @@
               <p>{{this.goodsInfo.selectedSpecGood.value | spec}}</p>
             </div>
             <div class="price">
-              <p v-if="goodsInfo.buyWay !== 'score'">￥{{this.goodsInfo.selectedSpecGood.price}}</p>
+              <p v-if="goodsInfo.buyWay !== 'score'">{{this.goodsInfo.selectedSpecGood.price | price}}</p>
               <p v-if="goodsInfo.buyWay === 'score'">{{this.goodsInfo.selectedSpecGood.score}}积分</p>
               <p class="mrg"><span>x{{goodsInfo.selectedSpecGood.count}}</span></p>
             </div>
@@ -142,7 +142,7 @@
           </li>
         </ul>
         <div class="freight" v-if="goodsInfo.buyWay !== 'score'">
-          <p>运费<span>{{userInfo.freight}}</span></p>
+          <p>运费<span>{{userInfo.freight | freight}}</span></p>
         </div>
       </div>
       <!--分隔-->
@@ -315,7 +315,7 @@
           name: '',
           telphone: '',
           myAddressId: '',
-          freight: '包邮'
+          freight: ''
         },
         locationUserInfo: {
           name: '',
@@ -362,8 +362,12 @@
         let cart = this.goodsInfo.selectedCartGoods
         if (this.goodsInfo.buyWay !== 'cart') {
           if (this.goodsInfo.buyWay === 'purchase') {
-            if (this.userInfo.freight !== '包邮' || this.userInfo.freight !== '') {
-              total = good.price * good.count * 100
+            if (this.userInfo.freight !== '') {
+              if (this.userInfo.freight.money) {
+                 total = good.price * good.count * 100  + this.userInfo.freight.money * 100
+              } else  if (this.userInfo.freight.target_money) {
+                 total = good.price * good.count * 100
+              }
             } else {
               total = good.price * good.count
             }
@@ -437,8 +441,6 @@
           }
           let checkedMyAddressInfo = utils.sessionstorageGetData('checkedMyAddress')
           // let detailArea = this.userInfo.defaultAddress.detail_area
-            console.log(checkedMyAddressInfo)
-            console.log(this.userInfo.checkedMyAddress.detail_area)
         })
         this.getNaberStore(utils.sessionstorageGetData('checkedAddress').location)
         // //获取门店列表
@@ -460,12 +462,7 @@
         ajax.getDataFromApi({
           url: `/v1/freight-details`
         }, (response) => {
-          let freight = response.data.body
-          if (freight !== '') {
-            this.userInfo.freight = '￥' + freight.money
-          } else {
-            this.userInfo.freight = '包邮'
-          }
+          this.userInfo.freight = response.data.body
         })
       },
       //    获取云图附件门店

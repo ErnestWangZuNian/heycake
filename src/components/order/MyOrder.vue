@@ -6,7 +6,7 @@
         <div class="grid-cell tright c-888">订单筛选：</div>
         <div class="grid-cell tleft c-333">
           <div class="same-select category">
-            <p class="same-select-list" @click="openOrderSelect()">{{order.seleted}}</p>
+            <p class="same-select-list" @click="openOrderSelect()">{{status | orderStatus}}</p>
             <ul class="same-select-list-container" v-if="order.status">
               <li class="same-select-list" :class="item.isSelected ? 'same-select-list-active': ''" v-for="item in order.value" @click="changeOrderStatus(item)">{{item.val}}</li>
             </ul>
@@ -100,6 +100,7 @@
     },
     mounted() {
       this.isLoginMethod()
+      this.status = this.$route.params.status || ''
     },
     data() {
       return {
@@ -116,11 +117,7 @@
             isSelected: false,
             val: '待支付',
             orderCode: 'at00',
-          }, {
-            isSelected: false,
-            val: '待分配',
-            orderCode: 'wfd0',
-          }, {
+          },{
             isSelected: false,
             val: '待发货',
             orderCode: 'wfs0',
