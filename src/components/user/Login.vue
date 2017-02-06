@@ -74,7 +74,7 @@
               location.href = '/#/site/index'
             })
           }, (error) => {
-            let err = error.data.code
+            // let err = error.data.code
             if (err == '100002') {
               Toast({
                 message: '密码错误，请重新输入',
@@ -121,7 +121,7 @@
       blurMethod(currentObj) {
         switch (currentObj) {
           case 'telphone':
-            let telRe = /^1[3|4|5|8]\d{9}$/
+            let telRe = /^1[3|4|5|8]\d{1}\s\d{4}\s\d{4}$/
             let formDataTel = this.telphone
             let validatorTel = this.validator.telphone
 
