@@ -10,9 +10,11 @@
            </div>
          </div>
          <div class="go-to-order">
-           <button>
+           <router-link to="/site/my-order">
+             <button >
               查看我的订单
            </button>
+           </router-link>
          </div>
          </div>
      </div>

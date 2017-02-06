@@ -242,6 +242,7 @@
                 url: `/v1/my-address/${this.formData.id}`
               }, response => {
                 let address = response.data.body
+                this.getNaberStore(address.location)
                 utils.sessionstorageData('checkedMyAddress', address)
                 if(utils.sessionstorageGetData('editAddress')){
                     location.href ='/#/site/my-address'
@@ -279,6 +280,40 @@
             this.validator.detailArea.errIsShow = true
           }
         }
+      },
+      //    获取云图附件门店
+      getNaberStore(location) {
+        let key = '6ec262982ede339365a6f9d9b5370f1b'
+        let tableid = '586b5c10afdf520ea8f2368e'
+        let center = location
+        let radius = 1000
+        this.$jsonp('http://yuntuapi.amap.com/datasearch/around', {
+          key: key,
+          tableid: tableid,
+          center: center,
+          radius: radius
+        })
+          .then(response => {
+            if (response.datas.length === 0) {
+              const self = this
+              this.naberStore = []
+              utils.sessionstorageData('allNavberStore', [])
+              utils.sessionstorageData('naberStore',[])
+              MessageBox.confirm('您所定位的地址没有推荐门店信息，您可以通过更改定位地址来获取门店商品信息', '门店推荐提示', { confirmButtonText: '换个地址' }).then(action => {
+                self.openAddress()
+              })
+              utils.sessionstorageData('editAddressIsInvaild',false)
+            } else {
+              if (response.datas && response.datas.length > 0) {
+                this.naberStore = response.datas
+                utils.sessionstorageData('allNavberStore', response.datas)
+                utils.sessionstorageData('naberStore',response.datas[0])
+              }
+              utils.sessionstorageData('editAddressIsInvaild',true)
+            }
+          }, err => {
+            console.log(err)
+          })
       },
       //  验证focus
       focusMethod(currentObj) {

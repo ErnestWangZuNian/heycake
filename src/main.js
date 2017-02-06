@@ -25,11 +25,11 @@ Vue.http.interceptors.push((request, next) => {
     spinnerType: 'fading-circle'
   })
   next((response) => {
+    Indicator.close()
     if (!response.ok) {
       console.log('404页面')
       return response
     } else {
-      Indicator.close()
     }
   })
 })

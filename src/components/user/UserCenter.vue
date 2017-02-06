@@ -142,6 +142,7 @@
           userId: null
         }
         localStorage.clear('userInfo')
+        utils.sessionstorageData("checkedMyAddress",[])
         this.$store.dispatch('setUserInfo', userInfo)
         location.href = '/#/site/index'
       },

@@ -6,7 +6,7 @@
         <button :class="[receiptway.storeHiglight ? 'btn-red' : 'btn-gray']" @click="storeDeliver">门店自提</button>
       </div>
       <!--快递配送信息-->
-      <div class="order-info" v-if="receiptway.expressDelivery">
+      <div class="order-info" v-if="receiptway.expressDelivery" >
         <div class="label-list" v-if="userInfo.isMyAddress===false">
           <div class="fl info">
             <section>
@@ -31,7 +31,7 @@
           </div>
           <div class="cf"></div>
         </div>
-        <div class="label-list" v-if="userInfo.isMyAddress">
+        <div class="label-list" v-if="userInfo.isMyAddress" @click="editMethod(userInfo.checkedMyAddress.id)">
           <div class="fl info">
             <section>
               <div class="icon icon-name"></div>
@@ -46,7 +46,7 @@
               <div class="text"><span>[已选择地址]</span>{{userInfo.checkedAddress }} {{userInfo.checkedMyAddress.doorplate}}</div>
             </section>
           </div>
-          <div class="fl arrow" @click="editMethod(userInfo.checkedMyAddress.id)">
+          <div class="fl arrow">
             <div class="icon-right"></div>
           </div>
           <div class="cf"></div>
@@ -230,6 +230,7 @@
   import {
     Swipe,
     SwipeItem,
+    MessageBox,
     Toast
   } from 'mint-ui'
   import ajax from '../../utils/ajax.js'
@@ -244,6 +245,7 @@
       SwipeItem,
       SelectTime,
       SelectStore,
+      MessageBox,
       Modal,
       Toast
     },
@@ -270,6 +272,7 @@
           isWarn: false,
           text: '您的密码有误请重新登录'
         },
+        juageAddressIsCanSubmit: true,
         canSubmitOrderFlag: true,
         addressIsAddSuccess: false,
         address: {
@@ -432,6 +435,10 @@
               this.userInfo.defaultAddress = addressList[0]
             }
           }
+          let checkedMyAddressInfo = utils.sessionstorageGetData('checkedMyAddress')
+          // let detailArea = this.userInfo.defaultAddress.detail_area
+            console.log(checkedMyAddressInfo)
+            console.log(this.userInfo.checkedMyAddress.detail_area)
         })
         this.getNaberStore(utils.sessionstorageGetData('checkedAddress').location)
         // //获取门店列表
@@ -475,13 +482,31 @@
         })
           .then(response => {
             let data = response.datas
-            data.map((val, index) => {
-              index === 0 ? val.isSelected = true : val.isSelected = false
-              // val.logo = `/attachment/${val.logo}`
-              return val
-            })
-            this.store.storeList = data
-            this.store.selectedStore = data[0]
+            if (response.datas.length === 0) {
+              const self = this
+              this.naberStore = []
+              utils.sessionstorageData('allNavberStore', [])
+              utils.sessionstorageData('naberStore',[])
+              this.juageAddressIsCanSubmit = false
+              MessageBox.confirm('您所定位的地址没有推荐门店信息，您可以通过更改定位地址来获取门店商品信息', '门店推荐提示', { confirmButtonText: '换个地址' }).then(action => {
+                self.openAddress()
+              })
+            } else {
+              if (response.datas && response.datas.length > 0) {
+                this.naberStore = response.datas
+                utils.sessionstorageData('allNavberStore', response.datas)
+                utils.sessionstorageData('naberStore',response.datas[0])
+              }
+              this.juageAddressIsCanSubmit = true
+            }
+            // 门店自提
+            // data.map((val, index) => {
+            //   index === 0 ? val.isSelected = true : val.isSelected = false
+            //   // val.logo = `/attachment/${val.logo}`
+            //   return val
+            // })
+            // this.store.storeList = data
+            // this.store.selectedStore = data[0]
           }, err => {
           })
       },
@@ -578,6 +603,7 @@
         this.address.checked = JSON.parse(JSON.stringify(address))
         this.userInfo.checkedAddress = this.address.checked.name
         this.locationUserInfo.location = this.address.checked.location
+        this.getNaberStore(this.locationUserInfo.location)
         this.locationUserInfo.district = this.address.checked.district
         this.addressClose()
       },
@@ -857,11 +883,16 @@
       //提交订单
       orderSubmit() {
         if (this.canSubmitOrder) {
-          // 快递配送提交方式
+          if (!utils.localstorageGetData('isCake') && !this.juageAddressIsCanSubmit || !utils.localstorageGetData('isCake') && !utils.sessionstorageGetData('editAddressIsInvaild')) {
+              MessageBox.confirm('您所定位的地址没有推荐门店信息，您可以通过更改定位地址来获取门店商品信息', '门店推荐提示', { confirmButtonText: '换个地址' }).then(action => {
+                this.openAddress()
+              })
+          } else{
+           // 快递配送提交方式
           if (this.receiptway.expressDelivery) {
             if (this.goodsInfo.buyWay !== "cart") {
               let postData = {
-                store_code: utils.sessionstorageGetData('naberStore') && utils.sessionstorageGetData('naberStore').store_id,
+                store_code: utils.sessionstorageGetData('naberStore').store_id || "" ,
                 profile_id: this.goodsInfo.selectedSpecGood.id,
                 address_id: this.userInfo.defalutAddress.id,
                 date: this.appointTime.selectedDate,
@@ -892,7 +923,7 @@
               }
             } else {
               let postData = {
-                store_code: utils.sessionstorageGetData('naberStore') && utils.sessionstorageGetData('naberStore').store_id,
+                store_code: utils.sessionstorageGetData('naberStore').store_id || "" ,
                 collection: this.goodsInfo.cartGoodsId,
                 address_id: this.userInfo.defalutAddress.id,
                 date: this.appointTime.selectedDate,
@@ -940,7 +971,7 @@
             } else {
               if (this.goodsInfo.buyWay !== "cart") {
                 let postData = {
-                  store_code: utils.sessionstorageGetData('naberStore') && utils.sessionstorageGetData('naberStore').store_id,
+                  store_code: utils.sessionstorageGetData('naberStore').store_id || "" ,
                   profile_id: this.goodsInfo.selectedSpecGood.id,
                   // offline_store: this.store.selectedStore._id,
                   custom_name: this.formData.name,
@@ -961,7 +992,7 @@
                 }, postData)
               } else {
                 let postData = {
-                  store_code: utils.sessionstorageGetData('naberStore') && utils.sessionstorageGetData('naberStore').store_id,
+                  store_code: utils.sessionstorageGetData('naberStore').store_id || "" ,
                   collection: this.goodsInfo.cartGoodsId,
                   // offline_store: this.store.selectedStore._id,
                   custom_name: this.formData.name,
@@ -978,6 +1009,7 @@
                 this.cartOrderSubmit('/v1/order/self-pick', postData)
               }
             }
+          }
           }
         }
       }

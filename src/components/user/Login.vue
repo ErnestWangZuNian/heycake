@@ -37,6 +37,7 @@
     MessageBox
   } from 'mint-ui'
   import ajax from '../../utils/ajax'
+  import utils from '../../utils/public'
   export default {
     components: {
       Toast,
@@ -71,6 +72,8 @@
               localStorage.setItem('userInfo', JSON.stringify(userInfo))
               this.$store.dispatch('setUserInfo', userInfo)
               location.href = '/#/site/index'
+              //  初始化编辑地址
+              utils.sessionstorageData('editAddressIsInvaild',true)
             })
           }, (error) => {
             let err = error.data.code

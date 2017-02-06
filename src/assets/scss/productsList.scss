@@ -1,12 +1,24 @@
 @import 'style.scss';
-.naber-cakelist-top{
-  position: fixed;
-  z-index: 9999;
-}
 .cakelist-container{
   .index-nav5{
     position: fixed;
     z-index: 9999;
+  }
+  .page-loadmore-wrapper{
+    padding-top:px2rem(100);
+    height: px2rem(780);
+    overflow: scroll;
+  }
+}
+.naber-cakelist{
+  .naber-cakelist-top{
+    position: fixed;
+    z-index: 9999;
+  }
+  .page-loadmore-wrapper{
+    padding-top:px2rem(360);
+    height: px2rem(620);
+    overflow: scroll;
   }
 }
 .naberStore {
@@ -76,20 +88,10 @@
     }
   }
 }
-
-.naber-cakelist {
-  .products-list {
-    padding-top:px2rem(360);
-    height: px2rem(600);
-  }
-}
 .products-list {
-  padding-top:px2rem(100);
-  height: px2rem(800);
   padding-left: px2rem(20);
   width:px2rem(620);
   color: $colorBlock;
-  overflow: scroll;
   dl {
     dt {
       font-size: px2rem(32);

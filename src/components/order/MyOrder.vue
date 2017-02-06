@@ -71,6 +71,9 @@
             <span v-if="loadStatus.current === 'loading'"> <!--加载中图标-->
                 <spinner type="fading-circle" :size="40" color="#000" class='mint-loading-icon'></spinner>Loading...</span>
           </div>
+           <div slot="bottom" class="mint-loadmore-bottom" v-show="listData.length === 0">
+              没有这种状态的订单
+           </div>
         </loadmore>
       </div>
     </div>

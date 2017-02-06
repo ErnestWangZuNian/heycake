@@ -38,7 +38,7 @@
         </ul>
       </div>
       <!--产品列表-->
-      <div class="products-list">
+      <div class="products-list page-loadmore-wrapper">
         <loadmore :bottom-method="loadTop" :auto-fill="false"  @bottom-status-change="getLodingStatus" ref="loadmore" :bottom-all-loaded="loadStatus.isLoadAll">
           <dl>
             <dt>蛋糕制作</dt>
@@ -142,6 +142,7 @@
       },
       //  跳转到详情
       gotoDetail(id) {
+        utils.localstorageData("isCake",true)
         location.href = `/#/site/detail/${id}`
       }
     }

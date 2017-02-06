@@ -68,7 +68,7 @@
         </div>
       </div>
       <!--产品列表-->
-      <div class="products-list">
+      <div class="products-list  page-loadmore-wrapper">
         <loadmore :bottom-method="loadTop" :auto-fill="false" @bottom-status-change="getLodingStatus" ref="loadmore" :bottom-all-loaded="loadStatus.isLoadAll">
           <dl v-for="item in goodInfo">
             <dt>{{item.category}}</dt>
@@ -101,7 +101,8 @@
   import {
     Swipe,
     SwipeItem,
-    Loadmore
+    Loadmore,
+    Spinner
   } from 'mint-ui'
   import ajax from '../../utils/ajax.js'
   import utils from '../../utils/public'
@@ -110,7 +111,8 @@
     components: {
       Swipe,
       SwipeItem,
-      Loadmore
+      Loadmore,
+      Spinner
     },
     mounted() {
       this.fetchData()

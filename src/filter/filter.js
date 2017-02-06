@@ -123,7 +123,7 @@ Vue.filter('onlinePayway', (value) => {
 })
 // 订单状态方式处理
 Vue.filter('orderStatus', (value) => {
-  let val = '在线支付'
+  let val = '待支付'
   if (value !== undefined) {
     switch (value) {
       case 'at00':
@@ -157,10 +157,10 @@ Vue.filter('orderStatus', (value) => {
         val = '待生产'
         break
       case 'kd00':
-        val.status_code = '客服签收'
+        val = '客服签收'
         break
       case 'ip00':
-        val.status_code = '生产中'
+        val = '生产中'
         break
       default:
         val = '待支付'
