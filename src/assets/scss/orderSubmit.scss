@@ -23,7 +23,7 @@
       width: px2rem(520);
       section{
         font-size: px2rem(24);
-        line-height: px2rem(48);
+        line-height: px2rem(42);
         color: #333333;
         display:-moz-box;
         display:-webkit-box;
@@ -86,6 +86,7 @@
     padding: px2rem(20) 0;
     .label-list{
       margin-top: px2rem(24);
+      font-size: px2rem(24);
       label{
         display: inline-block;
         width: px2rem(113);
@@ -203,7 +204,8 @@
   margin-top: px2rem(20);
   font-size: px2rem(24);
   label{
-    color:$subTitleColor
+    color:$subTitleColor;
+    margin-left: px2rem(20);
   }
   input{
     @include inputs();

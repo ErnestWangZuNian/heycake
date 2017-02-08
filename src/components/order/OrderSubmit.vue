@@ -22,7 +22,7 @@
               <div class="text"><span>[已选择地址]</span>{{userInfo.checkedAddress}}</div>
             </section>
             <section>
-              <div class="icon icon-tel"></div>
+              <div class="icon icon-addr"></div>
               <div class="text"><input type="text" placeholder="楼层/门牌号等信息" v-model="locationUserInfo.doorplate"></div>
             </section>
           </div>
@@ -81,6 +81,9 @@
           <div class="cf"></div>
         </div>-->
         <div class="label-message">
+          <div class="label-list">
+             自提门店地址：{{this.store.currentStore || '您当前位置无门店推荐'}}
+          </div>
           <div class="label-list">
             <label>自提人</label> <input class="inputs" type="text" v-model='formData.name' @focus="focusMethod('name')" @blur="blurMethod('name')"
               placeholder="请填写自提人姓名(必填)">
@@ -263,6 +266,7 @@
         this.locationUserInfo.location = utils.sessionstorageGetData('checkedAddress').location
         this.locationUserInfo.district = utils.sessionstorageGetData('checkedAddress').district
       }
+      this.store.currentStore = utils.sessionstorageGetData('naberStore')._address
     },
     data() {
       return {
@@ -293,6 +297,7 @@
         payWay: 'online',
         memberUser: {
           password: '',
+          discount: 1,
           status: false
         },
         receiptway: {
@@ -302,6 +307,7 @@
           storeHiglight: false
         },
         store: {
+          currentStore:{},
           storeShow: false,
           storeList: [],
           selectedStore: {}
@@ -369,9 +375,9 @@
                  total = good.price * good.count * 100
               }
             } else {
-              total = good.price * good.count
+              total = good.price * good.count * 100
             }
-            total = (total / 100).toFixed(2)
+
           } else {
             total = good.score * good.count
           }
@@ -379,12 +385,20 @@
           cart.forEach((val) => {
             total += val.price * 100 * val.amount
           })
-          if (this.userInfo.freight !== '包邮' || this.userInfo.freight !== '') {
-            total = total
+          if(this.userInfo.freight !== '') {
+             if(this.userInfo.freight.money) {
+               total = total + this.userInfo.freight.money * 100
+             } else if(this.userInfo.freight.target_money) {
+               total = total
+             }
+          } else {
+               total = total
           }
-          total = (total / 100).toFixed(2)
         }
-        return total
+        if(this.payWay === 'member') {
+          total = total * this.memberUser.discount
+        }
+        return total = (total / 100).toFixed(2)
       },
       // 判断订单是否能提交
       canSubmitOrder() {
@@ -430,8 +444,17 @@
               return val
             }
           })
-          this.appointTime.selectedDate = this.appointTime.date[0]
-          this.appointTime.selectedTime = this.appointTime.time[0]
+          if(this.appointTime.date.length > 1){
+            this.appointTime.selectedDate = this.appointTime.date[0]
+          } else {
+            this.appointTime.selectedDate = ''
+          }
+          if(this.appointTime.time.length > 1) {
+             this.appointTime.selectedTime = this.appointTime.time[0]
+          } else {
+            this.appointTime.selectedTime = ''
+          }
+          
         })
         // 获取我的地址
         ajax.getDataFromApi({
@@ -694,7 +717,8 @@
               password: this.memberUser.password
             }
           }, response => {
-            this.memberUser.status = response.data.body
+            this.memberUser.status = true
+            this.memberUser.discount = response.data.body
           }, err => {
             if (err.data.code === '200010') {
               this.errTip.isShow = true
@@ -920,7 +944,10 @@
       },
       //提交订单
       orderSubmit() {
-        if (this.canSubmitOrder) {
+        if(this.appointTime.selectedTime ==='' || this.appointTime.selectedDate === ''){
+           MessageBox('提示', '当前时间不可预约')
+        } else {
+         if (this.canSubmitOrder) {
           if (!utils.localstorageGetData('isCake') && !this.juageAddressIsCanSubmit || !utils.localstorageGetData('isCake') && !utils.sessionstorageGetData('editAddressIsInvaild')) {
               MessageBox.confirm('您所定位的地址没有推荐门店信息，您可以通过更改定位地址来获取门店商品信息', '门店推荐提示', { confirmButtonText: '换个地址' }).then(action => {
                 this.openAddress()
@@ -934,7 +961,7 @@
                 profile_id: this.goodsInfo.selectedSpecGood.id,
                 address_id: this.userInfo.defalutAddress.id,
                 date: this.appointTime.selectedDate,
-                time: this.appointTime.selectedTime,
+                time: this.appointTime.selectedTime || '',
                 pay_method: 'WAIT',
                 user_comment: this.formData.addressMessage,
                 amount: this.goodsInfo.selectedSpecGood.count
@@ -965,7 +992,7 @@
                 collection: this.goodsInfo.cartGoodsId,
                 address_id: this.userInfo.defalutAddress.id,
                 date: this.appointTime.selectedDate,
-                time: this.appointTime.selectedTime,
+                time: this.appointTime.selectedTime || '',
                 pay_method: 'WAIT',
                 user_comment: this.formData.addressMessage
               }
@@ -1015,7 +1042,7 @@
                   custom_name: this.formData.name,
                   contact_phone: this.formData.telphone.replace(/\s+/g,""),
                   date: this.appointTime.selectedDate,
-                  time: this.appointTime.selectedTime,
+                  time: this.appointTime.selectedTime || '',
                   pay_method: 'WAIT',
                   user_comment: this.formData.addressMessage,
                   amount: this.goodsInfo.selectedSpecGood.count
@@ -1036,7 +1063,7 @@
                   custom_name: this.formData.name,
                   contact_phone: this.formData.telphone,
                   date: this.appointTime.selectedDate,
-                  time: this.appointTime.selectedTime,
+                  time: this.appointTime.selectedTime || '',
                   pay_method: 'WAIT',
                   user_comment: this.formData.addressMessage
                 }
@@ -1049,6 +1076,7 @@
             }
           }
           }
+        }
         }
       }
     },

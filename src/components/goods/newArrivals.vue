@@ -84,6 +84,7 @@
     Loadmore
   } from 'mint-ui'
   import ajax from '../../utils/ajax.js'
+  import utils from '../../utils/public.js'
   //Swipe ， SwipeItem        幻灯片
   export default {
     name: 'NewArrivals',

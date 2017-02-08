@@ -100,11 +100,16 @@
         },
         payWay: {
           status: false,
-          selected: '余额支付',
-          selectedData: 'balance',
+          selected: '全部',
+          selectedData: '',
           list: [
             {
               selected: true,
+              val: '全部',
+              key: '',
+            },
+            {
+              selected: false,
               val: '余额支付',
               key: 'balance',
             },
@@ -143,11 +148,10 @@
             per_page: 8
           }
         }, response => {
-          this.consumptionList = response.data.body.list
+          this.consumptionList = this.consumptionList.concat(response.data.body.list)
           this.page.total = response.data.body.pagination.total
           this.text.pull = "上拉刷新"
           this.$refs.loadmore.onBottomLoaded()
-          return this.consumptionList
         })
       },
       //  获取上拉刷新各种时候的状态
@@ -182,6 +186,7 @@
       },
       //  搜索
       searchPay() {
+        this.consumptionList = []
         this.text.pull = "上拉刷新"
         this.loadStatus.isLoadAll = false
         this.fetchData()

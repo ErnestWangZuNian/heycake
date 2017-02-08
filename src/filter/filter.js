@@ -173,6 +173,9 @@ Vue.filter('orderStatus', (value) => {
       case 'kd00':
         val = '待收货'
         break
+      case 'gs00':
+        val = '待收货'
+        break
       case 'ip00':
         val = '生产中'
         break

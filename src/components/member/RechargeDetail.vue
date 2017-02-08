@@ -106,16 +106,21 @@
         },
         payWay: {
           status: false,
-          selected: '支付宝',
-          selectedData: 'alipay',
+          selected: '全部',
+          selectedData: '',
           list: [
+            {
+              selected: true,
+              val: '全部',
+              key: 'alipay',
+            },
             {
               selected: false,
               val: '余额支付',
               key: 'balance',
             },
             {
-              selected: true,
+              selected: false,
               val: '支付宝',
               key: 'alipay',
             },
@@ -161,15 +166,16 @@
             end_time: end_time,
           }
         }, response => {
-           response.data.body.list.forEach((val) => {
-              if(val.status !== 1) {
-                this.rechargeList.push(val)
+          let data = []
+          response.data.body.list.forEach((val) => {
+              if(val.status === 1) {
+                data.push(val)
               }
            })
+          this.rechargeList =  this.rechargeList.concat(data)
           this.page.total = response.data.body.pagination.total
           this.text.pull = "上拉刷新"
           this.$refs.loadmore.onBottomLoaded()
-          return this.rechargeList
         })
       },
       //  获取上拉刷新各种时候的状态
@@ -210,7 +216,7 @@
       loadTop() {
         if (this.page.currentPage < this.page.total) {
           this.page.currentPage++
-          this.rechargeList = this.fetchData(this.page.currentPage)
+          this.fetchData(this.page.currentPage)
         } else {
           this.text.pull = '没有更多数据了'
           this.loadStatus.isLoadAll = true
@@ -218,6 +224,7 @@
       },
       //  搜索
       searchPay() {
+        this.rechargeList = []
         this.text.pull = "上拉刷新"
         this.loadStatus.isLoadAll = false
         this.fetchData()
