@@ -143,10 +143,11 @@
             per_page: 8
           }
         }, response => {
-          this.consumptionList = this.consumptionList.concat(response.data.body.list)
+          this.consumptionList = response.data.body.list
           this.page.total = response.data.body.pagination.total
           this.text.pull = "上拉刷新"
           this.$refs.loadmore.onBottomLoaded()
+          return this.consumptionList
         })
       },
       //  获取上拉刷新各种时候的状态
@@ -157,7 +158,7 @@
       loadTop() {
         if (this.page.currentPage < this.page.total) {
           this.page.currentPage++
-          this.fetchData(this.page.currentPage)
+           this.consumptionList =  this.consumptionList.concat(this.fetchData(this.page.currentPage))
         } else {
           this.text.pull = '没有更多数据了'
           this.loadStatus.isLoadAll = true

@@ -6,7 +6,7 @@
     <div class="login-content">
       <div class="g-login-content tel-phone">
         <label for="telphone"></label>
-        <input id='telphone' name="telphone" placeholder="请输入手机号码" @input="detailPhone" v-model="telphone" @focus="focusMethod('telphone')"
+        <input id='telphone' name="telphone" placeholder="请输入手机号码" @input="detailPhoneCopy" @keyup="detailPhone" v-model="telphone" @focus="focusMethod('telphone')"
           @blur="blurMethod('telphone')">
       </div>
       <div class="g-login-content password">
@@ -55,7 +55,7 @@
           ajax.postDataToApi({
             url: '/v1/authentication/login',
             body: {
-              account: this.telphone,
+              account: this.telphone.replace(/\s+/g,""),
               password: this.password,
             }
           }, (response) => {
@@ -98,12 +98,17 @@
           }
         }
       },
-      detailPhone() {
-        if(this.telphone.length === 3) {
+      detailPhone(e) {
+        if(this.telphone.length === 3 && e.keyCode !== 8) {
           this.telphone = this.telphone + ' ' 
-        }else if(this.telphone.length === 8){
+        }else if(this.telphone.length === 8 && e.keyCode !== 8){
           this.telphone = this.telphone + ' '
+        }else {
+          this.telphone = this.telphone
         }
+      },
+      detailPhoneCopy() {
+         this.telphone = utils.detailPhone(this.telphone)
       },
       //验证方法
       //验证focus

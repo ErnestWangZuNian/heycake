@@ -204,7 +204,7 @@
                 ajax.getDataFromApi({
                     url: `/v1/goods/${this.$route.params.id}`,
                     data: {
-                        store_code: utils.sessionstorageGetData('naberStore') && utils.sessionstorageGetData('naberStore').store_id
+                        store_code: utils.sessionstorageGetData('naberStore').store_id || ""
                     }
                 }, (response) => {
                     this.loading = false
@@ -381,7 +381,7 @@
                     ajax.postDataToApi({
                         url: '/v1/shopping-cart',
                         body: {
-                            store_code: utils.sessionstorageGetData('naberStore') && utils.sessionstorageGetData('naberStore').store_id,
+                            store_code: utils.sessionstorageGetData('naberStore').store_id || "",
                             goods_id: goodId,
                             specification_id: specId,
                             amount: goodCount,

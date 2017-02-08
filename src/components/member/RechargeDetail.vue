@@ -40,7 +40,7 @@
                   <div class="list-content-fr">
                     <div class="fr-info">
                       <p class="fr-info-store">微商城</p>
-                      <p class="fr-info-decont color-red">满100送10</p>
+                      <p class="fr-info-decont color-red">      </p>
                     </div>
                   </div>
                 </div>
@@ -121,6 +121,11 @@
             },
             {
               selected: false,
+              val: '现金',
+              key: 'cash',
+            },
+            {
+              selected: false,
               val: '微信',
               key: 'weixin',
             },
@@ -139,12 +144,12 @@
         if (this.time.startTime === "选择日期") {
           start_time = ""
         } else {
-          start_time = this.selectedDate
+          start_time = this.time.startTime
         }
         if (this.time.endTime === "选择日期") {
           end_time = ""
         } else {
-          end_time = this.selectedDate
+          end_time = this.time.startTime
         }
         ajax.getDataFromApi({
           url: `/v1/recharge/${utils.localstorageGetData('userInfo').userId}`,
@@ -156,10 +161,15 @@
             end_time: end_time,
           }
         }, response => {
-          this.rechargeList = this.rechargeList.concat(response.data.body.list)
+           response.data.body.list.forEach((val) => {
+              if(val.status !== 1) {
+                this.rechargeList.push(val)
+              }
+           })
           this.page.total = response.data.body.pagination.total
           this.text.pull = "上拉刷新"
           this.$refs.loadmore.onBottomLoaded()
+          return this.rechargeList
         })
       },
       //  获取上拉刷新各种时候的状态
@@ -200,7 +210,7 @@
       loadTop() {
         if (this.page.currentPage < this.page.total) {
           this.page.currentPage++
-          this.fetchData(this.page.currentPage)
+          this.rechargeList = this.fetchData(this.page.currentPage)
         } else {
           this.text.pull = '没有更多数据了'
           this.loadStatus.isLoadAll = true

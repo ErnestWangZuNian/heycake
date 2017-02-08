@@ -226,7 +226,8 @@
 
 //提交订单
 .order-submit{
-  padding: 0 0 0 px2rem(20) ;
+  padding: 0 px2rem(20) 0 px2rem(20) ;
+  width:px2rem(620);
   background-color: #eeeeee;
   height: px2rem(100);
   position: fixed;
@@ -241,8 +242,8 @@
     }
   }
   .btn{
-    margin-left:px2rem(174);
-    @include btn(220,100,#cd0c0c,#ffffff,28,0);
+    float: right;
+    @include btn(180,100,#cd0c0c,#ffffff,28,0);
   }
   .btn-gary{
     background: #888;

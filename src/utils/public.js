@@ -68,6 +68,13 @@ var utils = {
     let val = JSON.parse(window.localStorage.getItem(key.toString()))
     return val
   },
+  // 手机号码处理
+  detailPhone (value) {
+    let re = /^(\d{3})(\d{4})(\d{4})$/
+    let arr = re.exec(value)
+    let result = arr[1] + ' ' + arr[2] + ' ' + arr[3]
+    return result
+  },
   // 删除数组的某一项
   arrayDelete (arr, val) {
     let arrIndex = -1

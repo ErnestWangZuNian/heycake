@@ -3,7 +3,7 @@
     <div class="container">
       <div class="home-member">
         <div class="info">
-          <div class="card-number">卡号： {{memberInfo.member_account}}</div>
+          <div class="card-number">卡号： {{memberInfo.card_number || '无卡号' }}</div>
           <div class="card-info-list">
             <span class="card-info-row">充值总额:{{memberInfo.recharge_total | detailPrice}}</span>
             <span class="card-info-row">消费总额:{{memberInfo.consumption_total | detailPrice}}</span>

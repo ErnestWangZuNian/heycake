@@ -108,6 +108,20 @@
         }, (error) => {
         })
       },
+      //  提交到购物车
+      postCartInfo(item) {
+        ajax.postDataToApi({
+           url: `v1/shopping-cart/${item.id}`,
+           body: {
+             store_code: utils.sessionstorageGetData('naberStore').store_id || "",
+             goods_id: item.goods_id,
+             specification_id: item.goods_profile_id,
+             amount: item.amount
+           }
+      },response => {
+
+      })
+      },
       // 选择商品
       selectedCart(item) {
         item.isSelected = !item.isSelected
@@ -117,6 +131,7 @@
       addCount(item) {
         item.amount++
         item.itemTotalPrice = item.amount * item.price
+        this.postCartInfo(item)
       },
       // 减少数量
       reduceCount(item) {
@@ -126,6 +141,7 @@
           item.amount--
         }
         item.itemTotalPrice = item.amount * item.price
+        this.postCartInfo(item)
       },
       // 输入数量
       inputCount(item) {
@@ -134,6 +150,7 @@
           item.amount = 1
         }
         item.itemTotalPrice = item.amount * item.price
+        this.postCartInfo(item)
       },
       // 全选
       selectedCartAll() {
@@ -162,6 +179,7 @@
           }
         }, (response) => {
           this.fetchData()
+          this.selectedCartAll()
         })
       },
       //  结算

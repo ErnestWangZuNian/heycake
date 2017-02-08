@@ -62,7 +62,7 @@
                         </div>
                         <div class="tip fl" v-if="goodInfo.erp_product_type !== 1">（剩余{{selectedSpec.stock | stock }}个）</div>
                     </div>
-                    <button class="confirm-spec" type="submit" :disabled="selectedSpec.stock <= 0" :class="{'disabled-spec': selectedSpec.stock <= 0}"
+                    <button class="confirm-spec" type="submit" :disabled="selectedSpec.stock <= 0 &&  goodInfo.product_type !== 3" :class="{'disabled-spec': selectedSpec.stock <= 0 &&  goodInfo.product_type !== 3}"
                         @click="confirmScoreChange">
                         立即兑换
                     </button>
@@ -96,7 +96,7 @@
             Modal
         },
         mounted() {
-            this.isLoginMethod()
+            this.getListData()
         },
         data() {
             return {
@@ -109,7 +109,7 @@
                 errTip: {
                     isShow: false,
                     login: false,
-                    url: '../../assets/img/modal_img.png',
+                    url: '/static/img/modal_img.f004504.png',
                     text: '请先登录!'
                 },
                 scoreInfo: {},
@@ -124,16 +124,22 @@
             }
         },
         methods: {
-            //  判断是否登录
-            isLoginMethod() {
-                if (this.isLogin) {
-                    this.loadShow = true
-                    this.getListData();
+            // 登录和规格判断
+            judge() {
+                let flag = false
+                if (!this.$store.state.user.userInfo.isLogin) {
+                    this.specStatus.isSelectSpec = false,
+                    this.errTip.isShow = true
+                    this.errTip.test = "请先登录！"
+                    this.errTip.login = true
+                } else if (utils.isEmptyObject(this.selectedSpec)) {
+                    this.specStatus.isSelectSpec = false,
+                    this.errTip.isShow = true
+                    this.errTip.test = "请先选择规格！"
                 } else {
-                    MessageBox.alert('未登录').then(action => {
-                        location.href = '/#/site/login'
-                    })
+                    flag = true
                 }
+                return flag
             },
             //  获取列表数据
             getListData() {
@@ -162,6 +168,9 @@
                 this.spec = []
                 this.originalSpecList = {}
                 this.selectedSpec = {}
+                if(item.product_type === 3) {
+                    utils.localstorageData('isCake',true)
+                }
                 // 获取商品的详细信息
                 ajax.getDataFromApi({
                     url: `/v1/goods/${item.id}`,
@@ -307,6 +316,7 @@
             // 确认立即兑换
             confirmScoreChange() {
                 let scoreFlag = false
+                let flag = this.judge()
                 if (this.selectedSpec.score > this.scoreInfo.score) {
                     this.errTip.isShow = true
                     this.errTip.test = "您的积分不足！"
@@ -314,7 +324,7 @@
                 } else {
                     scoreFlag = true
                 }
-                if (scoreFlag) {
+                if (flag && scoreFlag) {
                     utils.localstorageData('buyWay', 'score')
                     utils.localstorageData('purchaseGood', this.selectedSpec)
                     utils.localstorageData('count', this.goodCount)

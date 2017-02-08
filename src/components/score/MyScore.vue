@@ -21,7 +21,7 @@
               <span class="c-red font-36">+{{item.score}}</span>
             </template>
             <template v-else>
-              <span class="c-396 font-36">-{{item.score}}</span>
+              <span class="c-396 font-36">{{item.score}}</span>
             </template>
           </div>
         </li>
