@@ -184,15 +184,12 @@
         this.naberStore = utils.sessionstorageGetData('allNavberStore')
         this.address.around = utils.sessionstorageGetData('aroundAddress')
         this.address.current = utils.sessionstorageGetData('currentAddress')
-        //  初始化编辑地址
+        //  初始化编辑地址（订单提交页面修改个人地址做判断）
         utils.sessionstorageData('editAddressIsInvaild',true)
       } else {
         this.getCurrentPoistion()
       }
       this.getMyAddress()
-    },
-    watch: {
-      '$route': 'fetchData'
     },
     methods: {
       //     借助高德地图获取当前定位

@@ -806,7 +806,7 @@
         if (this.userInfo.isMyAddress) {
           postData.address_id = this.userInfo.checkedMyAddress.id
         } else {
-          this.locationUserInfo.detail_area = this.userInfo.checkedAddress
+          this.locationUserInfo.detail_area = JSON.parse(JSON.stringify(this.userInfo.checkedAddress))
           let telRe = /^1[3|4|5|8]\d{1}\s\d{4}\s\d{4}$/
           // 如果是定位地址过来的判断
           if (!this.userInfo.isMyAddress) {
@@ -838,6 +838,7 @@
                 let addressId = response.data.body.id
                 postData.address_id = addressId
                 utils.sessionstorageData('isMyAddress', true)
+                utils.sessionstorageData('checkedAddress',utils.sessionstorageData('checkedMyAddress'))
                 this.addressIsAddSuccess = true
                 callback && callback()
               }, err => {

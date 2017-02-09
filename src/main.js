@@ -29,12 +29,11 @@ Vue.http.interceptors.push((request, next) => {
     if (!response.ok) {
       console.log('404页面')
       return response
-    } else {
-    }
+    } else {}
   })
 })
 
-// 处理刷新的时候vuex被清空但是用户已经登录的情况
+// 处理刷新的时候vuex被清空但是用户已经登录的情况------用处不大
 let savedUserInfo = JSON.parse(window.localStorage.getItem('userInfo'))
 if (savedUserInfo) {
   if (savedUserInfo.isLogin) {

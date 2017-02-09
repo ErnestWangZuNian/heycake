@@ -58,7 +58,7 @@
                 <div class="grid-cell tright u-1of4">
                   <template v-if='item.status_code == "at00" '><span class="btn-myorder" @click="goPay(item.id)">去支付</span></template>
                   <template v-if='item.status_code == "wfd1" || item.status_code == "kd00" || item.status_code == "gs00"'><span class="btn-myorder" @click="confirmGoods(item.id)">确认收货</span></template>
-                  <template v-if='item.status_code == "wfc0" '><span class="btn-myorder" @click="goEvaluate(item.id)">去评价</span></template>
+                  <template v-if='item.status_code == "wfc0" || item.status_code == "rc00" '><span class="btn-myorder" @click="goEvaluate(item.id)">去评价</span></template>
                 </div>
               </div>
             </div>

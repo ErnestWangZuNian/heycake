@@ -242,8 +242,10 @@
                 url: `/v1/my-address/${this.formData.id}`
               }, response => {
                 let address = response.data.body
+                address.name = address.detail_area
                 this.getNaberStore(address.location)
                 utils.sessionstorageData('checkedMyAddress', address)
+                utils.sessionstorageData('checkedAddress', address)
                 if(utils.sessionstorageGetData('editAddress')){
                     location.href ='/#/site/my-address'
                 } else {

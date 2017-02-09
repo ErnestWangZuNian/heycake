@@ -113,7 +113,7 @@ Vue.filter('terminalName', (value) => {
     if (value === 'wsc') {
       val = '微商城'
     } else {
-      val = 'value'
+      val = value
     }
   }
   return val
@@ -160,6 +160,9 @@ Vue.filter('orderStatus', (value) => {
         break
       case 'c000':
         val = '已取消'
+        break
+      case 'rc00':
+        val = '待评价'
         break
       case 'r000':
         val = '退款中'

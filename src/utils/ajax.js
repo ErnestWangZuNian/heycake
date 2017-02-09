@@ -1,5 +1,6 @@
 import Vue from 'vue'
 // import urlRoot from './urlroot.js'
+import { MessageBox } from 'mint-ui'
 const ajax = {
   xhrhttp (params, callback, error) {
     Vue.http({
@@ -9,8 +10,14 @@ const ajax = {
       method: params.method
     }).then((response) => {
       callback && callback(response)
-    }).catch((response) => {
-      error && error(response)
+    }).catch((err) => {
+      if (err.data.code && err.data.code === '200003') {
+        MessageBox({
+          title: '提示',
+          message: '您当前选择的地址推荐门店的库存不足'
+        })
+      }
+      error && error(error)
     })
   },
   getDataFromApi (params, callback, error) {

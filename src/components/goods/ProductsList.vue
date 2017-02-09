@@ -166,6 +166,7 @@
       modifyData(data) {
         let category = []
         this.goodInfo = []
+        this.category.value = []
         data.forEach((val) => {
           category.push(val.parent_name)
         })
@@ -192,7 +193,7 @@
             }
           })
         })
-        this.category.value = utils.unique(this.category.value )
+        // this.category.value = utils.unique(this.category.value )
         this.allGoodInfo = this.allGoodInfo.concat(this.goodInfo)
       },
       //  获取上拉刷新各种时候的状态
@@ -212,6 +213,8 @@
       //  切换分类      
       changeCategory() {
         this.category.status = true
+        this.$refs.loadmore.onBottomLoaded()
+        this.modifyData(this.requestData)
       },
       //  选中的分类
       selectedCategory(item) {
