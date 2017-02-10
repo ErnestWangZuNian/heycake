@@ -42,10 +42,10 @@
         </div>
       </div>
       <div v-if="cartList.length <= 0" class="null-cart">
-         <div class="img-flag">
-           <img src="../../assets/img/null-cart.png" alt="暂无商品">
-         </div>
-         <div class="null-cart-btn" @click="gotoSelectGoods">去选购</div>
+        <div class="img-flag">
+          <img src="../../assets/img/null-cart.png" alt="暂无商品">
+        </div>
+        <div class="null-cart-btn" @click="gotoSelectGoods">去选购</div>
       </div>
     </div>
   </div>
@@ -96,6 +96,11 @@
       fetchData() {
         this.loading = true
         ajax.getDataFromApi({
+          url: `/v1/goods/428`
+        }, response => {
+          console.log(response)
+        })
+        ajax.getDataFromApi({
           url: `/v1/shopping-cart`
         }, (response) => {
           let data = response.data.body.list
@@ -109,18 +114,18 @@
         })
       },
       //  提交到购物车
-      postCartInfo(item) {
+      postCartInfo(item, callback) {
         ajax.postDataToApi({
-           url: `v1/shopping-cart/${item.id}`,
-           body: {
-             store_code: utils.sessionstorageGetData('naberStore').store_id || "",
-             goods_id: item.goods_id,
-             specification_id: item.goods_profile_id,
-             amount: item.amount
-           }
-      },response => {
-
-      })
+          url: `v1/shopping-cart/${item.id}`,
+          body: {
+            store_code: utils.sessionstorageGetData('naberStore').store_id || "",
+            goods_id: item.goods_id,
+            specification_id: item.goods_profile_id,
+            amount: item.amount
+          }
+        }, response => {
+          callback && callback()
+        })
       },
       // 选择商品
       selectedCart(item) {
@@ -129,28 +134,31 @@
       },
       // 增加数量
       addCount(item) {
-        item.amount++
-        item.itemTotalPrice = item.amount * item.price
-        this.postCartInfo(item)
+        this.postCartInfo(item, () => {
+          item.amount++
+          item.itemTotalPrice = item.amount * item.price
+        })
       },
       // 减少数量
       reduceCount(item) {
-        if (item.amount <= 1) {
-          item.amount = 1
-        } else {
-          item.amount--
-        }
-        item.itemTotalPrice = item.amount * item.price
-        this.postCartInfo(item)
+        this.postCartInfo(item, () => {
+          if (item.amount <= 1) {
+            item.amount = 1
+          } else {
+            item.amount--
+          }
+          item.itemTotalPrice = item.amount * item.price
+        })
       },
       // 输入数量
       inputCount(item) {
-        let re = /\D/
-        if (re.test(item.amount) || item.amount <= 1) {
-          item.amount = 1
-        }
-        item.itemTotalPrice = item.amount * item.price
-        this.postCartInfo(item)
+        this.postCartInfo(item, () => {
+          let re = /\D/
+          if (re.test(item.amount) || item.amount <= 1) {
+            item.amount = 1
+          }
+          item.itemTotalPrice = item.amount * item.price
+        })
       },
       // 全选
       selectedCartAll() {
@@ -205,7 +213,7 @@
       },
       //  去选择商品
       gotoSelectGoods() {
-         location.href = "/#/site/index"
+        location.href = "/#/site/index"
       }
     }
   }

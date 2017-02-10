@@ -213,14 +213,14 @@
       //  切换分类      
       changeCategory() {
         this.category.status = true
-        this.$refs.loadmore.onBottomLoaded()
-        this.modifyData(this.requestData)
+        // this.modifyData(this.requestData)
       },
       //  选中的分类
       selectedCategory(item) {
         this.category.value.forEach(val => {
           val.selected = false
         })
+        console.log(this.category.value)
         this.category.seleted = item.val
         this.category.status = false
         item.selected = true
@@ -237,7 +237,9 @@
               })
             }
           })
+          this.text.pull = ''
         }
+       this.$refs.loadmore.onBottomLoaded()
       },
       //  跳转到详情
       gotoDetail(item) {

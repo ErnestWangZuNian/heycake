@@ -465,11 +465,11 @@
             },
             // 增加数量
             addCount() {
-                if (this.goodCount >= this.selectedSpec.stock) {
+                if (this.goodCount >= Math.floor(this.selectedSpec.stock)) {
                     if(this.selectedSpec.stock < 1) {
                         this.selectedSpec.stock = 1
                     }
-                    this.goodCount = this.selectedSpec.stock
+                    this.goodCount =  Math.floor(this.selectedSpec.stock)
                 } else {
                     this.goodCount++
                 }

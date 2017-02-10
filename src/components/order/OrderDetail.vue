@@ -44,7 +44,7 @@
             </div>
           </div>
           <div class="grid-cell u-w130 tright">
-            <div class="price" v-if="orderInfo.pay_method !== 2">￥{{item.price}}</div>
+            <div class="price" v-if="orderInfo.pay_method !== 2">{{item.price |  price}}</div>
             <div class="price" v-if="orderInfo.pay_method === 2">{{item.score}}积分</div>
             <div class="f-20 c-666">x{{item.amount}}</div>
           </div>

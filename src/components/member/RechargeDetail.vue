@@ -39,8 +39,8 @@
                   </div>
                   <div class="list-content-fr">
                     <div class="fr-info">
-                      <p class="fr-info-store">微商城</p>
-                      <p class="fr-info-decont color-red">      </p>
+                      <p class="fr-info-store">{{item.terminal_name | terminalName}}</p>
+                      <p class="fr-info-decont color-red"></p>
                     </div>
                   </div>
                 </div>
@@ -113,6 +113,11 @@
               selected: true,
               val: '全部',
               key: 'alipay',
+            },
+             {
+              selected: false,
+              val: 'pos刷卡',
+              key: 'post',
             },
             {
               selected: false,

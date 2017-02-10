@@ -44,28 +44,20 @@ var utils = {
   },
   // sessionstorage 存储数据
   sessionstorageData (key, value) {
-    if (typeof data === 'string') {
-      window.sessionStorage.setItem(key.toString(), value)
-    } else {
-      window.sessionStorage.setItem(key.toString(), JSON.stringify(value))
-    }
+    window.sessionStorage.setItem(key, JSON.stringify(value))
   },
   // 获取sessionstorage存储的数据
   sessionstorageGetData (key) {
-    let val = JSON.parse(window.sessionStorage.getItem(key.toString()))
+    let val = JSON.parse(window.sessionStorage.getItem(key))
     return val
   },
   // localstorage 存储数据
   localstorageData (key, value) {
-    if (typeof data === 'string') {
-      window.localStorage.setItem(key.toString(), value)
-    } else {
-      window.localStorage.setItem(key.toString(), JSON.stringify(value))
-    }
+    window.localStorage.setItem(key, JSON.stringify(value))
   },
   // 获取localstorage存储的数据
   localstorageGetData (key) {
-    let val = JSON.parse(window.localStorage.getItem(key.toString()))
+    let val = JSON.parse(window.localStorage.getItem(key))
     return val
   },
   // 手机号码处理

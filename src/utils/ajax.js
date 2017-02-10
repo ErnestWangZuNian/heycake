@@ -17,7 +17,7 @@ const ajax = {
           message: '您当前选择的地址推荐门店的库存不足'
         })
       }
-      error && error(error)
+      error && error(err)
     })
   },
   getDataFromApi (params, callback, error) {

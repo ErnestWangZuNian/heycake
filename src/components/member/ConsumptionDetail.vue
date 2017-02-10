@@ -149,6 +149,7 @@
           }
         }, response => {
           this.consumptionList = this.consumptionList.concat(response.data.body.list)
+          // this.consumptionList = utils.unique( this.consumptionList,'order_number')
           this.page.total = response.data.body.pagination.total
           this.text.pull = "上拉刷新"
           this.$refs.loadmore.onBottomLoaded()

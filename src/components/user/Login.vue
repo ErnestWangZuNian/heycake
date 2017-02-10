@@ -74,7 +74,7 @@
               location.href = '/#/site/index'
             })
           }, (error) => {
-            // let err = error.data.code
+            let err = error.data.code
             if (err == '100002') {
               Toast({
                 message: '密码错误，请重新输入',

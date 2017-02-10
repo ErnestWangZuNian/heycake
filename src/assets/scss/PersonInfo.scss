@@ -17,6 +17,19 @@
     text-overflow: ellipsis;
   }
  }
+.person-info-sex{
+   float: right;
+   padding-bottom: px2rem(40);
+   margin-right: px2rem(-80);
+   .selected{
+     display: inline-block;
+     margin-left: px2rem(60);
+   }
+   .sex{
+     display: inline-block;
+     margin-left: px2rem(50);
+   }
+ }
 .loadmore-style{
   padding-top: px2rem(90);
   overflow-y: scroll;

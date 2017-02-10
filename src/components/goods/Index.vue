@@ -179,7 +179,10 @@
     },
     mounted() {
       this.fetchData()
+      // let testArray = [{id:1,name:'wangzunian'},{id:1,name: '我妈和'}]
+      // console.log(utils.unique())
       if (utils.sessionstorageGetData('isLocationSuccess')) {
+        console.log( utils.sessionstorageGetData('checkedAddress'))
         this.address.checked = utils.sessionstorageGetData('checkedAddress')
         this.naberStore = utils.sessionstorageGetData('allNavberStore')
         this.address.around = utils.sessionstorageGetData('aroundAddress')

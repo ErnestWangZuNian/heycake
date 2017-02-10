@@ -6,7 +6,7 @@
         <button :class="[receiptway.storeHiglight ? 'btn-red' : 'btn-gray']" @click="storeDeliver">门店自提</button>
       </div>
       <!--快递配送信息-->
-      <div class="order-info" v-if="receiptway.expressDelivery" >
+      <div class="order-info" v-if="receiptway.expressDelivery">
         <div class="label-list" v-if="userInfo.isMyAddress===false">
           <div class="fl info">
             <section>
@@ -15,7 +15,7 @@
             </section>
             <section>
               <div class="icon icon-tel"></div>
-              <div class="text"><input type="text" @input="detailPhoneCopy()"  @keyup="detailPhone($event)" placeholder="联系手机号码" v-model="locationUserInfo.tel_phone"></div>
+              <div class="text"><input type="text" @change="detailPhoneCopy()" @keyup="detailPhone($event)" placeholder="联系手机号码" v-model="locationUserInfo.tel_phone"></div>
             </section>
             <section>
               <div class="icon icon-addr"></div>
@@ -82,7 +82,7 @@
         </div>-->
         <div class="label-message">
           <div class="label-list">
-             自提门店地址：{{this.store.currentStore || '您当前位置无门店推荐'}}
+            自提门店地址：{{this.store.currentStore || '您当前位置无门店推荐'}}
           </div>
           <div class="label-list">
             <label>自提人</label> <input class="inputs" type="text" v-model='formData.name' @focus="focusMethod('name')" @blur="blurMethod('name')"
@@ -90,8 +90,8 @@
           </div>
           <div class='err-class tright' v-if="validator.name.errIsShow">{{validator.name.errText}}</div>
           <div class="label-list">
-            <label>联系电话</label> <input class="inputs" type="text" v-model='formData.telphone' @keyup='detailSelfMentionTelphone($event)'  @focus="focusMethod('telphone')"
-              @blur="blurMethod('telphone')" placeholder="请填写自提人联系方式(必填)" @input="detailSelfMentionTelphoneCopy()">
+            <label>联系电话</label> <input class="inputs" type="text" v-model='formData.telphone' @keyup='detailSelfMentionTelphone($event)'
+              @focus="focusMethod('telphone')" @blur="blurMethod('telphone')" placeholder="请填写自提人联系方式(必填)" @change="detailSelfMentionTelphoneCopy()">
           </div>
           <div class='err-class tright' v-if="validator.telphone.errIsShow">{{validator.telphone.errText}}</div>
           <div class="label-list">
@@ -307,7 +307,7 @@
           storeHiglight: false
         },
         store: {
-          currentStore:{},
+          currentStore: {},
           storeShow: false,
           storeList: [],
           selectedStore: {}
@@ -370,14 +370,14 @@
           if (this.goodsInfo.buyWay === 'purchase') {
             if (this.userInfo.freight !== '') {
               if (this.userInfo.freight.money) {
-                 total = good.price * good.count * 100  + this.userInfo.freight.money * 100
-              } else  if (this.userInfo.freight.target_money) {
-                 total = good.price * good.count * 100
+                total = good.price * good.count * 100 + this.userInfo.freight.money * 100
+              } else if (this.userInfo.freight.target_money) {
+                total = good.price * good.count * 100
               }
             } else {
               total = good.price * good.count * 100
             }
-
+            total = (total / 100).toFixed(2)
           } else {
             total = good.score * good.count
           }
@@ -385,20 +385,21 @@
           cart.forEach((val) => {
             total += val.price * 100 * val.amount
           })
-          if(this.userInfo.freight !== '') {
-             if(this.userInfo.freight.money) {
-               total = total + this.userInfo.freight.money * 100
-             } else if(this.userInfo.freight.target_money) {
-               total = total
-             }
+          if (this.userInfo.freight !== '') {
+            if (this.userInfo.freight.money) {
+              total = total + this.userInfo.freight.money * 100
+            } else if (this.userInfo.freight.target_money) {
+              total = total
+            }
+            total = (total / 100).toFixed(2)
           } else {
-               total = total
+            total = (total / 100).toFixed(2)
           }
         }
-        if(this.payWay === 'member') {
-          total = total * this.memberUser.discount
+        if (this.payWay === 'member') {
+          total = (total * this.memberUser.discount * 100 / 100).toFixed(2)
         }
-        return total = (total / 100).toFixed(2)
+        return total
       },
       // 判断订单是否能提交
       canSubmitOrder() {
@@ -419,11 +420,23 @@
       }
     },
     methods: {
-       //  获取当前数据
+      //  获取当前时间点
       getCurrentTime() {
-       let date = new Date()
-       let hour = date.getHours()
-       return hour
+        let date = new Date()
+        let hour = date.getHours()
+        return hour
+      },
+      //  获取当前年
+      getCurrentDate() {
+        let date = new Date()
+        let year = date.getFullYear()
+        let month = date.getMonth() + 1
+        if (month < 10) {
+          month = `0${month}`
+        }
+        let day = date.getDate()
+        let result = ''
+        return result = `${year}-${month}-${day}`
       },
       //  获取页面数据
       fetchData() {
@@ -433,10 +446,10 @@
         }, (response) => {
           let time = []
           this.appointTime.date = response.data.body.date
-          response.data.body.time.forEach((val) =>  {
-              if(Number(val.slice(0,2)) > Number(this.getCurrentTime())) {
-                time.push(val)
-              }
+          response.data.body.time.forEach((val) => {
+            if (Number(val.slice(0, 2)) > Number(this.getCurrentTime())) {
+              time.push(val)
+            }
           })
           this.appointTime.time = time.map((val, index) => {
             if (time[index + 1]) {
@@ -444,17 +457,17 @@
               return val
             }
           })
-          if(this.appointTime.date.length > 1){
+          if (this.appointTime.date.length > 1) {
             this.appointTime.selectedDate = this.appointTime.date[0]
           } else {
             this.appointTime.selectedDate = ''
           }
-          if(this.appointTime.time.length > 1) {
-             this.appointTime.selectedTime = this.appointTime.time[0]
+          if (this.appointTime.time.length > 1) {
+            this.appointTime.selectedTime = this.appointTime.time[0]
           } else {
             this.appointTime.selectedTime = ''
           }
-          
+
         })
         // 获取我的地址
         ajax.getDataFromApi({
@@ -502,12 +515,12 @@
       },
       //  手机号码处理
       detailPhone(e) {
-        if(this.locationUserInfo.tel_phone.length === 3 && e.keyCode !== 8) {
-           this.locationUserInfo.tel_phone =  this.locationUserInfo.tel_phone + ' ' 
-        }else if(this.locationUserInfo.tel_phone.length === 8 && e.keyCode !== 8){
-           this.locationUserInfo.tel_phone =  this.locationUserInfo.tel_phone + ' '
-        }else {
-           this.locationUserInfo.tel_phone =  this.locationUserInfo.tel_phone
+        if (this.locationUserInfo.tel_phone.length === 3 && e.keyCode !== 8) {
+          this.locationUserInfo.tel_phone = this.locationUserInfo.tel_phone + ' '
+        } else if (this.locationUserInfo.tel_phone.length === 8 && e.keyCode !== 8) {
+          this.locationUserInfo.tel_phone = this.locationUserInfo.tel_phone + ' '
+        } else {
+          this.locationUserInfo.tel_phone = this.locationUserInfo.tel_phone
         }
       },
       //  手机号码复制处理
@@ -516,17 +529,17 @@
       },
       //  自提手机号码处理
       detailSelfMentionTelphone(e) {
-       if(this.formData.telphone.length === 3  && e.keyCode !== 8) {
-           this.formData.telphone =  this.formData.telphone + ' ' 
-        }else if(this.formData.telphone.length === 8 && e.keyCode !== 8){
-          this.formData.telphone =  this.formData.telphone + ' '
-       } else {
-         this.formData.telphone =  this.formData.telphone
-       }
+        if (this.formData.telphone.length === 3 && e.keyCode !== 8) {
+          this.formData.telphone = this.formData.telphone + ' '
+        } else if (this.formData.telphone.length === 8 && e.keyCode !== 8) {
+          this.formData.telphone = this.formData.telphone + ' '
+        } else {
+          this.formData.telphone = this.formData.telphone
+        }
       },
       // 自提手机号码复制处理
       detailSelfMentionTelphoneCopy() {
-         this.formData.telphone =  utils.detailPhone(this.formData.telphone)
+        this.formData.telphone = utils.detailPhone(this.formData.telphone)
       },
       //    获取云图附件门店
       getNaberStore(location) {
@@ -546,7 +559,7 @@
               const self = this
               this.naberStore = []
               utils.sessionstorageData('allNavberStore', [])
-              utils.sessionstorageData('naberStore',[])
+              utils.sessionstorageData('naberStore', [])
               this.juageAddressIsCanSubmit = false
               MessageBox.confirm('您所定位的地址没有推荐门店信息，您可以通过更改定位地址来获取门店商品信息', '门店推荐提示', { confirmButtonText: '换个地址' }).then(action => {
                 self.openAddress()
@@ -555,7 +568,7 @@
               if (response.datas && response.datas.length > 0) {
                 this.naberStore = response.datas
                 utils.sessionstorageData('allNavberStore', response.datas)
-                utils.sessionstorageData('naberStore',response.datas[0])
+                utils.sessionstorageData('naberStore', response.datas[0])
               }
               this.juageAddressIsCanSubmit = true
             }
@@ -616,6 +629,24 @@
       // 获取选择的日期
       getDate(date) {
         this.appointTime.selectedDate = date
+        let time = ["08:00", "10:00", "12:00", "14:00", "16:00", "18:00", "20:00", "21:00"]
+        let invalidTime = []
+        time.forEach((val) => {
+          if (this.appointTime.selectedDate === this.getCurrentDate()) {
+            if (Number(val.slice(0, 2)) > Number(this.getCurrentTime())) {
+              invalidTime.push(val)
+            }
+          } else {
+            invalidTime.push(val)
+          }
+        })
+        this.appointTime.time = invalidTime.map((val, index) => {
+          if (invalidTime[index + 1]) {
+            val = `${invalidTime[index]}-${invalidTime[index + 1]}`
+            return val
+          }
+        })
+        this.appointTime.selectedTime = this.appointTime.time[0]
       },
       // 获取选择的时间
       getTime(time) {
@@ -665,6 +696,9 @@
         this.locationUserInfo.location = this.address.checked.location
         this.getNaberStore(this.locationUserInfo.location)
         this.locationUserInfo.district = this.address.checked.district
+        if (!utils.sessionstorageGetData('isMyaddress')) {
+          utils.sessionstorageData('checkedAddress', address)
+        }
         this.addressClose()
       },
       // 打开门店弹窗
@@ -830,15 +864,14 @@
               })
             }
             else {
-              this.locationUserInfo.tel_phone =  this.locationUserInfo.tel_phone.replace(/\s+/g,"")
+              this.locationUserInfo.tel_phone = this.locationUserInfo.tel_phone.replace(/\s+/g, "")
               ajax.postDataToApi({
                 url: '/v1/my-address',
                 body: this.locationUserInfo
               }, response => {
                 let addressId = response.data.body.id
                 postData.address_id = addressId
-                utils.sessionstorageData('isMyAddress', true)
-                utils.sessionstorageData('checkedAddress',utils.sessionstorageData('checkedMyAddress'))
+                // utils.sessionstorageData('isMyAddress', true)
                 this.addressIsAddSuccess = true
                 callback && callback()
               }, err => {
@@ -924,7 +957,7 @@
               } else {
                 location.href = `/#/site/my-order`
               }
-            }, 2000)
+            }, 4000)
           } else {
             if (this.payWay === 'member') {
               ajax.postDataToApi({
@@ -945,139 +978,139 @@
       },
       //提交订单
       orderSubmit() {
-        if(this.appointTime.selectedTime ==='' || this.appointTime.selectedDate === ''){
-           MessageBox('提示', '当前时间不可预约')
+        if (this.appointTime.selectedTime === '' || this.appointTime.selectedDate === '') {
+          MessageBox('提示', '当前时间不可预约')
         } else {
-         if (this.canSubmitOrder) {
-          if (!utils.localstorageGetData('isCake') && !this.juageAddressIsCanSubmit || !utils.localstorageGetData('isCake') && !utils.sessionstorageGetData('editAddressIsInvaild')) {
+          if (this.canSubmitOrder) {
+            if (!utils.localstorageGetData('isCake') && !this.juageAddressIsCanSubmit) {
               MessageBox.confirm('您所定位的地址没有推荐门店信息，您可以通过更改定位地址来获取门店商品信息', '门店推荐提示', { confirmButtonText: '换个地址' }).then(action => {
                 this.openAddress()
               })
-          } else{
-           // 快递配送提交方式
-          if (this.receiptway.expressDelivery) {
-            if (this.goodsInfo.buyWay !== "cart") {
-              let postData = {
-                store_code: utils.sessionstorageGetData('naberStore').store_id || "" ,
-                profile_id: this.goodsInfo.selectedSpecGood.id,
-                address_id: this.userInfo.defalutAddress.id,
-                date: this.appointTime.selectedDate,
-                time: this.appointTime.selectedTime || '',
-                pay_method: 'WAIT',
-                user_comment: this.formData.addressMessage,
-                amount: this.goodsInfo.selectedSpecGood.count
-              }
-              this.juadgePayWay(postData)
-              if (this.userInfo.isMyAddress) {
-                postData.address_id = this.userInfo.checkedMyAddress.id
-              }
-              if (!this.userInfo.isMyAddress) {
-                this.juadgeAddressId(postData, () => {
-                  if (!this.userInfo.isMyAddress && !this.addressIsAddSuccess) {
+            } else {
+              // 快递配送提交方式
+              if (this.receiptway.expressDelivery) {
+                if (this.goodsInfo.buyWay !== "cart") {
+                  let postData = {
+                    store_code: utils.sessionstorageGetData('naberStore').store_id || "",
+                    profile_id: this.goodsInfo.selectedSpecGood.id,
+                    address_id: this.userInfo.defalutAddress.id,
+                    date: this.appointTime.selectedDate,
+                    time: this.appointTime.selectedTime || '',
+                    pay_method: 'WAIT',
+                    user_comment: this.formData.addressMessage,
+                    amount: this.goodsInfo.selectedSpecGood.count
+                  }
+                  this.juadgePayWay(postData)
+                  if (this.userInfo.isMyAddress) {
+                    postData.address_id = this.userInfo.checkedMyAddress.id
+                  }
+                  if (!this.userInfo.isMyAddress) {
+                    this.juadgeAddressId(postData, () => {
+                      if (!this.userInfo.isMyAddress && !this.addressIsAddSuccess) {
+                      } else {
+                        this.falseCartOrderSubmit({
+                          orderUrl: '/v1/goods/default',
+                          scoreUrl: '/v1/score-goods/default'
+                        }, postData)
+                      }
+                    })
                   } else {
                     this.falseCartOrderSubmit({
                       orderUrl: '/v1/goods/default',
                       scoreUrl: '/v1/score-goods/default'
                     }, postData)
                   }
-                })
-              } else {
-                this.falseCartOrderSubmit({
-                  orderUrl: '/v1/goods/default',
-                  scoreUrl: '/v1/score-goods/default'
-                }, postData)
-              }
-            } else {
-              let postData = {
-                store_code: utils.sessionstorageGetData('naberStore').store_id || "" ,
-                collection: this.goodsInfo.cartGoodsId,
-                address_id: this.userInfo.defalutAddress.id,
-                date: this.appointTime.selectedDate,
-                time: this.appointTime.selectedTime || '',
-                pay_method: 'WAIT',
-                user_comment: this.formData.addressMessage
-              }
-              this.juadgePayWay(postData)
-              if (this.userInfo.isMyAddress) {
-                postData.address_id = this.userInfo.checkedMyAddress.id
-              }
-              if (!this.userInfo.isMyAddress) {
-                this.juadgeAddressId(postData, () => {
-                  if (!this.userInfo.isMyAddress && !this.addressIsAddSuccess) {
+                } else {
+                  let postData = {
+                    store_code: utils.sessionstorageGetData('naberStore').store_id || "",
+                    collection: this.goodsInfo.cartGoodsId,
+                    address_id: this.userInfo.defalutAddress.id,
+                    date: this.appointTime.selectedDate,
+                    time: this.appointTime.selectedTime || '',
+                    pay_method: 'WAIT',
+                    user_comment: this.formData.addressMessage
+                  }
+                  this.juadgePayWay(postData)
+                  if (this.userInfo.isMyAddress) {
+                    postData.address_id = this.userInfo.checkedMyAddress.id
+                  }
+                  if (!this.userInfo.isMyAddress) {
+                    this.juadgeAddressId(postData, () => {
+                      if (!this.userInfo.isMyAddress && !this.addressIsAddSuccess) {
+                      } else {
+                        this.cartOrderSubmit('/v1/order/default', postData)
+                      }
+                    })
                   } else {
                     this.cartOrderSubmit('/v1/order/default', postData)
                   }
-                })
-              } else {
-                this.cartOrderSubmit('/v1/order/default', postData)
+                }
+              }
+              //  门店自提提交方式
+              if (this.receiptway.storeDeliver) {
+                let telRe = /^1[3|4|5|8]\d{1}\s\d{4}\s\d{4}$/
+                if (this.formData.name === '') {
+                  Toast({
+                    message: '请输入自提人姓名',
+                    position: 'middle',
+                    duration: 2000
+                  })
+                } else if (this.formData.telphone === '') {
+                  Toast({
+                    message: '请输入您的手机号码',
+                    position: 'middle',
+                    duration: 2000
+                  })
+                } else if (!telRe.test(this.formData.telphone)) {
+                  Toast({
+                    message: '请输入正确的手机号码',
+                    position: 'middle',
+                    duration: 2000
+                  })
+                } else {
+                  if (this.goodsInfo.buyWay !== "cart") {
+                    let postData = {
+                      store_code: utils.sessionstorageGetData('naberStore').store_id || "",
+                      profile_id: this.goodsInfo.selectedSpecGood.id,
+                      // offline_store: this.store.selectedStore._id,
+                      custom_name: this.formData.name,
+                      contact_phone: this.formData.telphone.replace(/\s+/g, ""),
+                      date: this.appointTime.selectedDate,
+                      time: this.appointTime.selectedTime || '',
+                      pay_method: 'WAIT',
+                      user_comment: this.formData.storeMessage,
+                      amount: this.goodsInfo.selectedSpecGood.count
+                    }
+                    this.juadgePayWay(postData)
+                    if (this.userInfo.isMyAddress) {
+                      postData.address_id = this.userInfo.checkedMyAddress.id
+                    }
+                    this.falseCartOrderSubmit({
+                      orderUrl: '/v1/goods/self-pick',
+                      scoreUrl: '/v1/score-goods/self-pick'
+                    }, postData)
+                  } else {
+                    let postData = {
+                      store_code: utils.sessionstorageGetData('naberStore').store_id || "",
+                      collection: this.goodsInfo.cartGoodsId,
+                      // offline_store: this.store.selectedStore._id,
+                      custom_name: this.formData.name,
+                      contact_phone: this.formData.telphone.replace(/\s+/g, ""),
+                      date: this.appointTime.selectedDate,
+                      time: this.appointTime.selectedTime || '',
+                      pay_method: 'WAIT',
+                      user_comment: this.formData.storeMessage
+                    }
+                    this.juadgePayWay(postData)
+                    if (this.userInfo.isMyAddress) {
+                      postData.address_id = this.userInfo.checkedMyAddress.id
+                    }
+                    this.cartOrderSubmit('/v1/order/self-pick', postData)
+                  }
+                }
               }
             }
           }
-          //  门店自提提交方式
-          if (this.receiptway.storeDeliver) {
-            let telRe = /^1[3|4|5|8]\d{1}\s\d{4}\s\d{4}$/
-            if (this.formData.name === '') {
-              Toast({
-                message: '请输入自提人姓名',
-                position: 'middle',
-                duration: 2000
-              })
-            } else if (this.formData.telphone === '') {
-              Toast({
-                message: '请输入您的手机号码',
-                position: 'middle',
-                duration: 2000
-              })
-            } else if (!telRe.test(this.formData.telphone)) {
-              Toast({
-                message: '请输入正确的手机号码',
-                position: 'middle',
-                duration: 2000
-              })
-            } else {
-              if (this.goodsInfo.buyWay !== "cart") {
-                let postData = {
-                  store_code: utils.sessionstorageGetData('naberStore').store_id || "" ,
-                  profile_id: this.goodsInfo.selectedSpecGood.id,
-                  // offline_store: this.store.selectedStore._id,
-                  custom_name: this.formData.name,
-                  contact_phone: this.formData.telphone.replace(/\s+/g,""),
-                  date: this.appointTime.selectedDate,
-                  time: this.appointTime.selectedTime || '',
-                  pay_method: 'WAIT',
-                  user_comment: this.formData.addressMessage,
-                  amount: this.goodsInfo.selectedSpecGood.count
-                }
-                this.juadgePayWay(postData)
-                if (this.userInfo.isMyAddress) {
-                  postData.address_id = this.userInfo.checkedMyAddress.id
-                }
-                this.falseCartOrderSubmit({
-                  orderUrl: '/v1/goods/self-pick',
-                  scoreUrl: '/v1/score-goods/self-pick'
-                }, postData)
-              } else {
-                let postData = {
-                  store_code: utils.sessionstorageGetData('naberStore').store_id || "" ,
-                  collection: this.goodsInfo.cartGoodsId,
-                  // offline_store: this.store.selectedStore._id,
-                  custom_name: this.formData.name,
-                  contact_phone: this.formData.telphone,
-                  date: this.appointTime.selectedDate,
-                  time: this.appointTime.selectedTime || '',
-                  pay_method: 'WAIT',
-                  user_comment: this.formData.addressMessage
-                }
-                this.juadgePayWay(postData)
-                if (this.userInfo.isMyAddress) {
-                  postData.address_id = this.userInfo.checkedMyAddress.id
-                }
-                this.cartOrderSubmit('/v1/order/self-pick', postData)
-              }
-            }
-          }
-          }
-        }
         }
       }
     },

@@ -112,6 +112,8 @@ Vue.filter('terminalName', (value) => {
   if (value !== undefined) {
     if (value === 'wsc') {
       val = '微商城'
+    } else if (value === null) {
+      val = '后台充值'
     } else {
       val = value
     }
@@ -128,6 +130,12 @@ Vue.filter('onlinePayway', (value) => {
         break
       case 'weixin':
         val = '微信'
+        break
+      case 'cash':
+        val = '现金'
+        break
+      case 'post':
+        val = 'post刷卡'
         break
       case 'balance':
         val = '余额支付'
