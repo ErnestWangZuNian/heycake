@@ -3,7 +3,7 @@
     <div class="container">
       <div class="exchange">
         <ul>
-          <li class="list" v-for="item in listData" @click="gotoComment(item.id)">
+          <li class="list" v-for="item in listData" @click="gotoComment(item.goods_id)">
             <div class="grid height-160">
               <div class="grid-cell u-w120">
                 <img :src="item.goodsIcon | imgDetail">

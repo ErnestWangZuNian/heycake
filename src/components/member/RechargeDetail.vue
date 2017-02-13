@@ -112,7 +112,7 @@
             {
               selected: true,
               val: '全部',
-              key: 'alipay',
+              key: '',
             },
              {
               selected: false,
