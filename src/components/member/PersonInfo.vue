@@ -84,15 +84,15 @@
         selectedCountry: 1165,
         detailArea: '',
         birthday: '',
-        selectedSex: 0,
+        selectedSex: 1,
         city: [],
         sexArray: [{
           val: "男",
-          code: 0,
+          code: 1,
           isSelected: true,
         }, {
           val: "女",
-          code: 1,
+          code: 2,
           isSelected: false,
         }],
         country: []
@@ -159,7 +159,7 @@
              birthday: this.birthday,
              address: [{
                province_id: this.selectedProvince,
-               city_id: this.selectedCountry,
+               city_id: this.selectedCity,
                county_id: this.selectedCountry,
                detail_area: this.detailArea
              }]

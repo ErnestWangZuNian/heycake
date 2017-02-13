@@ -3,7 +3,7 @@
     <div class="container">
       <div class="exchange">
         <ul>
-          <li class="list" v-for="item in listData">
+          <li class="list" v-for="item in listData" @click="gotoComment(item.id)">
             <div class="grid height-160">
               <div class="grid-cell u-w120">
                 <img :src="item.goodsIcon | imgDetail">
@@ -80,6 +80,10 @@
         },(response)=>{
           this.listData = response.data.body.list
         })
+      },
+      //  去到商品详情页面
+      gotoComment(id) {
+         location.href = `/#/site/goods-recommand/${id}`
       }
     },
   }

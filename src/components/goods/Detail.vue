@@ -52,7 +52,7 @@
 
 
             <div class="grid">
-                <div class="grid-cell">查看用户评价<span class="c-888">(2564条评价)</span></div>
+                <div class="grid-cell" @click="gotoComment(goodInfo.id)">查看用户评价<span class="c-888">({{recommandCount}}条评价)</span></div>
                 <div class="grid-cell u-w30">
                     <div class="item-after"></div>
                 </div>
@@ -117,8 +117,8 @@
                         </div>
                         <div class="tip fl" v-if="goodInfo.erp_product_type !== 1">（剩余{{selectedSpec.stock | stock }}个）</div>
                     </div>
-                    <button class="confirm-spec" type="submit" :disabled="Math.floor(selectedSpec.stock) <= 0  && goodInfo.product_type !== 3" v-if="specStatus.specWay==='cart'"
-                        @click="confirmJoinCart(goodInfo.id,selectedSpec.id,goodCount)" :class="{'disabled-spec': Math.floor(selectedSpec.stock) <= 0 && goodInfo.product_type !== 3}">
+                    <button class="confirm-spec" type="submit" :disabled="Math.floor(selectedSpec.stock) <= 0  && goodInfo.product_type !== 3"
+                        v-if="specStatus.specWay==='cart'" @click="confirmJoinCart(goodInfo.id,selectedSpec.id,goodCount)" :class="{'disabled-spec': Math.floor(selectedSpec.stock) <= 0 && goodInfo.product_type !== 3}">
                         加入购物车
                     </button>
                     <button class="confirm-spec" type="submit" v-if="specStatus.specWay==='purchase'" :disabled="Math.floor(selectedSpec.stock) <= 0 && goodInfo.product_type !== 3"
@@ -169,6 +169,27 @@
         },
         mounted() {
             this.fetchData()
+            let arr =[{
+                id: '1',
+                name: 'wnagzunin'
+            },
+            {
+                id: '2',
+                name: 'wnagzunin'
+            },
+            {
+                id: '3',
+                name: 'wnagzunin'
+            },
+            {
+                id: '4',
+                name: 'wnagzuman'
+            },
+            {
+                id: '5',
+                name: 'wnagwei'
+            },]
+            console.log(utils.unique(arr,name))
         },
         data() {
             return {
@@ -188,6 +209,7 @@
                 },
                 rangeStatus: false,
                 goodCount: 1,
+                recommandCount: 0,
                 scoreInfo: {},
                 spec: [],
                 originalSpecList: [],
@@ -225,6 +247,12 @@
                     url: `/v1/freight-details`
                 }, (response) => {
                     this.freight = response.data.body
+                })
+                //  获取商品的评价
+                ajax.getDataFromApi({
+                    url: `/v1/goods/${this.$route.params.id}/comments`
+                }, response => {
+                    this.recommandCount = response.data.body.list.length
                 })
                 //  获取购物车数量
                 this.getcartCount()
@@ -346,6 +374,10 @@
                 this.specStatus.isSelectSpec = true
                 this.specStatus.specWay = 'purchase'
             },
+            //  去评论详情
+            gotoComment(id) {
+               location.href = `/#/site/goods-recommand/${id}`
+            },
             // 点击积分兑换
             scorePurchage() {
                 this.specStatus.isSelectSpec = true
@@ -466,10 +498,10 @@
             // 增加数量
             addCount() {
                 if (this.goodCount >= Math.floor(this.selectedSpec.stock)) {
-                    if(this.selectedSpec.stock < 1) {
+                    if (this.selectedSpec.stock < 1) {
                         this.selectedSpec.stock = 1
                     }
-                    this.goodCount =  Math.floor(this.selectedSpec.stock)
+                    this.goodCount = Math.floor(this.selectedSpec.stock)
                 } else {
                     this.goodCount++
                 }

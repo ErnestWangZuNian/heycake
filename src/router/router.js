@@ -27,6 +27,7 @@ const MemberRechargeDetail = resolve => require(['../components/member/RechargeD
 const MemberPersonInfo = resolve => require(['../components/member/PersonInfo'], resolve)
 const MemberConsumptionDetail = resolve => require(['../components/member/ConsumptionDetail'], resolve)
 const OrderDetail = resolve => require(['../components/order/OrderDetail'], resolve)
+const GoodsRecommand = resolve => require(['../components/goods/GoodsRecomand'], resolve)
 const routes = [{
   path: '',
   redirect: '/site/index'
@@ -111,6 +112,9 @@ const routes = [{
 }, {
   path: '/site/score-success',
   component: ScoreSuccess
+}, {
+  path: '/site/goods-recommand/:id',
+  component: GoodsRecommand
 }, {
   path: '/site/login',
   component: Login

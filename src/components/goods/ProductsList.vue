@@ -31,7 +31,7 @@
             <router-link to="products-list">
               <li class="nav-list">
                 <i class="icon icon1"></i>
-                <p>蛋糕目录</p>
+                <p>产品目录</p>
               </li>
             </router-link>
             <router-link to="new-arrivals">
@@ -124,8 +124,13 @@
         requestData: [],
         allGoodInfo: [],
         category: {
-          value: [],
+          value:[{
+            val: '全部',
+            selected: true,
+            category_id: '',
+          }],
           seleted: '全部',
+          seletedcategoryId: '',
           status: false
         },
         naberStore: {},
@@ -150,6 +155,7 @@
           url: `/v1/goods/`,
           data: {
             store_code: utils.sessionstorageGetData('naberStore') && utils.sessionstorageGetData('naberStore').store_id,
+            category_id: this.seletedcategoryId,
             per_page: 8,
             page: page
           }
@@ -172,17 +178,25 @@
         })
         category = utils.unique(category)
         category.forEach((val, index) => {
-          if (index === 0) {
-            this.category.value.push({
-              val: '全部',
-              selected: true
-            })
-          } else {
-            this.category.value.push({
+          this.category.value[0] = {
+            val: '全部',
+            selected: true
+          }
+          this.category.value.push({
               val: val,
               selected: false
             })
-          }
+          // if (index === 0) {
+          //   this.category.value.push({
+          //     val: '全部',
+          //     selected: true
+          //   })
+          // } else {
+          //   this.category.value.push({
+          //     val: val,
+          //     selected: false
+          //   })
+          // }
           this.goodInfo.push({
             category: val,
             goodList: []
@@ -217,12 +231,13 @@
       },
       //  选中的分类
       selectedCategory(item) {
+        this.goodInfo = []
         this.category.value.forEach(val => {
           val.selected = false
         })
-        console.log(this.category.value)
         this.category.seleted = item.val
         this.category.status = false
+        this.seletedcategoryId = item.category_id
         item.selected = true
         if (item.val === '全部') {
           this.goodInfo = []

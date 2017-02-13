@@ -27,8 +27,8 @@ var utils = {
       })
     } else {
       arr.forEach((elem) => {
-        if (!hash[elem.value]) {
-          hash[elem.value] = true
+        if (!hash[elem[value]]) {
+          hash[elem[value]] = true
           tempArr.push(elem)
         }
       })
