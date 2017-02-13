@@ -19,7 +19,10 @@ Vue.filter('freight', (value) => {
       val = `满${value.target_money}包邮`
     }
     if (value.money) {
-      val = `￥${(value.money * 100 / 100).toFixed(2)}`
+      val = `￥${(value.money * 100 / 100).toFixed(2)}起`
+    }
+    if (value.freight) {
+      val = `￥${(value.freight * 100 / 100).toFixed(2)}`
     }
     return val
   }

@@ -386,19 +386,30 @@
             total += val.price * 100 * val.amount
           })
           if (this.userInfo.freight !== '') {
-            if (this.userInfo.freight.money) {
-              total = total + this.userInfo.freight.money * 100
-            } else if (this.userInfo.freight.target_money) {
-              total = total
+            if (this.payWay === 'member') {
+              if (this.userInfo.freight.money) {
+                total = total * this.memberUser.discount + this.userInfo.freight.money * 100
+              } else if (this.userInfo.freight.target_money) {
+                total = total * this.memberUser.discount
+              } else if (this.userInfo.freight.freight) {
+                total = total * this.memberUser.discount + this.userInfo.freight.freight * 100
+              }
+              total = (total / 100).toFixed(2)
+            } else {
+              if (this.userInfo.freight.money) {
+                total = total + this.userInfo.freight.money * 100
+              } else if (this.userInfo.freight.target_money) {
+                total = total
+              } else if (this.userInfo.freight.freight) {
+                total = total + this.userInfo.freight.freight * 100
+              }
+              total = (total / 100).toFixed(2)
             }
-            total = (total / 100).toFixed(2)
-          } else {
-            total = (total / 100).toFixed(2)
           }
         }
-        if (this.payWay === 'member') {
-          total = (total * this.memberUser.discount * 100 / 100).toFixed(2)
-        }
+        // if (this.payWay === 'member') {
+        //   total = (total * this.memberUser.discount * 100 / 100).toFixed(2)
+        // }
         return total
       },
       // 判断订单是否能提交
@@ -467,7 +478,6 @@
           } else {
             this.appointTime.selectedTime = ''
           }
-
         })
         // 获取我的地址
         ajax.getDataFromApi({
@@ -505,10 +515,32 @@
         //   this.store.selectedStore = data[0]
         // });
         //   获取购物明细
-        this.getOrderInfo();
-        //  获取商品运费
-        ajax.getDataFromApi({
-          url: `/v1/freight-details`
+        this.getOrderInfo()
+        setTimeout(() => {
+          this.getGoodsFreight()
+        }, 300)
+      },
+      //   获取商品的运费
+      getGoodsFreight() {
+        let content = []
+        if (this.goodsInfo.buyWay !== 'cart') {
+          content = {
+            goods_id: this.goodsInfo.selectedSpecGood.id,
+            amount: this.goodsInfo.selectedSpecGood.count
+          }
+        } else {
+          this.goodsInfo.selectedCartGoods.forEach((val) => {
+            content.push({
+              goods_id: val.id,
+              amount: val.amount
+            })
+          })
+        }
+        ajax.postDataToApi({
+          url: `/v1/freight-template`,
+          body: {
+            content: content
+          }
         }, (response) => {
           this.userInfo.freight = response.data.body
         })
