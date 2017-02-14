@@ -61,7 +61,7 @@
             <div class="same-select category">
               <p class="same-select-list" @click="changeCategory">{{category.seleted}}</p>
               <ul class="same-select-list-container" v-if="category.status">
-                <li class="same-select-list" :class="item.selected ? 'same-select-list-active': ''" v-for="item in category.value" @click="selectedCategory(item)">{{item.val}}</li>
+                <li class="same-select-list" :class="item.selected ? 'same-select-list-active': ''" v-for="item in category.value" @click="selectedCategory(item)">{{item.val.name}}</li>
               </ul>
             </div>
           </div>
@@ -71,7 +71,7 @@
       <div class="products-list  page-loadmore-wrapper">
         <loadmore :bottom-method="loadTop" :auto-fill="false" @bottom-status-change="getLodingStatus" ref="loadmore" :bottom-all-loaded="loadStatus.isLoadAll">
           <dl v-for="item in goodInfo">
-            <dt>{{item.category}}</dt>
+            <dt>{{item.category.name}}</dt>
             <dd>
               <ul>
                 <li class="cf" v-for="el in item.goodList" @click="gotoDetail(el)">
@@ -127,10 +127,10 @@
           value:[{
             val: '全部',
             selected: true,
-            category_id: '',
+            id: ''
           }],
           seleted: '全部',
-          seletedcategoryId: '',
+          seletedId: '',
           status: false
         },
         naberStore: {},
@@ -155,8 +155,8 @@
           url: `/v1/goods/`,
           data: {
             store_code: utils.sessionstorageGetData('naberStore') && utils.sessionstorageGetData('naberStore').store_id,
-            category_id: this.seletedcategoryId,
-            per_page: 8,
+            per_page: 99999,
+            category_id: this.category.seletedId,
             page: page
           }
         }, (response) => {
@@ -174,12 +174,18 @@
         this.goodInfo = []
         this.category.value = []
         data.forEach((val) => {
-          category.push(val.parent_name)
+          category.push({
+            name: val.parent_name,
+            id: val.category_id
+          })
         })
-        category = utils.unique(category)
+        category = utils.unique(category,'name')
         category.forEach((val, index) => {
           this.category.value[0] = {
-            val: '全部',
+            val: {
+              name: '全部',
+              id: ''
+            },
             selected: true
           }
           this.category.value.push({
@@ -202,7 +208,7 @@
             goodList: []
           })
           data.forEach((val1) => {
-            if (val1.parent_name === val) {
+            if (val1.parent_name === val.name) {
               this.goodInfo[index].goodList.push(val1)
             }
           })
@@ -235,11 +241,11 @@
         this.category.value.forEach(val => {
           val.selected = false
         })
-        this.category.seleted = item.val
+        this.category.seleted = item.val.name
         this.category.status = false
-        this.seletedcategoryId = item.category_id
+        this.category.seletedId = item.val.id
         item.selected = true
-        if (item.val === '全部') {
+        if (item.val.name === '全部') {
           this.goodInfo = []
           this.goodInfo = this.goodInfo.concat(this.allGoodInfo)
         } else {

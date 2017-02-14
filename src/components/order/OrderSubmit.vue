@@ -368,14 +368,25 @@
         let cart = this.goodsInfo.selectedCartGoods
         if (this.goodsInfo.buyWay !== 'cart') {
           if (this.goodsInfo.buyWay === 'purchase') {
+            total = good.price * good.count * 100
             if (this.userInfo.freight !== '') {
-              if (this.userInfo.freight.money) {
-                total = good.price * good.count * 100 + this.userInfo.freight.money * 100
-              } else if (this.userInfo.freight.target_money) {
-                total = good.price * good.count * 100
+              if (this.payWay === 'member') {
+                if (this.userInfo.freight.money) {
+                  total = total * this.memberUser.discount + this.userInfo.freight.money * 100
+                } else if (this.userInfo.freight.target_money) {
+                  total = total * this.memberUser.discount
+                } else if (this.userInfo.freight.freight) {
+                  total = total * this.memberUser.discount + this.userInfo.freight.freight * 100
+                }
+              } else {
+                if (this.userInfo.freight.money) {
+                  total = total + this.userInfo.freight.money * 100
+                } else if (this.userInfo.freight.target_money) {
+                  total = total
+                } else if (this.userInfo.freight.freight) {
+                  total = total + this.userInfo.freight.freight * 100
+                }
               }
-            } else {
-              total = good.price * good.count * 100
             }
             total = (total / 100).toFixed(2)
           } else {
@@ -524,10 +535,10 @@
       getGoodsFreight() {
         let content = []
         if (this.goodsInfo.buyWay !== 'cart') {
-          content = {
+          content.push({
             goods_id: this.goodsInfo.selectedSpecGood.id,
             amount: this.goodsInfo.selectedSpecGood.count
-          }
+          })
         } else {
           this.goodsInfo.selectedCartGoods.forEach((val) => {
             content.push({

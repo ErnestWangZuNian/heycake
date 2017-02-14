@@ -119,8 +119,6 @@
           url: `v1/shopping-cart/${item.id}`,
           body: {
             store_code: utils.sessionstorageGetData('naberStore').store_id || "",
-            goods_id: item.goods_id,
-            specification_id: item.goods_profile_id,
             amount: item.amount
           }
         }, response => {
@@ -134,18 +132,18 @@
       },
       // 增加数量
       addCount(item) {
+        item.amount++
         this.postCartInfo(item, () => {
-          item.amount++
           item.itemTotalPrice = item.amount * item.price
         })
       },
       // 减少数量
       reduceCount(item) {
+        item.amount--
         this.postCartInfo(item, () => {
           if (item.amount <= 1) {
             item.amount = 1
           } else {
-            item.amount--
           }
           item.itemTotalPrice = item.amount * item.price
         })

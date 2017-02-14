@@ -169,27 +169,6 @@
         },
         mounted() {
             this.fetchData()
-            let arr =[{
-                id: '1',
-                name: 'wnagzunin'
-            },
-            {
-                id: '2',
-                name: 'wnagzunin'
-            },
-            {
-                id: '3',
-                name: 'wnagzunin'
-            },
-            {
-                id: '4',
-                name: 'wnagzuman'
-            },
-            {
-                id: '5',
-                name: 'wnagwei'
-            },]
-            console.log(utils.unique(arr,name))
         },
         data() {
             return {
