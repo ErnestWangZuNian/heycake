@@ -6,7 +6,7 @@
     <div class="login-content">
       <div class="g-login-content tel-phone">
         <label for="telphone"></label>
-        <input id='telphone' name="telphone" placeholder="请输入手机号码" @input="detailPhoneCopy" @keyup="detailPhone" v-model="telphone" @focus="focusMethod('telphone')"
+        <input id='telphone' name="telphone" placeholder="请输入手机号码"  v-model="telphone" @focus="focusMethod('telphone')"
           @blur="blurMethod('telphone')">
       </div>
       <div class="g-login-content password">
@@ -55,7 +55,7 @@
           ajax.postDataToApi({
             url: '/v1/authentication/login',
             body: {
-              account: this.telphone.replace(/\s+/g,""),
+              account: this.telphone,
               password: this.password,
             }
           }, (response) => {
@@ -77,7 +77,7 @@
             let err = error.data.code
             if (err == '100002') {
               Toast({
-                message: '密码错误，请重新输入',
+                message: '账户或者用户名有误',
                 position: 'top',
               })
               this.password = ''
@@ -126,7 +126,7 @@
       blurMethod(currentObj) {
         switch (currentObj) {
           case 'telphone':
-            let telRe = /^1[3|4|5|8]\d{1}\s\d{4}\s\d{4}$/
+            let telRe = /^1[3|4|5|8]\d{9}$/
             let formDataTel = this.telphone
             let validatorTel = this.validator.telphone
 

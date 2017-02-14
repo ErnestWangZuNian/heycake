@@ -15,7 +15,7 @@
             </section>
             <section>
               <div class="icon icon-tel"></div>
-              <div class="text"><input type="text" @change="detailPhoneCopy()" @keyup="detailPhone($event)" placeholder="联系手机号码" v-model="locationUserInfo.tel_phone"></div>
+              <div class="text"><input type="text"  placeholder="联系手机号码" v-model="locationUserInfo.tel_phone"></div>
             </section>
             <section>
               <div class="icon icon-addr"></div>
@@ -90,8 +90,8 @@
           </div>
           <div class='err-class tright' v-if="validator.name.errIsShow">{{validator.name.errText}}</div>
           <div class="label-list">
-            <label>联系电话</label> <input class="inputs" type="text" v-model='formData.telphone' @keyup='detailSelfMentionTelphone($event)'
-              @focus="focusMethod('telphone')" @blur="blurMethod('telphone')" placeholder="请填写自提人联系方式(必填)" @change="detailSelfMentionTelphoneCopy()">
+            <label>联系电话</label> <input class="inputs" type="text" v-model='formData.telphone' 
+              @focus="focusMethod('telphone')" @blur="blurMethod('telphone')" placeholder="请填写自提人联系方式(必填)" >
           </div>
           <div class='err-class tright' v-if="validator.telphone.errIsShow">{{validator.telphone.errText}}</div>
           <div class="label-list">
@@ -497,7 +497,7 @@
           let addressList = response.data.body.list
           let flag = false
           this.userInfo.address = addressList
-          this.userInfo.tel_phone = utils.detailPhone(this.userInfo.tel_phone)
+          // this.userInfo.tel_phone = utils.detailPhone(this.userInfo.tel_phone)
           if (addressList.length > 0) {
             addressList.forEach((val) => {
               if (val.is_default === 1) {
@@ -557,34 +557,34 @@
           this.userInfo.freight = response.data.body
         })
       },
-      //  手机号码处理
-      detailPhone(e) {
-        if (this.locationUserInfo.tel_phone.length === 3 && e.keyCode !== 8) {
-          this.locationUserInfo.tel_phone = this.locationUserInfo.tel_phone + ' '
-        } else if (this.locationUserInfo.tel_phone.length === 8 && e.keyCode !== 8) {
-          this.locationUserInfo.tel_phone = this.locationUserInfo.tel_phone + ' '
-        } else {
-          this.locationUserInfo.tel_phone = this.locationUserInfo.tel_phone
-        }
-      },
-      //  手机号码复制处理
-      detailPhoneCopy() {
-        this.locationUserInfo.tel_phone = utils.detailPhone(this.locationUserInfo.tel_phone)
-      },
-      //  自提手机号码处理
-      detailSelfMentionTelphone(e) {
-        if (this.formData.telphone.length === 3 && e.keyCode !== 8) {
-          this.formData.telphone = this.formData.telphone + ' '
-        } else if (this.formData.telphone.length === 8 && e.keyCode !== 8) {
-          this.formData.telphone = this.formData.telphone + ' '
-        } else {
-          this.formData.telphone = this.formData.telphone
-        }
-      },
-      // 自提手机号码复制处理
-      detailSelfMentionTelphoneCopy() {
-        this.formData.telphone = utils.detailPhone(this.formData.telphone)
-      },
+      // //  手机号码处理
+      // detailPhone(e) {
+      //   if (this.locationUserInfo.tel_phone.length === 3 && e.keyCode !== 8) {
+      //     this.locationUserInfo.tel_phone = this.locationUserInfo.tel_phone + ' '
+      //   } else if (this.locationUserInfo.tel_phone.length === 8 && e.keyCode !== 8) {
+      //     this.locationUserInfo.tel_phone = this.locationUserInfo.tel_phone + ' '
+      //   } else {
+      //     this.locationUserInfo.tel_phone = this.locationUserInfo.tel_phone
+      //   }
+      // },
+      // //  手机号码复制处理
+      // detailPhoneCopy() {
+      //   this.locationUserInfo.tel_phone = utils.detailPhone(this.locationUserInfo.tel_phone)
+      // },
+      // //  自提手机号码处理
+      // detailSelfMentionTelphone(e) {
+      //   if (this.formData.telphone.length === 3 && e.keyCode !== 8) {
+      //     this.formData.telphone = this.formData.telphone + ' '
+      //   } else if (this.formData.telphone.length === 8 && e.keyCode !== 8) {
+      //     this.formData.telphone = this.formData.telphone + ' '
+      //   } else {
+      //     this.formData.telphone = this.formData.telphone
+      //   }
+      // },
+      // // 自提手机号码复制处理
+      // detailSelfMentionTelphoneCopy() {
+      //   this.formData.telphone = utils.detailPhone(this.formData.telphone)
+      // },
       //    获取云图附件门店
       getNaberStore(location) {
         let key = '6ec262982ede339365a6f9d9b5370f1b'
@@ -852,7 +852,7 @@
             }
             break;
           case 'telphone':
-            let telRe = /^1[3|4|5|8]\d{1}\s\d{4}\s\d{4}$/
+            let telRe =  /^1[3|4|5|8]\d{9}$/
             let formDataTel = this.formData.telphone
             let validatorTel = this.validator.telphone
 
@@ -885,7 +885,7 @@
           postData.address_id = this.userInfo.checkedMyAddress.id
         } else {
           this.locationUserInfo.detail_area = JSON.parse(JSON.stringify(this.userInfo.checkedAddress))
-          let telRe = /^1[3|4|5|8]\d{1}\s\d{4}\s\d{4}$/
+          let telRe =  /^1[3|4|5|8]\d{9}$/
           // 如果是定位地址过来的判断
           if (!this.userInfo.isMyAddress) {
             if (this.locationUserInfo.name === '') {
@@ -908,7 +908,7 @@
               })
             }
             else {
-              this.locationUserInfo.tel_phone = this.locationUserInfo.tel_phone.replace(/\s+/g, "")
+              this.locationUserInfo.tel_phone = this.locationUserInfo.tel_phone
               ajax.postDataToApi({
                 url: '/v1/my-address',
                 body: this.locationUserInfo
@@ -1092,7 +1092,7 @@
               }
               //  门店自提提交方式
               if (this.receiptway.storeDeliver) {
-                let telRe = /^1[3|4|5|8]\d{1}\s\d{4}\s\d{4}$/
+                let telRe = /^1[3|4|5|8]\d{9}$/
                 if (this.formData.name === '') {
                   Toast({
                     message: '请输入自提人姓名',
@@ -1118,7 +1118,7 @@
                       profile_id: this.goodsInfo.selectedSpecGood.id,
                       // offline_store: this.store.selectedStore._id,
                       custom_name: this.formData.name,
-                      contact_phone: this.formData.telphone.replace(/\s+/g, ""),
+                      contact_phone: this.formData.telphone,
                       date: this.appointTime.selectedDate,
                       time: this.appointTime.selectedTime || '',
                       pay_method: 'WAIT',
@@ -1139,7 +1139,7 @@
                       collection: this.goodsInfo.cartGoodsId,
                       // offline_store: this.store.selectedStore._id,
                       custom_name: this.formData.name,
-                      contact_phone: this.formData.telphone.replace(/\s+/g, ""),
+                      contact_phone: this.formData.telphone,
                       date: this.appointTime.selectedDate,
                       time: this.appointTime.selectedTime || '',
                       pay_method: 'WAIT',

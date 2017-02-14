@@ -193,6 +193,9 @@ Vue.filter('orderStatus', (value) => {
       case 'ip00':
         val = '生产中'
         break
+      case 'sd00':
+        val = '待发货'
+        break
       case '':
         val = '全部'
         break

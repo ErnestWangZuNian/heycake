@@ -114,7 +114,7 @@
         })
       },
       //  提交到购物车
-      postCartInfo(item, callback) {
+      postCartInfo(item, callback,errback) {
         ajax.postDataToApi({
           url: `v1/shopping-cart/${item.id}`,
           body: {
@@ -123,7 +123,9 @@
           }
         }, response => {
           callback && callback()
-        })
+      }, err => {
+        errback && errback()
+      })
       },
       // 选择商品
       selectedCart(item) {
@@ -132,20 +134,24 @@
       },
       // 增加数量
       addCount(item) {
+        item.amount++
         this.postCartInfo(item, () => {
           item.itemTotalPrice = item.amount * item.price
-          item.amount++
+        },(err) => {
+          this.fetchData()
         })
       },
       // 减少数量
       reduceCount(item) {
+        item.amount--
         this.postCartInfo(item, () => {
           if (item.amount <= 1) {
             item.amount = 1
           } else {
-             item.amount--
           }
           item.itemTotalPrice = item.amount * item.price
+        },(err) => {
+          this.fetchData()
         })
       },
       // 输入数量
