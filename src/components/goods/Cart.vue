@@ -132,18 +132,18 @@
       },
       // 增加数量
       addCount(item) {
-        item.amount++
         this.postCartInfo(item, () => {
           item.itemTotalPrice = item.amount * item.price
+          item.amount++
         })
       },
       // 减少数量
       reduceCount(item) {
-        item.amount--
         this.postCartInfo(item, () => {
           if (item.amount <= 1) {
             item.amount = 1
           } else {
+             item.amount--
           }
           item.itemTotalPrice = item.amount * item.price
         })

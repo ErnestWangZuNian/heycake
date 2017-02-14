@@ -141,6 +141,10 @@
             isSelected: false,
             val: '已退款',
             orderCode: 'rs00',
+          },{
+            isSelected: false,
+            val: '已完成',
+            orderCode: 'trm0',
           }],
           seleted: '全部',
           status: false

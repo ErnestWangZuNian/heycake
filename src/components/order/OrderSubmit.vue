@@ -175,7 +175,7 @@
       <div class="order-null"></div>
       <!--提交订单-->
       <div class="order-submit ">
-        <p class="" v-if="goodsInfo.buyWay !== 'score'">合计：<span>￥{{ totalPrice }}(运费：{{userInfo.freight | freight}})</span></p>
+        <p class="" v-if="goodsInfo.buyWay !== 'score'">合计：<span>￥{{ totalPrice }}</span></p>
         <p class="" v-if="goodsInfo.buyWay === 'score'">合计：<span>{{ totalPrice }}积分</span></p>
         <button class="btn" :class="[!canSubmitOrder ? 'btn-gary' : ''] " @click="orderSubmit">提交订单</button>
       </div>
@@ -497,6 +497,7 @@
           let addressList = response.data.body.list
           let flag = false
           this.userInfo.address = addressList
+          this.userInfo.tel_phone = utils.detailPhone(this.userInfo.tel_phone)
           if (addressList.length > 0) {
             addressList.forEach((val) => {
               if (val.is_default === 1) {
