@@ -119,12 +119,13 @@
           url: `/wx/order/${this.listData.order_number}`
         }, response => {
           let ua = navigator.userAgent.toLowerCase()
+          console.log(navigator.userAgent)
           let timestamp = Date.parse(new Date())
           if (ua.match(/MicroMessenger/i) == "micromessenger") {
             onBridgeReady()
             function onBridgeReady() {
               WeixinJSBridge.invoke(
-                'getBrandWCPayRequest', result.body,
+                'getBrandWCPayRequest', response.body,
                 function (res) {
                   if (res.err_msg == "get_brand_wcpay_request:ok") {
                     alert('成功')

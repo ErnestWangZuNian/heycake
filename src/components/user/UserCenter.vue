@@ -93,7 +93,7 @@
   import {
     Swipe,
     SwipeItem,
-    MessageBox
+    MessageBox,
   } from 'mint-ui'
   import ajax from '../../utils/ajax.js'
   import utils from '../../utils/public'
@@ -124,6 +124,7 @@
         } else {
           MessageBox.alert('未登录').then(action => {
             location.href = '/#/site/login'
+            window.location.href = window.location.href
           })
         }
       },

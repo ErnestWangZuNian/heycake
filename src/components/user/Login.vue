@@ -126,7 +126,7 @@
       blurMethod(currentObj) {
         switch (currentObj) {
           case 'telphone':
-            let telRe = /^1[3|4|5|8]\d{9}$/
+            let telRe = /^1[3|4|5|7|8]\d{9}$/
             let formDataTel = this.telphone
             let validatorTel = this.validator.telphone
 
