@@ -238,7 +238,8 @@
       },
       //  去支付跳转
       goPay(id) {
-        location.href = `/#/site/order-pay/${id}`
+        utils.sessionstorageData('id',id)
+        location.href = `/#/site/order-pay`
       },
       //  下拉刷洗数据
       loadTop() {

@@ -43,6 +43,7 @@
   import { Swipe, SwipeItem, MessageBox, Toast } from 'mint-ui'
   import ajax from '../../utils/ajax.js'
   import Modal from '../common/Modal'
+  import utils from '../../utils/public'
   export default {
     name: 'myAddress',
     components: {
@@ -59,7 +60,8 @@
       return {
         isLogin: this.$store.state.user.userInfo.isLogin || '',   //是否登录
         userId: this.$store.state.user.userInfo.userId || '',      //当前用户ID
-        thisId: this.$route.params.id || '',
+        // thisId: this.$route.params.id || '',
+        thisId: utils.sessionstorageGetData('id') || '',
         listData: {},
         item: {},
         flag: {
