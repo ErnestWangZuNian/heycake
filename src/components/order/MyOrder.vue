@@ -45,7 +45,7 @@
               <div class="my-order-grid height-85 border-bottom">
                 <div class="grid-cell c-888" v-if="item.pay_method !== 2">
                   支付金额：
-                  <span class="c-red">{{item.total_sum | price}}</span>
+                  <span class="c-red">{{item.pay_money | price}}</span>
                   <template v-if='item.logistics_mode == "pick-up"'>（自提）</template>
                   <template v-else>（含运费：{{item.logistics_price}}元）</template>
                 </div>
