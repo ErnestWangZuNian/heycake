@@ -117,15 +117,15 @@
       weixin() {
         ajax.postDataToApi({
           url: `/wx/order/${this.listData.order_number}`
-        }, response => {
+        }, response => {        
           let ua = navigator.userAgent.toLowerCase()
           console.log(navigator.userAgent)
           let timestamp = Date.parse(new Date())
           if (ua.match(/MicroMessenger/i) == "micromessenger") {
             onBridgeReady()
-            function onBridgeReady() {
+            function onBridgeReady() {              
               WeixinJSBridge.invoke(
-                'getBrandWCPayRequest', response.body,
+                'getBrandWCPayRequest', response.data.body,
                 function (res) {
                   if (res.err_msg == "get_brand_wcpay_request:ok") {
                     alert('成功')
